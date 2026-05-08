@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: trigao_db
+    environment:
+      POSTGRES_DB: trigao
+      POSTGRES_USER: trigao_user
+      POSTGRES_PASSWORD: trigao_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trigao_user -d trigao"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: trigao_backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/trigao
+      SPRING_DATASOURCE_USERNAME: trigao_user
+      SPRING_DATASOURCE_PASSWORD: trigao_pass
+      JWT_SECRET: ${JWT_SECRET:-trigao-secret-key-change-in-production-min-256-bits}
+      ABACATEPAY_API_KEY: ${ABACATEPAY_API_KEY}
+      ABACATEPAY_BASE_URL: https://api.abacatepay.com/v2
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    container_name: trigao_frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
