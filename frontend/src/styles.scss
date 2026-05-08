@@ -1,0 +1,318 @@
+// ============================================================
+// Trigão Panificadora – Design Tokens
+// Paleta inspirada na logo (creme + vermelho + dourado)
+// ============================================================
+
+:root {
+  --background: #f4ecd2;
+  --foreground: #4c2316;
+  --primary: #c7392f;
+  --primary-deep: #9f2b23;
+  --primary-foreground: #fffdf6;
+  --gold: #f3bf2f;
+  --gold-deep: #d49e22;
+  --surface: #fffdf6;
+  --surface-alt: #faf2dd;
+
+  --gradient-hero: linear-gradient(135deg, #fff7dc 0%, #f4ecd2 52%, #f8e8b0 100%);
+  --gradient-gold: linear-gradient(135deg, var(--gold), var(--gold-deep));
+  --shadow-warm: 0 24px 52px -24px color-mix(in oklch, var(--primary) 24%, transparent);
+
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Inter', 'Nunito', sans-serif;
+}
+
+.dark {
+  --background: oklch(0.19 0.02 30);
+  --foreground: oklch(0.94 0.015 80);
+  --surface: oklch(0.24 0.02 28);
+  --surface-alt: oklch(0.28 0.03 35);
+  --primary-foreground: oklch(0.97 0.01 80);
+  --shadow-warm: 0 24px 50px -24px color-mix(in oklch, var(--gold) 28%, transparent);
+}
+
+/* Ponte para uso futuro com Tailwind sem alterar estrutura Angular atual. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-deep: var(--primary-deep);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-gold: var(--gold);
+  --color-gold-deep: var(--gold-deep);
+}
+
+// Cor de ação principal
+$primary:        #C7392F;   // vermelho de ação
+$primary-dark:   #9F2B23;
+$primary-light:  #DE6C63;
+
+// Cores secundárias
+$secondary:      #D12D2D;   // vermelho marca
+$secondary-dark: #9F1F1F;
+$secondary-light:#E24A4A;
+
+// Neutros quentes
+$bg-cream:       #F4ECD2;
+$bg-warm:        #FFF7DC;
+$surface:        #FFFDF6;
+$surface-alt:    #FAF2DD;
+
+// Texto
+$text-dark:      #4C2316;
+$text-medium:    #6D3A21;
+$text-light:     #99603E;
+
+// Destaque / ação
+$accent:         #C62828;
+$accent-light:   #DF4A4A;
+
+// Status
+$success:        #2E7D32;
+$warning:        #F57C00;
+$error:          #C62828;
+$info:           #1565C0;
+
+// Sombras
+$shadow-sm:      0 2px 8px rgba(214, 40, 40, 0.10);
+$shadow-md:      0 4px 16px rgba(214, 40, 40, 0.15);
+$shadow-lg:      0 8px 32px rgba(214, 40, 40, 0.22);
+
+// Border radius
+$radius-sm:      6px;
+$radius-md:      12px;
+$radius-lg:      20px;
+$radius-full:    9999px;
+
+// Fontes
+$font-heading:   'Playfair Display', serif;
+$font-body:      'Inter', 'Nunito', sans-serif;
+
+// Transições
+$transition:     0.25s ease;
+
+// ============================================================
+// Reset e base
+// ============================================================
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background-color: var(--background);
+  color: var(--foreground);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  margin-top: 0;
+  color: $secondary;
+}
+
+a {
+  color: $secondary;
+  text-decoration: none;
+  &:hover { color: $secondary-dark; }
+}
+
+*:focus-visible {
+  outline: 3px solid rgba($primary, 0.45);
+  outline-offset: 2px;
+}
+
+img { max-width: 100%; display: block; }
+
+// ============================================================
+// Utilitários
+// ============================================================
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@layer utilities {
+  .bg-primary { background: var(--primary); }
+  .bg-primary-deep { background: var(--primary-deep); }
+  .text-primary-foreground { color: var(--primary-foreground); }
+  .text-gold { color: var(--gold); }
+  .border-primary { border-color: var(--primary); }
+
+  .bg-gradient-hero { background-image: var(--gradient-hero); }
+  .text-gradient-gold {
+    background-image: var(--gradient-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .shadow-warm { box-shadow: var(--shadow-warm); }
+  .font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
+
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(circle at 1px 1px, color-mix(in oklch, var(--gold) 24%, transparent) 1px, transparent 0);
+    background-size: 8px 8px;
+    opacity: 0.25;
+  }
+}
+
+.section {
+  padding: 4rem 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.5rem;
+  border: none;
+  border-radius: $radius-full;
+  font-family: $font-body;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all $transition;
+  text-decoration: none;
+
+  &-primary {
+    background: $primary;
+    color: #fff;
+    &:hover { background: $primary-dark; color: #fff; transform: translateY(-1px); box-shadow: $shadow-md; }
+  }
+
+  &-secondary {
+    background: $secondary;
+    color: #fff;
+    &:hover { background: $secondary-dark; color: #fff; transform: translateY(-1px); }
+  }
+
+  &-outline {
+    background: transparent;
+    border: 2px solid $secondary;
+    color: $secondary;
+    &:hover { background: $secondary; color: #fff; }
+  }
+
+  &-accent {
+    background: $accent;
+    color: #fff;
+    &:hover { background: darken($accent, 10%); transform: translateY(-1px); box-shadow: $shadow-md; }
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: $radius-full;
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  &-primary   { background: $primary; color: #fff; }
+  &-secondary { background: $secondary; color: #fff; }
+  &-success   { background: $success; color: #fff; }
+  &-warning   { background: $warning; color: #fff; }
+  &-error     { background: $error; color: #fff; }
+}
+
+// Card genérico
+.card {
+  background: $surface;
+  border-radius: $radius-md;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+  transition: box-shadow $transition, transform $transition;
+
+  &:hover { box-shadow: $shadow-md; transform: translateY(-2px); }
+}
+
+// Form
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+
+  label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: $text-medium;
+  }
+
+  input, select, textarea {
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #ddd;
+    border-radius: $radius-sm;
+    font-family: $font-body;
+    font-size: 1rem;
+    background: $surface;
+    transition: border-color $transition;
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.15);
+    }
+
+    &.invalid { border-color: $error; }
+  }
+
+  .error-msg {
+    font-size: 0.82rem;
+    color: $error;
+  }
+}
+
+// Loader
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid rgba($primary, 0.2);
+  border-top-color: $primary;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 2rem auto;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+// Alert
+.alert {
+  padding: 0.875rem 1.25rem;
+  border-radius: $radius-sm;
+  margin-bottom: 1rem;
+  font-weight: 600;
+
+  &-success { background: lighten($success, 55%); color: darken($success, 10%); border-left: 4px solid $success; }
+  &-error   { background: lighten($error, 50%);   color: darken($error, 10%);   border-left: 4px solid $error; }
+  &-warning { background: lighten($warning, 45%); color: darken($warning, 10%); border-left: 4px solid $warning; }
+  &-info    { background: lighten($info, 55%);    color: darken($info, 10%);    border-left: 4px solid $info; }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .section { padding: 2.5rem 0; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.4rem; }
+}

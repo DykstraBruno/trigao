@@ -1,0 +1,62 @@
+@import '../../../styles.scss';
+
+.orders-page {
+  padding: 2.5rem 0 4rem;
+  h1 { font-size: 2rem; color: $secondary; margin-bottom: 2rem; }
+}
+
+.orders-list { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.order-card { padding: 1.25rem; }
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+
+  .order-id { font-weight: 700; font-size: 0.95rem; color: $text-dark; display: block; }
+  .order-date { font-size: 0.82rem; color: $text-light; }
+}
+
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba($secondary, 0.1);
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+
+  img { width: 40px; height: 40px; object-fit: cover; border-radius: $radius-sm; background: $bg-warm; }
+  .item-name { flex: 1; color: $text-dark; }
+  .item-qty { color: $text-light; }
+  .item-price { font-weight: 700; color: $primary-dark; }
+}
+
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .order-total { font-size: 0.95rem; color: $text-medium; strong { color: $text-dark; font-size: 1.05rem; } }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 0;
+  .material-icons { font-size: 4rem; color: $text-light; display: block; margin-bottom: 1rem; }
+  p { color: $text-light; margin-bottom: 1.5rem; }
+}
+
+.badge-warning { background: #FFF3CD; color: #856404; }
+.badge-info    { background: #D1ECF1; color: #0C5460; }
+.badge-primary { background: rgba($primary, 0.12); color: $primary-dark; }
+.badge-success { background: #D4EDDA; color: #155724; }
+.badge-error   { background: #F8D7DA; color: #721C24; }

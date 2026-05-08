@@ -1,0 +1,54 @@
+<div class="admin-page">
+  <div class="container">
+    <div class="page-header">
+      <div>
+        <a routerLink="/admin" class="back-link">
+          <span class="material-icons">arrow_back</span> Painel
+        </a>
+        <h1>Gerenciar Pedidos</h1>
+      </div>
+    </div>
+
+    <div class="spinner" *ngIf="loading"></div>
+
+    <div class="orders-grid" *ngIf="!loading">
+      <div class="order-card card" *ngFor="let order of orders">
+        <div class="order-top">
+          <span class="order-id">Pedido #{{ order.id }}</span>
+          <span class="order-date">{{ order.createdAt | date:'dd/MM HH:mm' }}</span>
+        </div>
+
+        <div class="order-customer" *ngIf="order.address">
+          <span class="material-icons">place</span>
+          <span>{{ order.address }}</span>
+        </div>
+
+        <div class="order-items">
+          <div class="item" *ngFor="let item of order.items | slice:0:3">
+            {{ item.quantity }}x {{ item.productName }}
+          </div>
+          <small *ngIf="order.items.length > 3">+{{ order.items.length - 3 }} itens</small>
+        </div>
+
+        <div class="order-total">R$ {{ order.totalAmount | number:'1.2-2' }}</div>
+
+        <div class="status-control">
+          <label>Status</label>
+          <select [ngModel]="order.status" (ngModelChange)="updateStatus(order, $event)">
+            <option *ngFor="let s of statusOptions" [value]="s">{{ statusLabels[s] }}</option>
+          </select>
+        </div>
+
+        <a *ngIf="order.billingUrl && order.status === 'PENDING'"
+           [href]="order.billingUrl" target="_blank" class="btn btn-outline btn-sm">
+          Link de pagamento
+        </a>
+      </div>
+
+      <div class="empty-state" *ngIf="orders.length === 0">
+        <span class="material-icons">inventory_2</span>
+        <p>Nenhum pedido encontrado.</p>
+      </div>
+    </div>
+  </div>
+</div>

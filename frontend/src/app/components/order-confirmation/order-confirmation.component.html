@@ -1,0 +1,44 @@
+<div class="confirmation-page">
+  <div class="container">
+    <div class="spinner" *ngIf="loading"></div>
+
+    <div class="alert alert-error" *ngIf="error">{{ error }}</div>
+
+    <div class="confirmation-card card" *ngIf="order && !loading">
+      <div class="status-icon">
+        <span class="material-icons" [class.paid]="order.status === 'PAID' || order.status === 'PREPARING' || order.status === 'READY' || order.status === 'DELIVERED'">
+          {{ order.status === 'CANCELLED' ? 'cancel' : 'check_circle' }}
+        </span>
+      </div>
+
+      <h2>{{ order.status === 'PENDING' ? 'Pedido Recebido!' : order.status === 'CANCELLED' ? 'Pedido Cancelado' : 'Pedido Confirmado!' }}</h2>
+      <p class="subtitle">Pedido #{{ order.id }} — {{ statusLabels[order.status] }}</p>
+
+      <div class="payment-action" *ngIf="order.status === 'PENDING' && order.billingUrl">
+        <p>Realize o pagamento para confirmar seu pedido.</p>
+        <a [href]="order.billingUrl" target="_blank" class="btn btn-accent btn-large">
+          <span class="material-icons">qr_code_2</span> Pagar agora
+        </a>
+      </div>
+
+      <div class="order-details">
+        <h4>Itens do pedido</h4>
+        <div class="item-row" *ngFor="let item of order.items">
+          <img [src]="item.productImageUrl || 'assets/placeholder-bread.jpg'" [alt]="item.productName">
+          <span class="name">{{ item.productName }}</span>
+          <span class="qty">x{{ item.quantity }}</span>
+          <span class="price">R$ {{ item.subtotal | number:'1.2-2' }}</span>
+        </div>
+        <div class="total-row">
+          <strong>Total</strong>
+          <strong>R$ {{ order.totalAmount | number:'1.2-2' }}</strong>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a routerLink="/meus-pedidos" class="btn btn-outline">Ver meus pedidos</a>
+        <a routerLink="/produtos" class="btn btn-primary">Continuar comprando</a>
+      </div>
+    </div>
+  </div>
+</div>

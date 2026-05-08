@@ -1,0 +1,109 @@
+@import '../../../../styles.scss';
+
+.admin-page {
+  padding: 2.5rem 0 4rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+
+  h1 { font-size: 1.75rem; color: $secondary; margin: 0.25rem 0 0; }
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: $primary;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 700;
+  .material-icons { font-size: 1rem; }
+  &:hover { text-decoration: underline; }
+}
+
+.product-form {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  h3 { font-family: $font-heading; color: $secondary; margin-bottom: 1rem; }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  @media (max-width: 600px) { grid-template-columns: 1fr; }
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.checkbox label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+
+.table-wrapper { overflow-x: auto; }
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: $surface;
+  border-radius: $radius-md;
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+  font-size: 0.9rem;
+
+  th {
+    background: $secondary;
+    color: #fff;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-family: $font-heading;
+  }
+
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba($secondary, 0.07);
+    vertical-align: middle;
+    color: $text-dark;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: $bg-warm; }
+}
+
+.product-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  img { width: 36px; height: 36px; object-fit: cover; border-radius: $radius-sm; }
+}
+
+.actions-cell { display: flex; gap: 0.4rem; }
+
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: $radius-sm;
+  background: rgba($primary, 0.08);
+  color: $primary;
+  cursor: pointer;
+  transition: all $transition;
+  .material-icons { font-size: 1.1rem; }
+  &:hover { background: $primary; color: #fff; }
+  &.danger { background: rgba($error, 0.08); color: $error; &:hover { background: $error; color: #fff; } }
+}
+
+.badge-success { background: #D4EDDA; color: #155724; }
+.badge-error   { background: #F8D7DA; color: #721C24; }

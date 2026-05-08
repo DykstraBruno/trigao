@@ -1,0 +1,25 @@
+@import '../../../../styles.scss';
+
+.admin-page {
+  padding: 2.5rem 0 4rem;
+  h1 { font-size: 2rem; color: $secondary; margin-bottom: 2rem; }
+}
+
+.admin-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.admin-card {
+  padding: 2rem;
+  cursor: pointer;
+  transition: all $transition;
+  text-align: center;
+
+  .material-icons { font-size: 3rem; color: $primary; display: block; margin-bottom: 1rem; }
+  h3 { font-family: $font-heading; color: $secondary; margin-bottom: 0.5rem; }
+  p { color: $text-light; font-size: 0.9rem; margin: 0; }
+
+  &:hover { transform: translateY(-4px); box-shadow: $shadow-lg; }
+}

@@ -1,0 +1,35 @@
+@import '../../../../styles.scss';
+
+.auth-page {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $bg-cream;
+  padding: 2rem 1rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+
+  h3 { font-family: $font-heading; font-size: 1.5rem; color: $secondary; margin-bottom: 1.5rem; }
+}
+
+.auth-logo {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  h2 { font-family: $font-heading; font-size: 1.6rem; color: $secondary; margin: 0; }
+  span { color: $primary; }
+}
+
+.btn-full { width: 100%; justify-content: center; margin-top: 0.5rem; }
+
+.auth-link {
+  text-align: center;
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+  color: $text-light;
+  a { color: $primary; font-weight: 700; text-decoration: none; &:hover { text-decoration: underline; } }
+}

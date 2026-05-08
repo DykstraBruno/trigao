@@ -1,0 +1,92 @@
+@import '../../../../styles.scss';
+
+.admin-page {
+  padding: 2.5rem 0 4rem;
+}
+
+.page-header {
+  margin-bottom: 1.5rem;
+  h1 { font-size: 1.75rem; color: $secondary; margin: 0.25rem 0 0; }
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: $primary;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 700;
+  .material-icons { font-size: 1rem; }
+  &:hover { text-decoration: underline; }
+}
+
+.orders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.order-card {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.order-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .order-id { font-weight: 700; color: $text-dark; }
+  .order-date { color: $text-light; font-size: 0.82rem; }
+}
+
+.order-customer {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: $text-medium;
+  font-size: 0.9rem;
+  .material-icons { font-size: 1rem; color: $primary; }
+}
+
+.order-items {
+  background: $bg-warm;
+  border-radius: $radius-sm;
+  padding: 0.75rem;
+  font-size: 0.85rem;
+  color: $text-medium;
+  .item { margin-bottom: 0.2rem; }
+  small { color: $text-light; }
+}
+
+.order-total {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: $primary-dark;
+}
+
+.status-control {
+  label { display: block; font-size: 0.8rem; color: $text-light; margin-bottom: 0.3rem; }
+
+  select {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid #e0d0bf;
+    border-radius: $radius-sm;
+    font-family: $font-body;
+    font-size: 0.88rem;
+    background: #fff;
+    color: $text-dark;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  grid-column: 1 / -1;
+  padding: 3rem 0;
+  .material-icons { font-size: 4rem; color: $text-light; display: block; margin-bottom: 0.75rem; }
+  p { color: $text-light; }
+}

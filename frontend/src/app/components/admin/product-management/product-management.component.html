@@ -1,0 +1,106 @@
+<div class="admin-page">
+  <div class="container">
+    <div class="page-header">
+      <div>
+        <a routerLink="/admin" class="back-link">
+          <span class="material-icons">arrow_back</span> Painel
+        </a>
+        <h1>Gerenciar Produtos</h1>
+      </div>
+      <button class="btn btn-primary" (click)="openCreate()">
+        <span class="material-icons">add</span> Novo Produto
+      </button>
+    </div>
+
+    <!-- Form -->
+    <div class="product-form card" *ngIf="showForm">
+      <h3>{{ editingId ? 'Editar Produto' : 'Novo Produto' }}</h3>
+      <div class="alert alert-error" *ngIf="error">{{ error }}</div>
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome</label>
+            <input type="text" formControlName="name">
+          </div>
+          <div class="form-group">
+            <label>Categoria</label>
+            <select formControlName="categoryId">
+              <option value="">Selecione...</option>
+              <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Descrição</label>
+          <textarea formControlName="description" rows="2"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Preço (R$)</label>
+            <input type="number" formControlName="price" step="0.01" min="0">
+          </div>
+          <div class="form-group">
+            <label>Estoque</label>
+            <input type="number" formControlName="stock" min="0">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>URL da Imagem</label>
+          <input type="text" formControlName="imageUrl" placeholder="https://...">
+        </div>
+        <div class="form-group checkbox">
+          <label>
+            <input type="checkbox" formControlName="active"> Produto ativo
+          </label>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline" (click)="cancel()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid || saving">
+            {{ saving ? 'Salvando...' : 'Salvar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Table -->
+    <div class="spinner" *ngIf="loading"></div>
+    <div class="table-wrapper" *ngIf="!loading">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Categoria</th>
+            <th>Preço</th>
+            <th>Estoque</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of products">
+            <td class="product-cell">
+              <img [src]="p.imageUrl || 'assets/placeholder-bread.jpg'" [alt]="p.name">
+              {{ p.name }}
+            </td>
+            <td>{{ p.categoryName }}</td>
+            <td>R$ {{ p.price | number:'1.2-2' }}</td>
+            <td>{{ p.stock }}</td>
+            <td>
+              <span class="badge" [class.badge-success]="p.active" [class.badge-error]="!p.active">
+                {{ p.active ? 'Ativo' : 'Inativo' }}
+              </span>
+            </td>
+            <td class="actions-cell">
+              <button class="icon-btn" (click)="openEdit(p)" title="Editar">
+                <span class="material-icons">edit</span>
+              </button>
+              <button class="icon-btn danger" (click)="delete(p)" title="Remover">
+                <span class="material-icons">delete_outline</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

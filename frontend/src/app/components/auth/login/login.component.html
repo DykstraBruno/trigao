@@ -1,0 +1,32 @@
+<div class="auth-page">
+  <div class="auth-card card">
+    <div class="auth-logo">
+      <h2>Trigão <span>Panificadora</span></h2>
+    </div>
+    <h3>Entrar na conta</h3>
+
+    <div class="alert alert-error" *ngIf="error">{{ error }}</div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="seu@email.com"
+               [class.invalid]="form.get('email')!.invalid && form.get('email')!.touched">
+        <span class="error-msg" *ngIf="form.get('email')!.invalid && form.get('email')!.touched">Email inválido</span>
+      </div>
+      <div class="form-group">
+        <label>Senha</label>
+        <input type="password" formControlName="password" placeholder="Sua senha"
+               [class.invalid]="form.get('password')!.invalid && form.get('password')!.touched">
+        <span class="error-msg" *ngIf="form.get('password')!.invalid && form.get('password')!.touched">Senha obrigatória</span>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full" [disabled]="loading">
+        {{ loading ? 'Entrando...' : 'Entrar' }}
+      </button>
+    </form>
+
+    <p class="auth-link">
+      Não tem conta? <a routerLink="/cadastro">Criar conta</a>
+    </p>
+  </div>
+</div>
