@@ -1,0 +1,209 @@
+@import '../../../styles.scss';
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: $surface;
+  border-bottom: 1px solid rgba($secondary, 0.12);
+  transition: box-shadow $transition, background $transition;
+
+  &.scrolled {
+    box-shadow: $shadow-md;
+    background: rgba($surface, 0.97);
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    gap: 1rem;
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: $radius-sm;
+
+    .brand-logo {
+      height: 48px;
+      width: auto;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    @media (max-width: 480px) {
+      .brand-logo { height: 42px; }
+    }
+  }
+
+  &__links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0.25rem;
+
+    li a {
+      display: block;
+      padding: 0.4rem 0.9rem;
+      color: $text-dark;
+      border-radius: $radius-full;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all $transition;
+
+      &:hover, &.active {
+        background: rgba($secondary, 0.1);
+        color: $secondary;
+      }
+    }
+
+    @media (max-width: 768px) { display: none; }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+}
+
+.cart-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: $text-dark;
+  transition: color $transition;
+
+  &:hover { color: $secondary; }
+
+  .material-icons { font-size: 1.6rem; }
+
+  .cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: $accent;
+    color: #fff;
+    border-radius: $radius-full;
+    font-size: 0.7rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+  }
+}
+
+.btn-sm { padding: 0.4rem 1rem; font-size: 0.88rem; }
+
+.user-menu { position: relative; }
+
+.user-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: none;
+  border: none;
+  color: $text-dark;
+  cursor: pointer;
+  font-family: $font-body;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.4rem 0.75rem;
+  border-radius: $radius-full;
+  transition: all $transition;
+
+  &:hover { background: rgba($secondary, 0.1); color: $secondary; }
+
+  .material-icons { font-size: 1.4rem; }
+  .arrow { font-size: 1.1rem; }
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: $surface;
+  border-radius: $radius-md;
+  box-shadow: $shadow-lg;
+  min-width: 180px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: all $transition;
+
+  &.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  a, button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    color: $text-dark;
+    font-family: $font-body;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background $transition;
+
+    .material-icons { font-size: 1.1rem; color: $text-light; }
+
+    &:hover { background: $surface-alt; color: $primary; }
+  }
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: $text-dark;
+  cursor: pointer;
+  padding: 0.25rem;
+
+  .material-icons { font-size: 1.8rem; }
+
+  @media (max-width: 768px) { display: flex; }
+}
+
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: $surface;
+  border-top: 1px solid rgba($secondary, 0.1);
+  padding: 0.5rem 0 1rem;
+
+  &.open { display: flex; }
+
+  a, button {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    color: $text-dark;
+    font-weight: 600;
+    font-family: $font-body;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background $transition;
+
+    &:hover { background: rgba($secondary, 0.1); color: $secondary; }
+  }
+
+  @media (min-width: 769px) { display: none !important; }
+}

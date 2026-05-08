@@ -1,0 +1,87 @@
+<div class="products-page">
+  <div class="products-hero">
+    <div class="container">
+      <h1>Nossos Produtos</h1>
+      <p>{{ totalElements }} produtos disponíveis</p>
+    </div>
+  </div>
+
+  <div class="container products-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h3>Categorias</h3>
+      <button class="category-btn" [class.active]="!selectedCategory" (click)="selectCategory(undefined)">
+        Todos
+      </button>
+      <button class="category-btn"
+              *ngFor="let cat of categories"
+              [class.active]="selectedCategory === cat.id"
+              (click)="selectCategory(cat.id)">
+        {{ cat.name }}
+      </button>
+    </aside>
+
+    <!-- Main -->
+    <main class="products-main">
+      <!-- Search -->
+      <div class="search-bar">
+        <span class="material-icons">search</span>
+        <input type="text" placeholder="Buscar produtos..."
+               [(ngModel)]="searchQuery"
+               (ngModelChange)="onSearch()">
+        <button *ngIf="searchQuery" class="clear-btn" (click)="searchQuery=''; loadProducts()">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="loading" class="spinner"></div>
+
+      <!-- Grid -->
+      <div class="products-grid" *ngIf="!loading">
+        <div class="product-card card" *ngFor="let p of products">
+          <div class="product-card__img">
+            <img [src]="p.imageUrl || 'assets/placeholder-bread.jpg'" [alt]="p.name" loading="lazy">
+            <span class="out-of-stock" *ngIf="p.stock === 0">Esgotado</span>
+          </div>
+          <div class="product-card__body">
+            <span class="product-card__category">{{ p.categoryName }}</span>
+            <h4>{{ p.name }}</h4>
+            <p class="product-card__desc">{{ p.description }}</p>
+            <div class="product-card__footer">
+              <span class="product-card__price">R$ {{ p.price | number:'1.2-2' }}</span>
+              <button class="btn btn-primary btn-sm"
+                      [class.added]="addedToCart.has(p.id)"
+                      [disabled]="p.stock === 0"
+                      (click)="addToCart(p)">
+                <span class="material-icons">{{ addedToCart.has(p.id) ? 'check' : 'add_shopping_cart' }}</span>
+                {{ addedToCart.has(p.id) ? 'Adicionado!' : 'Adicionar' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty -->
+      <div class="empty-state" *ngIf="!loading && products.length === 0">
+        <span class="material-icons">search_off</span>
+        <p>Nenhum produto encontrado.</p>
+      </div>
+
+      <!-- Paginação -->
+      <div class="pagination" *ngIf="totalPages > 1">
+        <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 0">
+          <span class="material-icons">chevron_left</span>
+        </button>
+        <button *ngFor="let p of pages"
+                [class.active]="p === currentPage"
+                (click)="goToPage(p)">
+          {{ p + 1 }}
+        </button>
+        <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages - 1">
+          <span class="material-icons">chevron_right</span>
+        </button>
+      </div>
+    </main>
+  </div>
+</div>

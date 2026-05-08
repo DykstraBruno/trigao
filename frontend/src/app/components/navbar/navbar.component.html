@@ -1,0 +1,72 @@
+<nav class="navbar" [class.scrolled]="scrolled">
+  <div class="container navbar__inner">
+    <!-- Logo -->
+    <a class="navbar__brand" routerLink="/" (click)="closeMenu()">
+      <img src="assets/logo-trigao.png?v=2" alt="Trigão Panificadora" class="brand-logo">
+    </a>
+
+    <!-- Links desktop -->
+    <ul class="navbar__links">
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Início</a></li>
+      <li><a routerLink="/produtos" routerLinkActive="active">Produtos</a></li>
+      <li><a [routerLink]="['/']" fragment="sobre" (click)="closeMenu()">Sobre</a></li>
+      <li><a [routerLink]="['/']" fragment="contato" (click)="closeMenu()">Contato</a></li>
+    </ul>
+
+    <!-- Ações -->
+    <div class="navbar__actions">
+      <a routerLink="/sacola" class="cart-btn">
+        <span class="material-icons">shopping_bag</span>
+        <span class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+      </a>
+
+      <ng-container *ngIf="currentUser; else loginBtn">
+        <div class="user-menu">
+          <button class="user-btn" (click)="toggleMenu()">
+            <span class="material-icons">account_circle</span>
+            <span class="user-name">{{ currentUser.name.split(' ')[0] }}</span>
+            <span class="material-icons arrow">expand_more</span>
+          </button>
+          <div class="dropdown" [class.open]="menuOpen">
+            <a routerLink="/meus-pedidos" (click)="closeMenu()">
+              <span class="material-icons">receipt_long</span> Meus Pedidos
+            </a>
+            <a *ngIf="currentUser.role === 'ADMIN'" routerLink="/admin" (click)="closeMenu()">
+              <span class="material-icons">admin_panel_settings</span> Admin
+            </a>
+            <button (click)="logout()">
+              <span class="material-icons">logout</span> Sair
+            </button>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #loginBtn>
+        <a routerLink="/login" class="btn btn-primary btn-sm">Entrar</a>
+      </ng-template>
+
+      <!-- Hamburguer mobile -->
+      <button class="hamburger" (click)="toggleMenu()">
+        <span class="material-icons">{{ menuOpen ? 'close' : 'menu' }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Menu mobile -->
+  <div class="mobile-menu" [class.open]="menuOpen">
+    <a routerLink="/" (click)="closeMenu()">Início</a>
+    <a routerLink="/produtos" (click)="closeMenu()">Produtos</a>
+    <a [routerLink]="['/']" fragment="sobre" (click)="closeMenu()">Sobre</a>
+    <a [routerLink]="['/']" fragment="contato" (click)="closeMenu()">Contato</a>
+    <a routerLink="/sacola" (click)="closeMenu()">Sacola ({{ cartCount }})</a>
+    <ng-container *ngIf="currentUser">
+      <a routerLink="/meus-pedidos" (click)="closeMenu()">Meus Pedidos</a>
+      <a *ngIf="currentUser.role === 'ADMIN'" routerLink="/admin" (click)="closeMenu()">Admin</a>
+      <button (click)="logout()">Sair</button>
+    </ng-container>
+    <ng-container *ngIf="!currentUser">
+      <a routerLink="/login" (click)="closeMenu()">Entrar</a>
+      <a routerLink="/cadastro" (click)="closeMenu()">Cadastrar</a>
+    </ng-container>
+  </div>
+</nav>

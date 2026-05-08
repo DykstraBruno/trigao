@@ -1,0 +1,70 @@
+<div class="cart-page">
+  <div class="container">
+    <h1>Minha Sacola</h1>
+
+    <div class="cart-layout" *ngIf="cart.items.length > 0; else emptyCart">
+      <!-- Itens -->
+      <div class="cart-items">
+        <div class="cart-item" *ngFor="let item of cart.items">
+          <img [src]="item.product.imageUrl || 'assets/placeholder-bread.jpg'" [alt]="item.product.name">
+          <div class="cart-item__info">
+            <h4>{{ item.product.name }}</h4>
+            <span class="category">{{ item.product.categoryName }}</span>
+            <span class="price">R$ {{ item.product.price | number:'1.2-2' }}</span>
+          </div>
+          <div class="cart-item__qty">
+            <button (click)="updateQuantity(item, item.quantity - 1)">
+              <span class="material-icons">remove</span>
+            </button>
+            <span>{{ item.quantity }}</span>
+            <button (click)="updateQuantity(item, item.quantity + 1)">
+              <span class="material-icons">add</span>
+            </button>
+          </div>
+          <div class="cart-item__subtotal">
+            R$ {{ (item.product.price * item.quantity) | number:'1.2-2' }}
+          </div>
+          <button class="remove-btn" (click)="removeItem(item)">
+            <span class="material-icons">delete_outline</span>
+          </button>
+        </div>
+
+        <button class="btn btn-outline clear-btn" (click)="clearCart()">
+          <span class="material-icons">delete_sweep</span> Limpar sacola
+        </button>
+      </div>
+
+      <!-- Resumo -->
+      <div class="cart-summary card">
+        <h3>Resumo do Pedido</h3>
+        <div class="summary-line">
+          <span>{{ cart.itemCount }} {{ cart.itemCount === 1 ? 'item' : 'itens' }}</span>
+          <span>R$ {{ cart.total | number:'1.2-2' }}</span>
+        </div>
+        <div class="summary-line delivery">
+          <span>Entrega</span>
+          <span class="free">A combinar</span>
+        </div>
+        <div class="summary-line total">
+          <strong>Total</strong>
+          <strong>R$ {{ cart.total | number:'1.2-2' }}</strong>
+        </div>
+        <button class="btn btn-accent full-width" (click)="goToCheckout()">
+          <span class="material-icons">lock</span> Finalizar Pedido
+        </button>
+        <a routerLink="/produtos" class="btn btn-outline full-width" style="margin-top:0.75rem">
+          Continuar Comprando
+        </a>
+      </div>
+    </div>
+
+    <ng-template #emptyCart>
+      <div class="empty-cart">
+        <span class="material-icons">shopping_bag</span>
+        <h3>Sua sacola está vazia</h3>
+        <p>Adicione produtos para continuar.</p>
+        <a routerLink="/produtos" class="btn btn-primary">Ver Produtos</a>
+      </div>
+    </ng-template>
+  </div>
+</div>

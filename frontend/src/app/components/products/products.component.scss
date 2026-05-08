@@ -1,0 +1,164 @@
+@import '../../../styles.scss';
+
+.products-hero {
+  background: linear-gradient(135deg, $surface 0%, $surface-alt 100%);
+  padding: 3rem 0 2rem;
+  text-align: center;
+
+  h1 { color: $secondary; font-size: 2.25rem; margin-bottom: 0.5rem; }
+  p  { color: $text-medium; font-size: 1rem; margin: 0; }
+}
+
+.products-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+  align-items: start;
+
+  @media (max-width: 768px) { grid-template-columns: 1fr; }
+}
+
+.sidebar {
+  position: sticky;
+  top: 80px;
+  background: $surface;
+  border-radius: $radius-md;
+  padding: 1.25rem;
+  box-shadow: $shadow-sm;
+
+  h3 { font-size: 1rem; font-family: $font-heading; color: $secondary; margin-bottom: 1rem; }
+
+  @media (max-width: 768px) { position: static; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+}
+
+.category-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  border: none;
+  background: none;
+  border-radius: $radius-sm;
+  font-family: $font-body;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $text-medium;
+  cursor: pointer;
+  transition: all $transition;
+  margin-bottom: 0.25rem;
+
+  &:hover { background: $bg-warm; color: $secondary; }
+  &.active { background: $secondary; color: #fff; }
+
+  @media (max-width: 768px) { width: auto; display: inline-block; }
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: $surface;
+  border: 1.5px solid #e0d0bf;
+  border-radius: $radius-full;
+  padding: 0.5rem 1rem;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: $shadow-sm;
+
+  .material-icons { color: $text-light; font-size: 1.2rem; }
+
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: $font-body;
+    font-size: 1rem;
+    background: transparent;
+    color: $text-dark;
+
+    &::placeholder { color: $text-light; }
+  }
+
+  .clear-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $text-light;
+    display: flex;
+    .material-icons { font-size: 1.1rem; }
+    &:hover { color: $text-dark; }
+  }
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.product-card {
+  &__img {
+    position: relative;
+    height: 190px;
+    overflow: hidden;
+    background: $bg-warm;
+    img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+    &:hover img { transform: scale(1.05); }
+  }
+  &__body { padding: 1rem; }
+  &__category { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: $secondary; }
+  h4 { font-family: $font-heading; font-size: 1.05rem; color: $secondary; margin: 0.25rem 0 0.4rem; }
+  &__desc { font-size: 0.83rem; color: $text-light; margin-bottom: 0.8rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  &__footer { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
+  &__price { font-size: 1.2rem; font-weight: 700; color: $secondary-dark; }
+}
+
+.out-of-stock {
+  position: absolute;
+  top: 10px; left: 10px;
+  background: $error;
+  color: #fff;
+  padding: 0.25rem 0.6rem;
+  border-radius: $radius-full;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.btn-sm { padding: 0.38rem 0.85rem; font-size: 0.82rem; }
+.btn.added { background: $success; }
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 0;
+  .material-icons { font-size: 3.5rem; color: $text-light; display: block; margin-bottom: 0.75rem; }
+  p { color: $text-light; font-size: 1.1rem; }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 2rem;
+
+  button {
+    min-width: 38px;
+    height: 38px;
+    padding: 0 0.5rem;
+    border: 1.5px solid #e0d0bf;
+    background: $surface;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    font-family: $font-body;
+    font-weight: 600;
+    color: $text-medium;
+    transition: all $transition;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover:not(:disabled) { background: $secondary; color: #fff; border-color: $secondary; }
+    &.active { background: $secondary; color: #fff; border-color: $secondary; }
+    &:disabled { opacity: 0.4; cursor: not-allowed; }
+  }
+}

@@ -1,0 +1,87 @@
+<div class="checkout-page">
+  <div class="container">
+    <h1>Finalizar Pedido</h1>
+
+    <div class="checkout-layout">
+      <!-- Formulário -->
+      <div class="checkout-form">
+        <form [formGroup]="form" (ngSubmit)="submit()">
+
+          <div class="form-section">
+            <h3><span class="material-icons">place</span> Endereço de Entrega</h3>
+            <div class="form-group">
+              <label for="address">Endereço completo</label>
+              <input id="address" type="text" formControlName="address"
+                     placeholder="Rua, número, bairro, cidade"
+                     [class.invalid]="form.get('address')!.invalid && form.get('address')!.touched">
+              <span class="error-msg" *ngIf="form.get('address')!.invalid && form.get('address')!.touched">
+                Endereço é obrigatório
+              </span>
+            </div>
+            <div class="form-group">
+              <label for="notes">Observações (opcional)</label>
+              <textarea id="notes" formControlName="notes" rows="3"
+                        placeholder="Ex: apartamento, complemento, sem cebola..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><span class="material-icons">payments</span> Forma de Pagamento</h3>
+            <div class="payment-methods">
+              <label class="payment-option"
+                     *ngFor="let m of paymentMethods"
+                     [class.selected]="form.get('paymentMethod')!.value === m.value">
+                <input type="radio" formControlName="paymentMethod" [value]="m.value">
+                <span class="material-icons">{{ m.icon }}</span>
+                <div>
+                  <strong>{{ m.label }}</strong>
+                  <small>{{ m.desc }}</small>
+                </div>
+              </label>
+            </div>
+
+            <div class="pix-info" *ngIf="form.get('paymentMethod')!.value === 'PIX'">
+              <span class="material-icons">info_outline</span>
+              <p>Após confirmar, você será redirecionado ao <strong>AbacatePay</strong> para escanear o QR Code via Pix.</p>
+            </div>
+            <div class="card-info" *ngIf="form.get('paymentMethod')!.value === 'CARD'">
+              <span class="material-icons">info_outline</span>
+              <p>Após confirmar, você será redirecionado ao <strong>AbacatePay</strong> para inserir os dados do cartão.</p>
+            </div>
+          </div>
+
+          <div class="alert alert-error" *ngIf="error">{{ error }}</div>
+
+          <button type="submit" class="btn btn-accent btn-large"
+                  [disabled]="form.invalid || loading">
+            <span class="material-icons">lock</span>
+            {{ loading ? 'Processando...' : 'Confirmar Pedido' }}
+          </button>
+        </form>
+      </div>
+
+      <!-- Resumo -->
+      <div class="order-summary card">
+        <h3>Resumo</h3>
+        <div class="summary-items">
+          <div class="summary-item" *ngFor="let item of cart.items">
+            <div class="item-info">
+              <strong>{{ item.product.name }}</strong>
+              <small>x{{ item.quantity }}</small>
+            </div>
+            <span>R$ {{ (item.product.price * item.quantity) | number:'1.2-2' }}</span>
+          </div>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-total">
+          <strong>Total</strong>
+          <strong class="total-value">R$ {{ cart.total | number:'1.2-2' }}</strong>
+        </div>
+        <div class="abacatepay-badge">
+          <img src="https://abacatepay.com/favicon.ico" alt="AbacatePay" width="16">
+          <span>Pagamento seguro via <strong>AbacatePay</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

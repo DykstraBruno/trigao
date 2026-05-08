@@ -1,0 +1,151 @@
+<!-- Hero Section -->
+<section class="hero bg-gradient-hero shadow-warm grain">
+  <div class="hero__content container">
+    <span class="hero__tag">Artesanal desde sempre</span>
+    <h1 class="font-display">Pão quentinho,<br>feito com <span class="highlight text-gradient-gold">amor</span></h1>
+    <p>Da nossa fornada diretamente para a sua mesa. Pães frescos, bolos e salgados artesanais todos os dias.</p>
+    <div class="hero__ctas">
+      <a routerLink="/produtos" class="btn btn-accent">Ver Produtos</a>
+      <a href="#sobre" class="btn btn-outline">Conheça-nos</a>
+    </div>
+  </div>
+  <div class="hero__visual">
+    <div class="hero__badge">🕕 Abrimos às 6h</div>
+  </div>
+</section>
+
+<!-- Features strip -->
+<section class="features">
+  <div class="container features__grid">
+    <div class="feature-item">
+      <span class="feature-icon">🌾</span>
+      <h3>Ingredientes selecionados</h3>
+      <p>Farinha premium e produtos naturais em todas as receitas.</p>
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon">🔥</span>
+      <h3>Assados todo dia</h3>
+      <p>Forno aceso desde as 5h para garantir frescor na sua mesa.</p>
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon">🛵</span>
+      <h3>Entrega rápida</h3>
+      <p>Peça online e receba no conforto de casa.</p>
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon">💳</span>
+      <h3>Pague como preferir</h3>
+      <p>Pix, cartão de crédito ou boleto via AbacatePay.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Produtos em destaque -->
+<section class="section" id="produtos">
+  <div class="container">
+    <div class="section-header">
+      <h2>Nossos Destaques</h2>
+      <p>Escolhas do dia, saídos quentinhos do forno</p>
+    </div>
+
+    <div class="products-grid">
+      <div class="product-card card" *ngFor="let p of featuredProducts">
+        <div class="product-card__img">
+          <img [src]="p.imageUrl || 'assets/placeholder-bread.jpg'" [alt]="p.name" loading="lazy">
+        </div>
+        <div class="product-card__body">
+          <span class="product-card__category">{{ p.categoryName }}</span>
+          <h4>{{ p.name }}</h4>
+          <p class="product-card__desc">{{ p.description }}</p>
+          <div class="product-card__footer">
+            <span class="product-card__price">R$ {{ p.price | number:'1.2-2' }}</span>
+            <button class="btn btn-primary btn-sm"
+                    [class.added]="addedToCart.has(p.id)"
+                    (click)="addToCart(p)">
+              <span class="material-icons">{{ addedToCart.has(p.id) ? 'check' : 'add_shopping_cart' }}</span>
+              {{ addedToCart.has(p.id) ? 'Adicionado!' : 'Adicionar' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center" style="margin-top:2rem">
+      <a routerLink="/produtos" class="btn btn-outline">Ver Todos os Produtos</a>
+    </div>
+  </div>
+</section>
+
+<!-- Sobre -->
+<section class="about section" id="sobre">
+  <div class="container about__inner">
+    <div class="about__text">
+      <h2>Trigão Panificadora</h2>
+      <p>Somos uma panificadora apaixonada pelo que fazemos. Há anos trazendo o melhor da panificação artesanal para a mesa das famílias.</p>
+      <p>Utilizamos ingredientes selecionados, receitas tradicionais e muito cuidado em cada produto.</p>
+      <a routerLink="/produtos" class="btn btn-primary">Conheça nossos produtos</a>
+    </div>
+    <div class="about__image">
+      <div class="about__image-placeholder">🌾</div>
+    </div>
+  </div>
+</section>
+
+<!-- Contato -->
+<section class="contact section" id="contato">
+  <div class="container">
+    <div class="section-header">
+      <h2>Onde Estamos</h2>
+    </div>
+    <div class="contact__grid">
+      <div class="contact-info">
+        <div class="info-item">
+          <span class="material-icons">place</span>
+          <div>
+            <strong>Av. Barão de Gurguéia, Nº 1932</strong>
+            <p><a href="tel:+5599982281369">(99) 98228-1369</a></p>
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="material-icons">place</span>
+          <div>
+            <strong>Av. Joaquim Ribeiro, Nº 1890</strong>
+            <p><a href="tel:+5586998165030">(86) 99816-5030</a></p>
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="material-icons">place</span>
+          <div>
+            <strong>Av. 19 de Outubro, Qd. I, Casa 04 – Parque Piauí</strong>
+            <p><a href="tel:+5586988811785">(86) 98881-1785</a></p>
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="material-icons">schedule</span>
+          <div>
+            <strong>Horário</strong>
+            <p>Seg–Dom: 05:30h às 21:30h</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="material-icons">photo_camera</span>
+          <div>
+            <strong>Instagram</strong>
+            <a href="https://www.instagram.com/trigaopanificadora/" target="_blank" rel="noopener">@trigaopanificadora</a>
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="material-icons">phone</span>
+          <div>
+            <strong>WhatsApp</strong>
+            <p>
+              <a href="https://wa.me/5599982281369" target="_blank" rel="noopener">(99) 98228-1369</a><br>
+              <a href="https://wa.me/5586998165030" target="_blank" rel="noopener">(86) 99816-5030</a><br>
+              <a href="https://wa.me/5586988811785" target="_blank" rel="noopener">(86) 98881-1785</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
