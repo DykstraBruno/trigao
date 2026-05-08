@@ -1,0 +1,95 @@
+<!-- src/app/shared/components/cart-drawer/cart-drawer.component.html -->
+
+<!-- Overlay (fundo escuro) -->
+<div class="cart-overlay" 
+     [class.open]="isOpen" 
+     (click)="closeDrawer()">
+</div>
+
+<!-- Drawer (carrinho lateral) -->
+<div class="cart-drawer" [class.open]="isOpen">
+  <!-- Header -->
+  <div class="drawer-header">
+    <h2 class="drawer-title">
+      <i class="ph-bold ph-shopping-cart"></i>
+      Meu Carrinho
+      <span class="item-count" *ngIf="cartCount > 0">({{ cartCount }})</span>
+    </h2>
+    <button class="btn-close" (click)="closeDrawer()">
+      <i class="ph-bold ph-x"></i>
+    </button>
+  </div>
+
+  <!-- Carrinho Vazio -->
+  <div class="drawer-empty" *ngIf="cartCount === 0">
+    <div class="empty-icon">
+      <i class="ph-bold ph-shopping-cart"></i>
+    </div>
+    <p class="empty-text">Seu carrinho está vazio</p>
+    <p class="empty-subtext">Adicione produtos deliciosos!</p>
+  </div>
+
+  <!-- Lista de Itens -->
+  <div class="drawer-items" *ngIf="cartCount > 0">
+    <div class="cart-item" *ngFor="let item of cartItems$ | async">
+      <!-- Imagem -->
+      <div class="item-image">
+        <img [src]="item.product.image" 
+             [alt]="item.product.name"
+             (error)="$any($event.target).src='assets/products/placeholder.jpg'">
+      </div>
+
+      <!-- Info -->
+      <div class="item-info">
+        <h3 class="item-name">{{ item.product.name }}</h3>
+        <p class="item-price">R$ {{ item.product.price | number:'1.2-2' }}</p>
+        
+        <!-- Controles de Quantidade -->
+        <div class="quantity-controls">
+          <button class="btn-qty" (click)="decreaseQuantity(item.product.id, item.quantity)">
+            <i class="ph-bold ph-minus"></i>
+          </button>
+          <span class="quantity">{{ item.quantity }}</span>
+          <button class="btn-qty" (click)="increaseQuantity(item.product.id, item.quantity)">
+            <i class="ph-bold ph-plus"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Subtotal e Remover -->
+      <div class="item-actions">
+        <p class="item-subtotal">
+          R$ {{ getItemSubtotal(item) | number:'1.2-2' }}
+        </p>
+        <button class="btn-remove" (click)="removeItem(item.product.id)">
+          <i class="ph-bold ph-trash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer (Total e Ações) -->
+  <div class="drawer-footer" *ngIf="cartCount > 0">
+    <!-- Subtotal -->
+    <div class="footer-total">
+      <span class="total-label">Subtotal</span>
+      <span class="total-value">R$ {{ cartTotal | number:'1.2-2' }}</span>
+    </div>
+
+    <!-- Info de Entrega -->
+    <p class="delivery-info">
+      <i class="ph ph-info"></i>
+      Taxa de entrega calculada no checkout
+    </p>
+
+    <!-- Botões -->
+    <button class="btn-checkout" (click)="goToCheckout()">
+      <i class="ph-bold ph-credit-card"></i>
+      Finalizar Pedido
+    </button>
+
+    <button class="btn-view-cart" (click)="goToCart()">
+      Ver Carrinho Completo
+    </button>
+  </div>
+</div>

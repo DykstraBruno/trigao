@@ -1,0 +1,25 @@
+<section class="hero-section">
+  <div class="hero-copy">
+    <p class="eyebrow">
+      <app-icon name="bread" weight="fill" [size]="18" color="var(--trigao-gold)"></app-icon>
+      Panificação artesanal
+    </p>
+
+    <h1>Trigão Panificadora</h1>
+
+    <p class="lead">
+      Pães, doces e cafés preparados todos os dias com aroma de padaria de bairro e acabamento premium.
+    </p>
+
+    <div class="actions">
+      <button class="btn-primary" type="button" (click)="addToCart.emit()">
+        <app-icon name="plus" [size]="18" color="currentColor"></app-icon>
+        Adicionar ao Carrinho
+      </button>
+
+      <button class="btn-secondary" type="button" (click)="viewMenu.emit()">
+        Ver cardápio
+      </button>
+    </div>
+  </div>
+</section>

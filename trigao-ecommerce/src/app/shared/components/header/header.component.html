@@ -1,0 +1,65 @@
+<header class="header">
+  <div class="header-container">
+    <a routerLink="/" class="logo" (click)="closeMobileMenu()">
+      <img src="assets/logo-trigao.png" alt="Trigão Panificadora" class="logo-image">
+    </a>
+
+    <nav class="desktop-nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Início</a>
+      <a routerLink="/produtos" routerLinkActive="active">Produtos</a>
+      <a routerLink="/sobre" routerLinkActive="active">Sobre</a>
+      <a routerLink="/contato" routerLinkActive="active">Contato</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="cart-button" routerLink="/carrinho" (click)="closeMobileMenu()">
+        <i class="ph-bold ph-shopping-cart"></i>
+        <span class="cart-badge" *ngIf="(cartCount$ | async) as count">{{ count }}</span>
+      </a>
+
+      <a class="login-button" routerLink="/login" (click)="closeMobileMenu()">
+        <i class="ph ph-user-circle"></i>
+        <span class="login-text">Entrar</span>
+      </a>
+
+      <button class="mobile-menu-toggle" type="button" (click)="toggleMobileMenu()">
+        <i class="ph-bold ph-list"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu-overlay" [class.open]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
+
+<nav class="mobile-menu" [class.open]="isMobileMenuOpen">
+  <div class="mobile-menu-header">
+    <img src="assets/logo-trigao.png" alt="Trigão" class="mobile-logo">
+    <button class="close-button" type="button" (click)="closeMobileMenu()">
+      <i class="ph-bold ph-x"></i>
+    </button>
+  </div>
+
+  <div class="mobile-menu-items">
+    <a routerLink="/" (click)="closeMobileMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <i class="ph ph-house"></i>
+      Início
+    </a>
+    <a routerLink="/produtos" (click)="closeMobileMenu()" routerLinkActive="active">
+      <i class="ph ph-bread"></i>
+      Produtos
+    </a>
+    <a routerLink="/sobre" (click)="closeMobileMenu()" routerLinkActive="active">
+      <i class="ph ph-info"></i>
+      Sobre
+    </a>
+    <a routerLink="/contato" (click)="closeMobileMenu()" routerLinkActive="active">
+      <i class="ph ph-phone"></i>
+      Contato
+    </a>
+  </div>
+
+  <div class="mobile-menu-footer">
+    <p class="slogan">Somos história, somos família!</p>
+    <p class="hours">Seg à Dom: 05:30h às 21:30h</p>
+  </div>
+</nav>

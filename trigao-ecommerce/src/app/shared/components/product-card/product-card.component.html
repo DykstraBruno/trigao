@@ -1,0 +1,22 @@
+<article class="product-card" [class.list-view]="viewMode === 'list'">
+  <div class="product-image">
+    <img [src]="product.image" [alt]="product.name">
+  </div>
+
+  <div class="product-body">
+    <div class="product-header">
+      <h3 class="product-name">{{ product.name }}</h3>
+      <span class="product-badge" *ngIf="product.badge">{{ product.badge }}</span>
+    </div>
+
+    <p class="product-description">{{ product.description }}</p>
+
+    <div class="product-footer">
+      <strong class="product-price">R$ {{ product.price | number:'1.2-2' }}</strong>
+      <div class="product-actions">
+        <button type="button" class="btn-outline" (click)="onViewDetails()">Detalhes</button>
+        <button type="button" class="btn-primary" (click)="onAddToCart()">Adicionar</button>
+      </div>
+    </div>
+  </div>
+</article>
