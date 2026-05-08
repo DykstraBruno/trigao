@@ -1,0 +1,72 @@
+<!-- src/app/features/home/pages/home-page/home-page.component.html -->
+
+<div class="home-page">
+  <!-- Hero Section -->
+  <app-hero-section
+    (addToCart)="handleAddToCart()"
+    (viewMenu)="handleViewMenu()">
+  </app-hero-section>
+
+  <!-- Seção de Filtros de Categoria -->
+  <section class="categories-section" id="products-section">
+    <div class="container">
+      <h2 class="section-title">Nosso Cardápio</h2>
+      
+      <div class="category-filter">
+        <button 
+          class="category-chip"
+          [class.active]="selectedCategory === 'all'"
+          (click)="filterByCategory('all')">
+          <i class="ph ph-list"></i>
+          Todos
+        </button>
+        <button 
+          *ngFor="let category of categories"
+          class="category-chip"
+          [class.active]="selectedCategory === category.id"
+          (click)="filterByCategory(category.id)">
+          <i [class]="'ph ph-' + category.icon"></i>
+          {{ category.name }}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Grid de Produtos -->
+  <section class="products-section">
+    <div class="container">
+      <!-- Mensagem se não houver produtos -->
+      <div class="empty-state" *ngIf="filteredProducts.length === 0">
+        <i class="ph-bold ph-package"></i>
+        <p>Nenhum produto encontrado nesta categoria.</p>
+      </div>
+
+      <!-- Grid de Cards -->
+      <div class="products-grid" *ngIf="filteredProducts.length > 0">
+        <app-product-card
+          *ngFor="let product of filteredProducts"
+          [product]="product"
+          (addToCart)="onAddToCart($event)"
+          (viewDetails)="onViewDetails($event)">
+        </app-product-card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção de Encomendas Especiais -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-card">
+        <div class="cta-content">
+          <i class="ph-fill ph-cake cta-icon"></i>
+          <h3 class="cta-title">Encomendas Personalizadas</h3>
+          <p class="cta-text">Bolos, tortas e salgados sob medida para sua festa ou evento!</p>
+        </div>
+        <button class="btn-order-custom" (click)="goToCustomOrders()">
+          <i class="ph-bold ph-gift"></i>
+          Fazer Encomenda
+        </button>
+      </div>
+    </div>
+  </section>
+</div>

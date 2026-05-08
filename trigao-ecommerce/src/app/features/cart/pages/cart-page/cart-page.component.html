@@ -1,0 +1,168 @@
+<!-- src/app/features/cart/pages/cart-page/cart-page.component.html -->
+
+<div class="cart-page">
+  <div class="container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+      <a routerLink="/" class="breadcrumb-link">
+        <i class="ph ph-house"></i>
+        Início
+      </a>
+      <i class="ph ph-caret-right"></i>
+      <span class="breadcrumb-current">Carrinho</span>
+    </nav>
+
+    <!-- Header da Página -->
+    <div class="page-header">
+      <h1 class="page-title">
+        <i class="ph-bold ph-shopping-cart"></i>
+        Meu Carrinho
+      </h1>
+      <button class="btn-clear" 
+              *ngIf="cartCount > 0"
+              (click)="clearCart()">
+        <i class="ph-bold ph-trash"></i>
+        Limpar Carrinho
+      </button>
+    </div>
+
+    <!-- Carrinho Vazio -->
+    <div class="empty-state" *ngIf="cartCount === 0">
+      <div class="empty-icon">
+        <i class="ph-bold ph-shopping-cart"></i>
+      </div>
+      <h2 class="empty-title">Seu carrinho está vazio</h2>
+      <p class="empty-text">Que tal adicionar alguns produtos deliciosos?</p>
+      <button class="btn-shop" (click)="continueShopping()">
+        <i class="ph-bold ph-storefront"></i>
+        Ver Produtos
+      </button>
+    </div>
+
+    <!-- Carrinho com Itens -->
+    <div class="cart-content" *ngIf="cartCount > 0">
+      <!-- Coluna da Esquerda: Lista de Itens -->
+      <div class="cart-items-section">
+        <div class="section-header">
+          <h2 class="section-title">Itens do Pedido</h2>
+          <span class="item-count">{{ cartCount }} {{ cartCount === 1 ? 'item' : 'itens' }}</span>
+        </div>
+
+        <div class="cart-items-list">
+          <div class="cart-item" *ngFor="let item of cartItems$ | async">
+            <!-- Imagem -->
+            <div class="item-image">
+              <img [src]="item.product.image" 
+                   [alt]="item.product.name"
+                   (error)="$any($event.target).src='assets/products/placeholder.jpg'">
+            </div>
+
+            <!-- Informações -->
+            <div class="item-info">
+              <h3 class="item-name">{{ item.product.name }}</h3>
+              <p class="item-description">{{ item.product.description }}</p>
+              <p class="item-unit-price">R$ {{ item.product.price | number:'1.2-2' }} un.</p>
+
+              <!-- Observações -->
+              <div class="item-observations" *ngIf="item.observations">
+                <i class="ph ph-note"></i>
+                <span>{{ item.observations }}</span>
+              </div>
+            </div>
+
+            <!-- Controles -->
+            <div class="item-controls">
+              <!-- Quantidade -->
+              <div class="quantity-control">
+                <button class="btn-qty" (click)="decreaseQuantity(item.product.id, item.quantity)">
+                  <i class="ph-bold ph-minus"></i>
+                </button>
+                <input type="number" 
+                       class="qty-input" 
+                       [value]="item.quantity"
+                       readonly>
+                <button class="btn-qty" (click)="increaseQuantity(item.product.id, item.quantity)">
+                  <i class="ph-bold ph-plus"></i>
+                </button>
+              </div>
+
+              <!-- Subtotal -->
+              <p class="item-subtotal">
+                R$ {{ getItemSubtotal(item) | number:'1.2-2' }}
+              </p>
+
+              <!-- Botão Remover -->
+              <button class="btn-remove" (click)="removeItem(item.product.id)">
+                <i class="ph-bold ph-trash"></i>
+                Remover
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coluna da Direita: Resumo -->
+      <div class="cart-summary">
+        <div class="summary-card">
+          <h2 class="summary-title">Resumo do Pedido</h2>
+
+          <!-- Linhas do Resumo -->
+          <div class="summary-line">
+            <span class="label">Subtotal ({{ cartCount }} {{ cartCount === 1 ? 'item' : 'itens' }})</span>
+            <span class="value">R$ {{ cartTotal | number:'1.2-2' }}</span>
+          </div>
+
+          <div class="summary-line">
+            <span class="label">
+              <i class="ph ph-motorcycle"></i>
+              Taxa de entrega
+            </span>
+            <span class="value delivery">A calcular</span>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <!-- Total -->
+          <div class="summary-total">
+            <span class="total-label">Total</span>
+            <span class="total-value">R$ {{ cartTotal | number:'1.2-2' }}</span>
+          </div>
+
+          <!-- Info de Desconto -->
+          <div class="discount-info">
+            <i class="ph-bold ph-tag"></i>
+            <span>Pague com <strong>Pix</strong> e ganhe <strong>5% de desconto</strong>!</span>
+          </div>
+
+          <!-- Botão Finalizar -->
+          <button class="btn-checkout" (click)="goToCheckout()">
+            <i class="ph-bold ph-credit-card"></i>
+            Finalizar Pedido
+          </button>
+
+          <!-- Continuar Comprando -->
+          <button class="btn-continue" (click)="continueShopping()">
+            <i class="ph-bold ph-arrow-left"></i>
+            Continuar Comprando
+          </button>
+        </div>
+
+        <!-- Card de Segurança -->
+        <div class="security-badges">
+          <div class="badge-item">
+            <i class="ph-fill ph-lock"></i>
+            <span>Pagamento Seguro</span>
+          </div>
+          <div class="badge-item">
+            <i class="ph-fill ph-shield-check"></i>
+            <span>Dados Protegidos</span>
+          </div>
+          <div class="badge-item">
+            <i class="ph-fill ph-truck"></i>
+            <span>Entrega Rápida</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

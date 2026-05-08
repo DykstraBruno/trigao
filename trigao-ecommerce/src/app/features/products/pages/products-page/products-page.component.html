@@ -1,0 +1,155 @@
+<div class="products-page">
+  <div class="container">
+    <!-- Header da Página -->
+    <div class="page-header">
+      <div class="header-content">
+        <nav class="breadcrumb">
+          <a routerLink="/" class="breadcrumb-link">
+            <i class="ph ph-house"></i>
+            Início
+          </a>
+          <i class="ph ph-caret-right"></i>
+          <span class="breadcrumb-current">{{ getCategoryName(selectedCategory) }}</span>
+        </nav>
+
+        <h1 class="page-title">
+          <i class="ph-bold ph-storefront"></i>
+          Nosso Cardápio
+        </h1>
+        <p class="page-subtitle">
+          Produtos frescos e artesanais preparados diariamente
+        </p>
+      </div>
+    </div>
+
+    <!-- Barra de Busca e Filtros -->
+    <div class="filters-bar">
+      <!-- Busca -->
+      <div class="search-box">
+        <i class="ph-bold ph-magnifying-glass search-icon"></i>
+        <input 
+          type="text" 
+          class="search-input"
+          placeholder="Buscar produtos..."
+          [(ngModel)]="searchQuery"
+          (input)="onSearch(searchQuery)">
+        <button 
+          class="btn-clear-search" 
+          *ngIf="searchQuery"
+          (click)="clearSearch()">
+          <i class="ph-bold ph-x"></i>
+        </button>
+      </div>
+
+      <!-- Ordenação -->
+      <div class="sort-dropdown" (mouseleave)="sortDropdownOpen = false">
+        <button class="sort-button" (click)="sortDropdownOpen = !sortDropdownOpen">
+          <i class="ph ph-sort-ascending"></i>
+          <span>Ordenar</span>
+          <i class="ph ph-caret-down"></i>
+        </button>
+        <div class="sort-menu" *ngIf="sortDropdownOpen">
+          <button 
+            class="sort-option"
+            [class.active]="sortBy === 'popular'"
+            (click)="changeSortBy('popular')">
+            Mais Populares
+          </button>
+          <button 
+            class="sort-option"
+            [class.active]="sortBy === 'name'"
+            (click)="changeSortBy('name')">
+            Nome (A-Z)
+          </button>
+          <button 
+            class="sort-option"
+            [class.active]="sortBy === 'price-asc'"
+            (click)="changeSortBy('price-asc')">
+            Menor Preço
+          </button>
+          <button 
+            class="sort-option"
+            [class.active]="sortBy === 'price-desc'"
+            (click)="changeSortBy('price-desc')">
+            Maior Preço
+          </button>
+        </div>
+      </div>
+
+      <!-- Modo de Visualização -->
+      <div class="view-toggle">
+        <button 
+          class="view-btn"
+          [class.active]="viewMode === 'grid'"
+          (click)="changeViewMode('grid')">
+          <i class="ph-bold ph-grid-four"></i>
+        </button>
+        <button 
+          class="view-btn"
+          [class.active]="viewMode === 'list'"
+          (click)="changeViewMode('list')">
+          <i class="ph-bold ph-list"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Filtros de Categoria -->
+    <div class="categories-filter">
+      <button 
+        class="category-chip"
+        [class.active]="selectedCategory === 'all'"
+        (click)="filterByCategory('all')">
+        <i class="ph ph-list"></i>
+        Todos
+      </button>
+      <button 
+        *ngFor="let category of categories"
+        class="category-chip"
+        [class.active]="selectedCategory === category.id"
+        (click)="filterByCategory(category.id)">
+        <i [class]="'ph ph-' + category.icon"></i>
+        {{ category.name }}
+      </button>
+    </div>
+
+    <!-- Contador de Resultados -->
+    <div class="results-info">
+      <p class="results-text">
+        <strong>{{ filteredProducts.length }}</strong> 
+        {{ filteredProducts.length === 1 ? 'produto encontrado' : 'produtos encontrados' }}
+        <span *ngIf="selectedCategory !== 'all'">
+          em <strong>{{ getCategoryName(selectedCategory) }}</strong>
+        </span>
+      </p>
+    </div>
+
+    <!-- Grid de Produtos -->
+    <div class="products-grid" [class.list-view]="viewMode === 'list'">
+      <app-product-card
+        *ngFor="let product of filteredProducts"
+        [product]="product"
+        [viewMode]="viewMode"
+        (addToCart)="onAddToCart($event)"
+        (viewDetails)="onViewDetails($event)">
+      </app-product-card>
+    </div>
+
+    <!-- Estado Vazio -->
+    <div class="empty-state" *ngIf="filteredProducts.length === 0">
+      <div class="empty-icon">
+        <i class="ph-bold ph-magnifying-glass"></i>
+      </div>
+      <h2 class="empty-title">Nenhum produto encontrado</h2>
+      <p class="empty-text" *ngIf="searchQuery">
+        Tente buscar com outros termos ou remova os filtros
+      </p>
+      <p class="empty-text" *ngIf="!searchQuery">
+        Não há produtos nesta categoria no momento
+      </p>
+      <button class="btn-clear-filters" (click)="filterByCategory('all'); clearSearch()">
+        <i class="ph-bold ph-x-circle"></i>
+        Limpar Filtros
+      </button>
+    </div>
+  </div>
+</div>

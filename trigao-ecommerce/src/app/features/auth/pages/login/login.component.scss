@@ -1,0 +1,264 @@
+// src/app/features/auth/pages/login/login.component.scss
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    #FAF5F0 0%,
+    #F5EDE3 50%,
+    #FAF5F0 100%
+  );
+  padding: 20px;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 440px;
+  background: white;
+  border-radius: 24px;
+  padding: 48px 32px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+
+  @media (min-width: 768px) {
+    padding: 56px 48px;
+  }
+}
+
+// ==========================================
+// HEADER
+// ==========================================
+.login-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.login-logo {
+  height: 80px;
+  width: auto;
+  margin-bottom: 24px;
+}
+
+.login-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #2C1810;
+  margin: 0 0 8px 0;
+
+  @media (min-width: 768px) {
+    font-size: 32px;
+  }
+}
+
+.login-subtitle {
+  font-size: 15px;
+  color: #8B7D75;
+  margin: 0;
+}
+
+// ==========================================
+// FORMULÁRIO
+// ==========================================
+.login-form {
+  margin-bottom: 32px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #5C4A3A;
+  margin-bottom: 8px;
+
+  i {
+    font-size: 18px;
+    color: #C9A780;
+  }
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #E5DDD6;
+  border-radius: 12px;
+  font-size: 15px;
+  color: #2C1810;
+  transition: all 0.3s ease;
+  background: #FFFEF9;
+
+  &::placeholder {
+    color: #B8ADA5;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #C9A780;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(201, 167, 128, 0.1);
+  }
+
+  &:disabled {
+    background: #F5F5F5;
+    cursor: not-allowed;
+  }
+}
+
+.password-input-wrapper {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: #8B7D75;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+
+  i {
+    font-size: 20px;
+  }
+
+  &:hover {
+    background: #F5EDE3;
+    color: #5C4A3A;
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+}
+
+// ==========================================
+// MENSAGEM DE ERRO
+// ==========================================
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: #FEF2F2;
+  border: 1px solid #FCA5A5;
+  border-radius: 12px;
+  color: #991B1B;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  animation: shake 0.4s ease;
+
+  i {
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+// ==========================================
+// BOTÃO DE LOGIN
+// ==========================================
+.btn-login {
+  width: 100%;
+  padding: 16px 24px;
+  background: #C9A780;
+  color: #2C1810;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 16px rgba(201, 167, 128, 0.3);
+
+  i {
+    font-size: 20px;
+  }
+
+  &:hover:not(:disabled) {
+    background: #B8885A;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201, 167, 128, 0.4);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.loading-spinner i {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// ==========================================
+// CREDENCIAIS DEMO
+// ==========================================
+.demo-credentials {
+  padding: 20px;
+  background: #FEF3C7;
+  border: 1px solid #FCD34D;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.demo-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #92400E;
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  i {
+    font-size: 18px;
+  }
+}
+
+.demo-text {
+  font-size: 14px;
+  color: #78350F;
+  margin: 0;
+  line-height: 1.6;
+
+  strong {
+    font-weight: 700;
+  }
+}

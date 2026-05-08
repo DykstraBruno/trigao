@@ -1,0 +1,281 @@
+// src/app/features/home/pages/home-page/home-page.component.scss
+
+.home-page {
+  min-height: 100vh;
+  background: var(--trigao-cream);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  @media (min-width: 1024px) {
+    padding: 0 40px;
+  }
+}
+
+// ==========================================
+// CATEGORIES SECTION
+// ==========================================
+.categories-section {
+  padding: 48px 0 32px;
+  background: var(--trigao-cream);
+  position: sticky;
+  top: 72px;
+  z-index: 50;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+  @media (min-width: 768px) {
+    padding: 56px 0 40px;
+  }
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--trigao-brown, #2C1810);
+  margin: 0 0 24px 0;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    font-size: 40px;
+    margin-bottom: 32px;
+  }
+}
+
+.category-filter {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.category-chip {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: white;
+  border: 2px solid #E5DDD6;
+  border-radius: 24px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #5C4A3A;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  scroll-snap-align: start;
+  white-space: nowrap;
+
+  i {
+    font-size: 20px;
+    color: #C9A780;
+  }
+
+  &:hover {
+    border-color: #C9A780;
+    background: #FAF5F0;
+    transform: translateY(-2px);
+  }
+
+  &.active {
+    background: #C9A780;
+    border-color: #C9A780;
+    color: #2C1810;
+    box-shadow: 0 4px 12px rgba(201, 167, 128, 0.3);
+
+    i {
+      color: #2C1810;
+    }
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+// ==========================================
+// PRODUCTS SECTION
+// ==========================================
+.products-section {
+  padding: 40px 0 80px;
+
+  @media (min-width: 768px) {
+    padding: 56px 0 100px;
+  }
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+
+  @media (min-width: 640px) {
+    gap: 24px;
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+}
+
+// ==========================================
+// EMPTY STATE
+// ==========================================
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+
+  i {
+    font-size: 64px;
+    color: #C9A780;
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 18px;
+    color: #8B7D75;
+    margin: 0;
+  }
+}
+
+// ==========================================
+// CTA SECTION (Encomendas)
+// ==========================================
+.cta-section {
+  padding: 0 0 80px;
+  background: var(--trigao-cream);
+
+  @media (min-width: 768px) {
+    padding: 0 0 100px;
+  }
+}
+
+.cta-card {
+  background: linear-gradient(
+    135deg,
+    #C9A780 0%,
+    #B8885A 100%
+  );
+  border-radius: 24px;
+  padding: 40px 32px;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(201, 167, 128, 0.3);
+
+  @media (min-width: 768px) {
+    padding: 56px 48px;
+    border-radius: 32px;
+  }
+}
+
+.cta-content {
+  margin-bottom: 32px;
+}
+
+.cta-icon {
+  font-size: 64px;
+  color: white;
+  margin-bottom: 16px;
+
+  @media (min-width: 768px) {
+    font-size: 80px;
+    margin-bottom: 24px;
+  }
+}
+
+.cta-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 12px 0;
+
+  @media (min-width: 768px) {
+    font-size: 36px;
+    margin-bottom: 16px;
+  }
+}
+
+.cta-text {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+
+  @media (min-width: 768px) {
+    font-size: 18px;
+  }
+}
+
+.btn-order-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 40px;
+  background: white;
+  color: #8B6F47;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  i {
+    font-size: 24px;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    background: #FFFEF9;
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+
+  @media (min-width: 768px) {
+    padding: 18px 48px;
+    font-size: 18px;
+
+    i {
+      font-size: 26px;
+    }
+  }
+}
+
+// ==========================================
+// LOADING STATE
+// ==========================================
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 80px 20px;
+
+  i {
+    font-size: 48px;
+    color: #C9A780;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
