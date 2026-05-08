@@ -1,0 +1,73 @@
+<app-header></app-header>
+
+<main class="page-shell">
+  <section class="hero-card">
+    <div class="hero-copy">
+      <p class="eyebrow">
+        <app-icon name="bread" weight="fill" [size]="18" color="var(--trigao-gold)"></app-icon>
+        Panificação artesanal
+      </p>
+
+      <h1>{{ title() }}</h1>
+
+      <p class="lead">
+        Pães, doces e cafés preparados todos os dias com aroma de padaria de bairro e acabamento premium.
+      </p>
+
+      <div class="actions">
+        <button class="btn-primary" type="button">
+          <app-icon name="plus" [size]="18" color="currentColor"></app-icon>
+          Adicionar ao Carrinho
+        </button>
+
+        <button class="btn-secondary" type="button">
+          Ver cardápio
+        </button>
+      </div>
+
+      <div class="stats">
+        <article>
+          <strong>120+</strong>
+          <span>itens frescos</span>
+        </article>
+        <article>
+          <strong>05:30 às 21:30</strong>
+          <span>atendimento diário</span>
+        </article>
+        <article>
+          <strong>4.9/5</strong>
+          <span>avaliação média</span>
+        </article>
+      </div>
+    </div>
+
+    <div class="hero-showcase" aria-hidden="true">
+      <div class="orb orb-one"></div>
+      <div class="orb orb-two"></div>
+
+      <div class="showcase-panel">
+        <div class="icon-grid">
+          <div class="icon-tile accent-gold">
+            <app-icon name="bread" weight="fill" [size]="64" color="#D4A574"></app-icon>
+          </div>
+          <div class="icon-tile accent-brown">
+            <app-icon name="cake" weight="bold" [size]="64" color="#8B4513"></app-icon>
+          </div>
+          <div class="icon-tile accent-gold-soft">
+            <app-icon name="shopping-cart" weight="fill" [size]="64" color="#D4A574"></app-icon>
+          </div>
+          <div class="icon-tile accent-rose">
+            <app-icon name="heart" weight="fill" [size]="64" color="#F44336"></app-icon>
+          </div>
+        </div>
+
+        <div class="feature-chip">
+          <app-icon name="sparkle" weight="fill" [size]="18" color="#B8885A"></app-icon>
+          Receita de vitrine para o dia inteiro
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<router-outlet></router-outlet>
