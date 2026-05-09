@@ -1,16 +1,38 @@
 <!-- Hero Section -->
 <section class="hero bg-gradient-hero shadow-warm grain">
   <div class="hero__content container">
-    <span class="hero__tag">Artesanal desde sempre</span>
-    <h1 class="font-display">Pão quentinho,<br>feito com <span class="highlight text-gradient-gold">amor</span></h1>
-    <p>Da nossa fornada diretamente para a sua mesa. Pães frescos, bolos e salgados artesanais todos os dias.</p>
+    <span class="hero__tag">PANIFICAÇÃO ARTESANAL</span>
+    <h1 class="font-display">
+      <span class="highlight text-gradient-gold">Trigão</span> Panificadora
+    </h1>
+    <p class="hero__slogan">Somos história, somos família!</p>
+    <p class="hero__desc">Da nossa fornada diretamente para a sua mesa. Pães frescos, bolos e salgados artesanais todos os dias, das 05:30h às 21:30h.</p>
     <div class="hero__ctas">
-      <a routerLink="/produtos" class="btn btn-accent">Ver Produtos</a>
-      <a href="#sobre" class="btn btn-outline">Conheça-nos</a>
+      <a routerLink="/produtos" class="btn btn-accent">Ver cardápio</a>
+      <a routerLink="/carrinho" class="btn btn-outline">Meu carrinho</a>
+    </div>
+
+    <div class="hero__stats">
+      <div class="stat">
+        <strong class="stat__value">120+</strong>
+        <span class="stat__label">itens no cardápio</span>
+      </div>
+      <div class="stat">
+        <strong class="stat__value">05:30 – 21:30</strong>
+        <span class="stat__label">todos os dias</span>
+      </div>
+      <div class="stat">
+        <strong class="stat__value">4,9 / 5</strong>
+        <span class="stat__label">avaliação dos clientes</span>
+      </div>
     </div>
   </div>
-  <div class="hero__visual">
-    <div class="hero__badge">🕕 Abrimos às 6h</div>
+</section>
+
+<!-- Banner faixa -->
+<section class="hero-banner">
+  <div class="container">
+    <p>🥖 Receita de vitrine para o dia inteiro</p>
   </div>
 </section>
 
@@ -48,8 +70,14 @@
       <p>Escolhas do dia, saídos quentinhos do forno</p>
     </div>
 
-    <div class="products-grid">
-      <div class="product-card card" *ngFor="let p of featuredProducts">
+    <div *ngIf="loading" class="products-status">Carregando produtos…</div>
+
+    <div *ngIf="loadError && !loading" class="products-status products-status--error">
+      Não foi possível carregar os produtos. Verifique sua conexão e tente novamente.
+    </div>
+
+    <div *ngIf="!loading && !loadError" class="products-grid">
+      <div class="product-card card" *ngFor="let p of featuredProducts; trackBy: trackByProductId">
         <div class="product-card__img">
           <img [src]="p.imageUrl || 'assets/placeholder-bread.jpg'" [alt]="p.name" loading="lazy">
         </div>
@@ -62,7 +90,7 @@
             <button class="btn btn-primary btn-sm"
                     [class.added]="addedToCart.has(p.id)"
                     (click)="addToCart(p)">
-              <span class="material-icons">{{ addedToCart.has(p.id) ? 'check' : 'add_shopping_cart' }}</span>
+              <i class="ph" [class.ph-check]="addedToCart.has(p.id)" [class.ph-shopping-cart-simple]="!addedToCart.has(p.id)"></i>
               {{ addedToCart.has(p.id) ? 'Adicionado!' : 'Adicionar' }}
             </button>
           </div>
@@ -80,13 +108,18 @@
 <section class="about section" id="sobre">
   <div class="container about__inner">
     <div class="about__text">
+      <span class="about__eyebrow">Nossa história</span>
       <h2>Trigão Panificadora</h2>
-      <p>Somos uma panificadora apaixonada pelo que fazemos. Há anos trazendo o melhor da panificação artesanal para a mesa das famílias.</p>
-      <p>Utilizamos ingredientes selecionados, receitas tradicionais e muito cuidado em cada produto.</p>
-      <a routerLink="/produtos" class="btn btn-primary">Conheça nossos produtos</a>
+      <p class="about__tagline">Somos história, somos família!</p>
+      <p>Em Teresina, a Trigão é mais que uma padaria — é ponto de encontro de gerações. Começamos pequenos, com um forno e a vontade de levar pão quentinho para a mesa das famílias do bairro. Hoje, com três lojas abertas todos os dias, mantemos a mesma receita: cuidado em cada massa e respeito por quem entra na nossa loja.</p>
+      <p>Nossos pães, bolos e salgados saem do forno desde às 05:30h, feitos com farinha selecionada, fermentação cuidada e o toque artesanal que só quem trabalha por amor sabe entregar.</p>
+      <div class="about__ctas">
+        <a routerLink="/produtos" class="btn btn-primary">Conheça nossos produtos</a>
+        <a href="#contato" class="btn btn-outline">Encontre uma loja</a>
+      </div>
     </div>
     <div class="about__image">
-      <div class="about__image-placeholder">🌾</div>
+      <div class="about__image-placeholder">🥖</div>
     </div>
   </div>
 </section>
@@ -100,42 +133,42 @@
     <div class="contact__grid">
       <div class="contact-info">
         <div class="info-item">
-          <span class="material-icons">place</span>
+          <i class="ph ph-map-pin"></i>
           <div>
             <strong>Av. Barão de Gurguéia, Nº 1932</strong>
             <p><a href="tel:+5599982281369">(99) 98228-1369</a></p>
           </div>
         </div>
         <div class="info-item">
-          <span class="material-icons">place</span>
+          <i class="ph ph-map-pin"></i>
           <div>
             <strong>Av. Joaquim Ribeiro, Nº 1890</strong>
             <p><a href="tel:+5586998165030">(86) 99816-5030</a></p>
           </div>
         </div>
         <div class="info-item">
-          <span class="material-icons">place</span>
+          <i class="ph ph-map-pin"></i>
           <div>
             <strong>Av. 19 de Outubro, Qd. I, Casa 04 – Parque Piauí</strong>
             <p><a href="tel:+5586988811785">(86) 98881-1785</a></p>
           </div>
         </div>
         <div class="info-item">
-          <span class="material-icons">schedule</span>
+          <i class="ph ph-clock"></i>
           <div>
             <strong>Horário</strong>
             <p>Seg–Dom: 05:30h às 21:30h</p>
           </div>
         </div>
         <div class="info-item">
-          <span class="material-icons">photo_camera</span>
+          <i class="ph ph-instagram-logo"></i>
           <div>
             <strong>Instagram</strong>
             <a href="https://www.instagram.com/trigaopanificadora/" target="_blank" rel="noopener">@trigaopanificadora</a>
           </div>
         </div>
         <div class="info-item">
-          <span class="material-icons">phone</span>
+          <i class="ph ph-whatsapp-logo"></i>
           <div>
             <strong>WhatsApp</strong>
             <p>

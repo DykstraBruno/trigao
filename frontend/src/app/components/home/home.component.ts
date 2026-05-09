@@ -11,6 +11,8 @@ import { CartService } from '../../services/cart.service';
 export class HomeComponent implements OnInit {
   featuredProducts: Product[] = [];
   addedToCart: Set<number> = new Set();
+  loading = true;
+  loadError = false;
 
   constructor(
     private productService: ProductService,
@@ -18,9 +20,21 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.productService.getProducts(0, 6).subscribe(page => {
-      this.featuredProducts = page.content;
+    this.productService.getProducts(0, 6).subscribe({
+      next: page => {
+        this.featuredProducts = page.content;
+        this.loading = false;
+      },
+      error: err => {
+        console.error('Falha ao carregar produtos em destaque', err);
+        this.loadError = true;
+        this.loading = false;
+      }
     });
+  }
+
+  trackByProductId(_: number, product: Product): number {
+    return product.id;
   }
 
   addToCart(product: Product): void {
