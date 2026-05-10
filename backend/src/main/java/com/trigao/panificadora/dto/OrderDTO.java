@@ -21,6 +21,11 @@ public class OrderDTO {
     private String paymentMethod;
     private String address;
     private Instant createdAt;
+    private Long storeId;
+    private String storeName;
+    private String customerName;
+    private String customerEmail;
+    private String customerPhone;
     private List<ItemDTO> items;
 
     @Data
@@ -43,6 +48,15 @@ public class OrderDTO {
         dto.setPaymentMethod(o.getPaymentMethod());
         dto.setAddress(o.getAddress());
         dto.setCreatedAt(o.getCreatedAt());
+        if (o.getStore() != null) {
+            dto.setStoreId(o.getStore().getId());
+            dto.setStoreName(o.getStore().getName());
+        }
+        if (o.getUser() != null) {
+            dto.setCustomerName(o.getUser().getName());
+            dto.setCustomerEmail(o.getUser().getEmail());
+            dto.setCustomerPhone(o.getUser().getPhone());
+        }
         dto.setItems(o.getItems().stream().map(OrderDTO::mapItem).collect(Collectors.toList()));
         return dto;
     }

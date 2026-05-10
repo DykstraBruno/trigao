@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#c88a34"/>
+      <stop offset="100%" stop-color="#8f5a1f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect x="260" y="240" width="680" height="320" rx="80" fill="#d89644"/>
+  <rect x="330" y="300" width="540" height="220" rx="60" fill="#c5792c"/>
+  <text x="600" y="690" font-family="Verdana, sans-serif" font-size="58" text-anchor="middle" fill="#fff0d4">PAO CARTEIRO</text>
+</svg>

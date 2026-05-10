@@ -55,10 +55,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/stores", "/api/stores/*").permitAll()
                 // Webhook do AbacatePay
                 .antMatchers("/api/webhooks/**").permitAll()
                 // Admin
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
+                // Manager
+                .antMatchers("/api/orders/manager/**").hasAnyRole("MANAGER", "ADMIN")
                 // Demais rotas autenticadas
                 .anyRequest().authenticated();
 

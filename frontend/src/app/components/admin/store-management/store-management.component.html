@@ -1,0 +1,76 @@
+<div class="store-mgmt">
+  <header>
+    <h2><span class="material-icons">storefront</span> Lojas</h2>
+    <button class="btn btn-primary" (click)="openNew()">
+      <span class="material-icons">add</span> Nova loja
+    </button>
+  </header>
+
+  <div class="form-card" *ngIf="showForm">
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="grid">
+        <label>
+          Nome
+          <input formControlName="name" placeholder="Ex: Centro">
+        </label>
+        <label>
+          Slug (opcional)
+          <input formControlName="slug" placeholder="centro">
+        </label>
+        <label class="full">
+          Endereço
+          <input formControlName="address" placeholder="Rua, bairro, cidade">
+        </label>
+        <label>
+          Telefone
+          <input formControlName="phone" placeholder="(86) 99999-9999">
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" formControlName="active"> Ativa
+        </label>
+      </div>
+      <div class="alert" *ngIf="error">{{ error }}</div>
+      <div class="actions">
+        <button type="button" class="btn btn-ghost" (click)="cancel()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salvar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="loading" *ngIf="loading">Carregando…</div>
+
+  <table class="data-table" *ngIf="!loading">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Slug</th>
+        <th>Endereço</th>
+        <th>Telefone</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let s of stores; trackBy: trackById" [class.inactive]="!s.active">
+        <td><strong>{{ s.name }}</strong></td>
+        <td><code>{{ s.slug }}</code></td>
+        <td>{{ s.address || '—' }}</td>
+        <td>{{ s.phone || '—' }}</td>
+        <td>
+          <span class="status-pill" [class.on]="s.active">{{ s.active ? 'Ativa' : 'Inativa' }}</span>
+        </td>
+        <td class="row-actions">
+          <button class="icon-btn" (click)="edit(s)" title="Editar">
+            <span class="material-icons">edit</span>
+          </button>
+          <button class="icon-btn danger" *ngIf="s.active" (click)="toggle(s)" title="Desativar">
+            <span class="material-icons">block</span>
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="stores.length === 0">
+        <td colspan="6" class="empty">Nenhuma loja cadastrada.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

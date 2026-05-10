@@ -10,6 +10,9 @@ public class CreateOrderRequest {
     @NotNull @NotEmpty
     private List<OrderItemRequest> items;
 
+    @NotNull
+    private Long storeId;
+
     private String notes;
     private String address;
 

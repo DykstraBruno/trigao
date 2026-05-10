@@ -7,35 +7,38 @@
 
     <!-- Links desktop -->
     <ul class="navbar__links">
-      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Início</a></li>
-      <li><a routerLink="/produtos" routerLinkActive="active">Produtos</a></li>
-      <li><a [routerLink]="['/']" fragment="sobre" (click)="closeMenu()">Sobre</a></li>
-      <li><a [routerLink]="['/']" fragment="contato" (click)="closeMenu()">Contato</a></li>
+      <li><a routerLink="/" [class.active]="isActive('/')">Início</a></li>
+      <li><a routerLink="/produtos" [class.active]="isActive('/produtos')">Produtos</a></li>
+      <li><a [routerLink]="['/']" fragment="sobre"   [class.active]="isActive('/', 'sobre')"   (click)="closeMenu()">Sobre</a></li>
+      <li><a [routerLink]="['/']" fragment="contato" [class.active]="isActive('/', 'contato')" (click)="closeMenu()">Contato</a></li>
     </ul>
 
     <!-- Ações -->
     <div class="navbar__actions">
       <a routerLink="/sacola" class="cart-btn">
-        <span class="material-icons">shopping_bag</span>
+        <i class="ph ph-shopping-bag"></i>
         <span class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
       </a>
 
       <ng-container *ngIf="currentUser; else loginBtn">
         <div class="user-menu">
           <button class="user-btn" (click)="toggleMenu()">
-            <span class="material-icons">account_circle</span>
+            <i class="ph ph-user-circle"></i>
             <span class="user-name">{{ currentUser.name.split(' ')[0] }}</span>
-            <span class="material-icons arrow">expand_more</span>
+            <i class="ph ph-caret-down arrow"></i>
           </button>
           <div class="dropdown" [class.open]="menuOpen">
             <a routerLink="/meus-pedidos" (click)="closeMenu()">
-              <span class="material-icons">receipt_long</span> Meus Pedidos
+              <i class="ph ph-receipt"></i> Meus Pedidos
+            </a>
+            <a *ngIf="currentUser.role === 'MANAGER'" routerLink="/gerente/pedidos" (click)="closeMenu()">
+              <i class="ph ph-storefront"></i> Painel da Loja
             </a>
             <a *ngIf="currentUser.role === 'ADMIN'" routerLink="/admin" (click)="closeMenu()">
-              <span class="material-icons">admin_panel_settings</span> Admin
+              <i class="ph ph-gear-six"></i> Admin
             </a>
             <button (click)="logout()">
-              <span class="material-icons">logout</span> Sair
+              <i class="ph ph-sign-out"></i> Sair
             </button>
           </div>
         </div>
@@ -47,7 +50,7 @@
 
       <!-- Hamburguer mobile -->
       <button class="hamburger" (click)="toggleMenu()">
-        <span class="material-icons">{{ menuOpen ? 'close' : 'menu' }}</span>
+        <i class="ph" [ngClass]="menuOpen ? 'ph-x' : 'ph-list'"></i>
       </button>
     </div>
   </div>
@@ -61,6 +64,7 @@
     <a routerLink="/sacola" (click)="closeMenu()">Sacola ({{ cartCount }})</a>
     <ng-container *ngIf="currentUser">
       <a routerLink="/meus-pedidos" (click)="closeMenu()">Meus Pedidos</a>
+      <a *ngIf="currentUser.role === 'MANAGER'" routerLink="/gerente/pedidos" (click)="closeMenu()">Painel da Loja</a>
       <a *ngIf="currentUser.role === 'ADMIN'" routerLink="/admin" (click)="closeMenu()">Admin</a>
       <button (click)="logout()">Sair</button>
     </ng-container>

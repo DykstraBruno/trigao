@@ -33,13 +33,13 @@
   }
 }
 
-.payment-methods {
+.payment-methods, .store-options {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
-.payment-option {
+.payment-option, .store-option {
   display: flex;
   align-items: center;
   gap: 1rem;

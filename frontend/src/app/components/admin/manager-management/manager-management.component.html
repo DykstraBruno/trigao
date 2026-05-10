@@ -1,0 +1,77 @@
+<div class="manager-mgmt">
+  <header>
+    <h2><span class="material-icons">badge</span> Gerentes</h2>
+    <button class="btn btn-primary" (click)="openNew()">
+      <span class="material-icons">person_add</span> Novo gerente
+    </button>
+  </header>
+
+  <div class="form-card" *ngIf="showForm">
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="grid">
+        <label>
+          Nome
+          <input formControlName="name">
+        </label>
+        <label>
+          E-mail
+          <input formControlName="email" type="email">
+        </label>
+        <label>
+          Senha
+          <input formControlName="password" type="password">
+        </label>
+        <label>
+          Telefone
+          <input formControlName="phone">
+        </label>
+        <label class="full">
+          Loja
+          <select formControlName="storeId">
+            <option [ngValue]="null" disabled>Selecione…</option>
+            <option *ngFor="let s of stores" [ngValue]="s.id">{{ s.name }}</option>
+          </select>
+        </label>
+      </div>
+      <div class="alert" *ngIf="error">{{ error }}</div>
+      <div class="actions">
+        <button type="button" class="btn btn-ghost" (click)="cancel()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Criar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="loading" *ngIf="loading">Carregando…</div>
+
+  <table class="data-table" *ngIf="!loading">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>E-mail</th>
+        <th>Telefone</th>
+        <th>Loja</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let m of managers; trackBy: trackById">
+        <td><strong>{{ m.name }}</strong></td>
+        <td>{{ m.email }}</td>
+        <td>{{ m.phone || '—' }}</td>
+        <td>
+          <select [value]="m.storeId" (change)="reassign(m, $any($event.target).value)">
+            <option *ngFor="let s of stores" [value]="s.id">{{ s.name }}</option>
+          </select>
+        </td>
+        <td class="row-actions">
+          <button class="icon-btn danger" (click)="remove(m)" title="Remover">
+            <span class="material-icons">delete</span>
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="managers.length === 0">
+        <td colspan="5" class="empty">Nenhum gerente cadastrado.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

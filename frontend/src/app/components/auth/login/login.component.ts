@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    if (this.auth.isLoggedIn()) this.router.navigate(['/']);
+    if (this.auth.isLoggedIn()) this.redirectByRole();
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -28,11 +28,17 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.error = '';
     this.auth.login(this.form.value).subscribe({
-      next: () => this.router.navigate(['/']),
+      next: () => this.redirectByRole(),
       error: (err: any) => {
         this.error = err?.error?.error || 'Email ou senha incorretos.';
         this.loading = false;
       }
     });
+  }
+
+  private redirectByRole(): void {
+    if (this.auth.isAdmin())   { this.router.navigate(['/admin']); return; }
+    if (this.auth.isManager()) { this.router.navigate(['/gerente/pedidos']); return; }
+    this.router.navigate(['/']);
   }
 }

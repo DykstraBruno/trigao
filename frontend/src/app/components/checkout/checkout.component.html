@@ -8,6 +8,25 @@
         <form [formGroup]="form" (ngSubmit)="submit()">
 
           <div class="form-section">
+            <h3><span class="material-icons">store</span> Loja de Retirada/Preparo</h3>
+            <div class="store-options">
+              <label class="store-option"
+                     *ngFor="let s of stores"
+                     [class.selected]="form.get('storeId')!.value === s.id">
+                <input type="radio" formControlName="storeId" [value]="s.id">
+                <span class="material-icons">storefront</span>
+                <div>
+                  <strong>{{ s.name }}</strong>
+                  <small *ngIf="s.address">{{ s.address }}</small>
+                </div>
+              </label>
+            </div>
+            <span class="error-msg" *ngIf="form.get('storeId')!.invalid && form.get('storeId')!.touched">
+              Selecione uma loja
+            </span>
+          </div>
+
+          <div class="form-section">
             <h3><span class="material-icons">place</span> Endereço de Entrega</h3>
             <div class="form-group">
               <label for="address">Endereço completo</label>

@@ -46,13 +46,24 @@ export class AuthService {
     return this.currentUserSubject.value?.role === 'ADMIN';
   }
 
+  isManager(): boolean {
+    return this.currentUserSubject.value?.role === 'MANAGER';
+  }
+
   get currentUser(): User | null {
     return this.currentUserSubject.value;
   }
 
   private saveSession(res: LoginResponse): void {
     localStorage.setItem(this.TOKEN_KEY, res.token);
-    const user: User = { id: res.id, name: res.name, email: res.email, role: res.role };
+    const user: User = {
+      id: res.id,
+      name: res.name,
+      email: res.email,
+      role: res.role,
+      storeId: res.storeId,
+      storeName: res.storeName
+    };
     localStorage.setItem(this.USER_KEY, JSON.stringify(user));
     this.currentUserSubject.next(user);
   }

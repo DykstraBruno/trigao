@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ecd7c7"/>
+      <stop offset="100%" stop-color="#c79f84"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <ellipse cx="420" cy="430" rx="220" ry="150" fill="#e4b06e"/>
+  <ellipse cx="780" cy="430" rx="220" ry="150" fill="#d79d58"/>
+  <rect x="365" y="390" width="110" height="70" rx="22" fill="#d06d35"/>
+  <rect x="725" y="390" width="110" height="70" rx="22" fill="#d06d35"/>
+  <rect x="395" y="370" width="55" height="24" rx="10" fill="#ffe29f"/>
+  <rect x="755" y="370" width="55" height="24" rx="10" fill="#ffe29f"/>
+  <text x="600" y="690" font-family="Verdana, sans-serif" font-size="52" text-anchor="middle" fill="#5c2d0f">PAO ROMEU E JULIETA</text>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f6c36b"/>
+      <stop offset="100%" stop-color="#e08d2f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <ellipse cx="320" cy="470" rx="210" ry="130" fill="#f8d48e"/>
+  <ellipse cx="600" cy="430" rx="230" ry="140" fill="#f2c06f"/>
+  <ellipse cx="860" cy="470" rx="210" ry="130" fill="#efb45e"/>
+  <text x="600" y="690" font-family="Verdana, sans-serif" font-size="58" text-anchor="middle" fill="#5b2f08">PAO FRANCES</text>
+</svg>

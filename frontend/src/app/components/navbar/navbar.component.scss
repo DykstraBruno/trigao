@@ -80,7 +80,7 @@
 
   &:hover { color: $secondary; }
 
-  .material-icons { font-size: 1.6rem; }
+  .ph { font-size: 1.6rem; }
 
   .cart-badge {
     position: absolute;
@@ -121,7 +121,7 @@
 
   &:hover { background: rgba($secondary, 0.1); color: $secondary; }
 
-  .material-icons { font-size: 1.4rem; }
+  .ph { font-size: 1.4rem; }
   .arrow { font-size: 1.1rem; }
 }
 
@@ -161,7 +161,7 @@
     text-decoration: none;
     transition: background $transition;
 
-    .material-icons { font-size: 1.1rem; color: $text-light; }
+    .ph { font-size: 1.1rem; color: $text-light; }
 
     &:hover { background: $surface-alt; color: $primary; }
   }
@@ -175,7 +175,7 @@
   cursor: pointer;
   padding: 0.25rem;
 
-  .material-icons { font-size: 1.8rem; }
+  .ph { font-size: 1.8rem; }
 
   @media (max-width: 768px) { display: flex; }
 }

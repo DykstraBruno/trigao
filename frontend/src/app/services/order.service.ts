@@ -34,4 +34,16 @@ export class OrderService {
     const params = new HttpParams().set('status', status);
     return this.http.patch<Order>(`${this.base}/admin/${id}/status`, {}, { params });
   }
+
+  // Manager
+  getManagerOrders(page = 0, size = 20, status?: string): Observable<PageResponse<Order>> {
+    let params = new HttpParams().set('page', String(page)).set('size', String(size));
+    if (status) params = params.set('status', status);
+    return this.http.get<PageResponse<Order>>(`${this.base}/manager`, { params });
+  }
+
+  managerUpdateStatus(id: number, status: string): Observable<Order> {
+    const params = new HttpParams().set('status', status);
+    return this.http.patch<Order>(`${this.base}/manager/${id}/status`, {}, { params });
+  }
 }

@@ -1,25 +1,63 @@
 // ============================================================
-// Trigão Panificadora – Design Tokens
-// Paleta inspirada na logo (creme + vermelho + dourado)
+// Trigao Panificadora - Design Tokens
 // ============================================================
 
 :root {
-  --background: #f4ecd2;
-  --foreground: #4c2316;
-  --primary: #c7392f;
-  --primary-deep: #9f2b23;
-  --primary-foreground: #fffdf6;
-  --gold: #f3bf2f;
-  --gold-deep: #d49e22;
-  --surface: #fffdf6;
-  --surface-alt: #faf2dd;
+  --trigao-gold: #d4a574;
+  --trigao-gold-dark: #b8885a;
+  --trigao-gold-light: #e8c9a8;
+  --trigao-brown: #8b4513;
+  --trigao-brown-dark: #6b3410;
+  --trigao-brown-light: #a0522d;
+  --trigao-wheat: #f5deb3;
+  --trigao-cream: #fffef7;
+  --trigao-off-white: #faf8f3;
 
-  --gradient-hero: linear-gradient(135deg, #fff7dc 0%, #f4ecd2 52%, #f8e8b0 100%);
-  --gradient-gold: linear-gradient(135deg, var(--gold), var(--gold-deep));
-  --shadow-warm: 0 24px 52px -24px color-mix(in oklch, var(--primary) 24%, transparent);
+  --success-green: #4caf50;
+  --warning-orange: #ff9800;
+  --error-red: #f44336;
+  --info-blue: #2196f3;
 
-  --font-display: 'Playfair Display', serif;
-  --font-body: 'Inter', 'Nunito', sans-serif;
+  --text-primary: #2c1810;
+  --text-secondary: #5d4e46;
+  --text-muted: #8b7d75;
+  --border-light: #e5ddd6;
+  --shadow-soft: rgba(139, 69, 19, 0.08);
+
+  --background: var(--trigao-cream);
+  --foreground: var(--text-primary);
+  --primary: var(--trigao-gold);
+  --primary-deep: var(--trigao-gold-dark);
+  --primary-foreground: var(--trigao-brown-dark);
+  --gold: var(--trigao-gold);
+  --gold-deep: var(--trigao-gold-dark);
+  --surface: var(--trigao-off-white);
+  --surface-alt: #fff6ea;
+
+  --hero-gradient: linear-gradient(135deg, #d4a574 0%, #b8885a 50%, #8b4513 100%);
+  --card-gradient: linear-gradient(180deg, #fffef7 0%, #faf8f3 100%);
+  --gradient-gold: linear-gradient(135deg, var(--trigao-gold), var(--trigao-gold-dark));
+  --shadow-warm: 0 14px 32px -12px var(--shadow-soft);
+
+  --font-display: 'Playfair Display', 'Merriweather', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-prices: 'Poppins', 'Inter', sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-3xl-desktop: 2.5rem;
+  --text-4xl-desktop: 3rem;
+
+  --font-light: 300;
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
 }
 
 .dark {
@@ -42,41 +80,41 @@
   --color-gold-deep: var(--gold-deep);
 }
 
-// Cor de ação principal
-$primary:        #C7392F;   // vermelho de ação
-$primary-dark:   #9F2B23;
-$primary-light:  #DE6C63;
+// Cor de acao principal
+$primary:        #D4A574;
+$primary-dark:   #B8885A;
+$primary-light:  #E8C9A8;
 
-// Cores secundárias
-$secondary:      #D12D2D;   // vermelho marca
-$secondary-dark: #9F1F1F;
-$secondary-light:#E24A4A;
+// Cores secundarias
+$secondary:      #8B4513;
+$secondary-dark: #6B3410;
+$secondary-light:#A0522D;
 
 // Neutros quentes
-$bg-cream:       #F4ECD2;
-$bg-warm:        #FFF7DC;
-$surface:        #FFFDF6;
-$surface-alt:    #FAF2DD;
+$bg-cream:       #FFFEF7;
+$bg-warm:        #F5DEB3;
+$surface:        #FAF8F3;
+$surface-alt:    #FFF6EA;
 
 // Texto
-$text-dark:      #4C2316;
-$text-medium:    #6D3A21;
-$text-light:     #99603E;
+$text-dark:      #2C1810;
+$text-medium:    #5D4E46;
+$text-light:     #8B7D75;
 
-// Destaque / ação
-$accent:         #C62828;
-$accent-light:   #DF4A4A;
+// Destaque / acao
+$accent:         #D4A574;
+$accent-light:   #E8C9A8;
 
 // Status
-$success:        #2E7D32;
-$warning:        #F57C00;
-$error:          #C62828;
-$info:           #1565C0;
+$success:        #4CAF50;
+$warning:        #FF9800;
+$error:          #F44336;
+$info:           #2196F3;
 
 // Sombras
-$shadow-sm:      0 2px 8px rgba(214, 40, 40, 0.10);
-$shadow-md:      0 4px 16px rgba(214, 40, 40, 0.15);
-$shadow-lg:      0 8px 32px rgba(214, 40, 40, 0.22);
+$shadow-sm:      0 2px 8px rgba(139, 69, 19, 0.08);
+$shadow-md:      0 4px 12px rgba(139, 69, 19, 0.12);
+$shadow-lg:      0 8px 24px rgba(139, 69, 19, 0.16);
 
 // Border radius
 $radius-sm:      6px;
@@ -193,8 +231,8 @@ img { max-width: 100%; display: block; }
 
   &-primary {
     background: $primary;
-    color: #fff;
-    &:hover { background: $primary-dark; color: #fff; transform: translateY(-1px); box-shadow: $shadow-md; }
+    color: $secondary-dark;
+    &:hover { background: $primary-dark; color: $secondary-dark; transform: translateY(-1px); box-shadow: $shadow-md; }
   }
 
   &-secondary {
@@ -212,7 +250,7 @@ img { max-width: 100%; display: block; }
 
   &-accent {
     background: $accent;
-    color: #fff;
+    color: $secondary-dark;
     &:hover { background: darken($accent, 10%); transform: translateY(-1px); box-shadow: $shadow-md; }
   }
 

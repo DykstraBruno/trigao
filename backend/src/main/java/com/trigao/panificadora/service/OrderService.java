@@ -5,6 +5,7 @@ import com.trigao.panificadora.dto.OrderDTO;
 import com.trigao.panificadora.model.*;
 import com.trigao.panificadora.repository.OrderRepository;
 import com.trigao.panificadora.repository.ProductRepository;
+import com.trigao.panificadora.repository.StoreRepository;
 import com.trigao.panificadora.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final StoreRepository storeRepository;
     private final AbacatePayService abacatePayService;
 
     @Value("${app.frontend-url:http://localhost:4200}")
@@ -37,8 +39,13 @@ public class OrderService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado."));
 
+        Store store = storeRepository.findById(request.getStoreId())
+                .filter(Store::getActive)
+                .orElseThrow(() -> new IllegalArgumentException("Loja indisponível."));
+
         Order order = new Order();
         order.setUser(user);
+        order.setStore(store);
         order.setNotes(request.getNotes());
         order.setAddress(request.getAddress());
         order.setPaymentMethod(request.getPaymentMethod());
@@ -135,10 +142,45 @@ public class OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado."));
         User user = userRepository.findByEmail(email).orElseThrow();
-        if (!order.getUser().getId().equals(user.getId()) && user.getRole() != Role.ADMIN) {
+        boolean isOwner = order.getUser().getId().equals(user.getId());
+        boolean isAdmin = user.getRole() == Role.ADMIN;
+        boolean isManagerOfStore = user.getRole() == Role.MANAGER
+                && user.getStore() != null
+                && order.getStore() != null
+                && user.getStore().getId().equals(order.getStore().getId());
+        if (!isOwner && !isAdmin && !isManagerOfStore) {
             throw new IllegalArgumentException("Acesso negado.");
         }
         return OrderDTO.from(order);
+    }
+
+    // Manager: pedidos da própria loja
+    public Page<OrderDTO> findByManagerStore(String email, OrderStatus status, Pageable pageable) {
+        User manager = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado."));
+        if (manager.getStore() == null) {
+            throw new IllegalArgumentException("Gerente sem loja vinculada.");
+        }
+        Long storeId = manager.getStore().getId();
+        Page<Order> page = (status != null)
+                ? orderRepository.findByStoreIdAndStatusOrderByCreatedAtDesc(storeId, status, pageable)
+                : orderRepository.findByStoreIdOrderByCreatedAtDesc(storeId, pageable);
+        return page.map(OrderDTO::from);
+    }
+
+    @Transactional
+    public OrderDTO updateStatusAsManager(Long id, OrderStatus status, String email) {
+        User manager = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado."));
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado."));
+        if (manager.getStore() == null
+                || order.getStore() == null
+                || !manager.getStore().getId().equals(order.getStore().getId())) {
+            throw new IllegalArgumentException("Pedido não pertence à loja do gerente.");
+        }
+        order.setStatus(status);
+        return OrderDTO.from(orderRepository.save(order));
     }
 
     // Chamado pelo webhook do AbacatePay

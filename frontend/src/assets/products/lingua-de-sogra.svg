@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d2a066"/>
+      <stop offset="100%" stop-color="#a66f34"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect x="180" y="280" width="840" height="240" rx="120" fill="#ebb364"/>
+  <rect x="220" y="320" width="760" height="160" rx="80" fill="#dc903d"/>
+  <path d="M260 360 C360 330, 460 330, 560 360" stroke="#f7e0b8" stroke-width="14" fill="none"/>
+  <path d="M560 360 C660 330, 760 330, 860 360" stroke="#f7e0b8" stroke-width="14" fill="none"/>
+  <text x="600" y="690" font-family="Verdana, sans-serif" font-size="58" text-anchor="middle" fill="#fff7ea">LINGUA DE SOGRA</text>
+</svg>

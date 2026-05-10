@@ -6,6 +6,19 @@
     </div>
   </div>
 
+  <div class="category-filter">
+    <div class="container filter-scroll">
+      <button
+        *ngFor="let category of quickCategories"
+        class="category-chip"
+        [class.active]="category.id === activeCategoryChip"
+        (click)="selectQuickCategory(category.id)">
+        <span class="material-icons">{{ category.icon }}</span>
+        {{ category.label }}
+      </button>
+    </div>
+  </div>
+
   <div class="container products-layout">
     <!-- Sidebar -->
     <aside class="sidebar">
@@ -44,12 +57,18 @@
             <img [src]="p.imageUrl || 'assets/placeholder-bread.jpg'" [alt]="p.name" loading="lazy">
             <span class="out-of-stock" *ngIf="p.stock === 0">Esgotado</span>
           </div>
+          <div class="badge-container" *ngIf="p.stock && p.stock > 0 && p.stock < 10">
+            <span class="badge badge-esgotando">Esgotando</span>
+          </div>
           <div class="product-card__body">
             <span class="product-card__category">{{ p.categoryName }}</span>
             <h4>{{ p.name }}</h4>
             <p class="product-card__desc">{{ p.description }}</p>
             <div class="product-card__footer">
               <span class="product-card__price">R$ {{ p.price | number:'1.2-2' }}</span>
+              <button class="btn btn-outline btn-sm" (click)="openDetails(p)">
+                Ver detalhes
+              </button>
               <button class="btn btn-primary btn-sm"
                       [class.added]="addedToCart.has(p.id)"
                       [disabled]="p.stock === 0"
@@ -83,5 +102,53 @@
         </button>
       </div>
     </main>
+  </div>
+
+  <div class="modal-overlay" *ngIf="selectedProduct" (click)="closeDetails()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <button class="btn-close" (click)="closeDetails()" aria-label="Fechar modal">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+
+      <div class="product-hero-image">
+        <img [src]="selectedProduct.imageUrl || 'assets/placeholder-bread.jpg'" [alt]="selectedProduct.name">
+      </div>
+
+      <div class="product-details">
+        <h2>{{ selectedProduct.name }}</h2>
+        <p>{{ selectedProduct.description || 'Produto artesanal preparado diariamente pela Trigao.' }}</p>
+
+        <div class="price-section">
+          <span>Preco</span>
+          <strong>R$ {{ selectedProduct.price | number:'1.2-2' }}</strong>
+        </div>
+
+        <div class="quantity-control">
+          <span>Quantidade</span>
+          <div class="quantity-buttons">
+            <button class="btn-qty" [disabled]="selectedQty <= 1" (click)="decreaseQty()">
+              <span class="material-icons">remove</span>
+            </button>
+            <input type="number" min="1" max="99" [(ngModel)]="selectedQty">
+            <button class="btn-qty" (click)="increaseQty()">
+              <span class="material-icons">add</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="observations-section">
+          <label>Alguma observacao?</label>
+          <textarea rows="3" maxlength="200" [(ngModel)]="observations" placeholder="Ex: bem branquinho, sem acucar"></textarea>
+          <small>{{ observations.length }}/200</small>
+        </div>
+
+        <button class="btn-add-to-cart" (click)="addModalToCart()">
+          <span class="material-icons">shopping_cart</span>
+          Adicionar ao pedido - R$ {{ getTotalPrice() | number:'1.2-2' }}
+        </button>
+      </div>
+    </div>
   </div>
 </div>

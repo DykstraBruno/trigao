@@ -1,0 +1,77 @@
+<div class="manager-page">
+  <div class="container">
+    <header class="page-header">
+      <div>
+        <h1><span class="material-icons">storefront</span> {{ storeName || 'Gerência' }}</h1>
+        <p>Pedidos em tempo real da sua loja</p>
+      </div>
+      <div class="badge">{{ totalElements }} pedido(s)</div>
+    </header>
+
+    <div class="filter-bar">
+      <button class="chip" [class.active]="filter === ''" (click)="setFilter('')">Todos</button>
+      <button class="chip" *ngFor="let s of statusOptions"
+              [class.active]="filter === s"
+              (click)="setFilter(s)">
+        {{ statusLabels[s] }}
+      </button>
+    </div>
+
+    <div class="loading" *ngIf="loading">Carregando…</div>
+
+    <div class="empty" *ngIf="!loading && orders.length === 0">
+      <span class="material-icons">inbox</span>
+      <p>Nenhum pedido nesta categoria.</p>
+    </div>
+
+    <div class="orders-list" *ngIf="!loading && orders.length > 0">
+      <article class="order-card" *ngFor="let o of orders; trackBy: trackById"
+               [class.expanded]="expandedId === o.id"
+               [attr.data-status]="o.status">
+        <header class="order-head" (click)="toggle(o.id)">
+          <div class="head-left">
+            <strong>#{{ o.id }}</strong>
+            <span class="status-pill" [attr.data-status]="o.status">
+              {{ statusLabels[o.status] }}
+            </span>
+          </div>
+          <div class="head-right">
+            <span class="total">R$ {{ o.totalAmount | number:'1.2-2' }}</span>
+            <small>{{ o.createdAt | date:'dd/MM HH:mm' }}</small>
+          </div>
+        </header>
+
+        <div class="order-body" *ngIf="expandedId === o.id">
+          <div class="customer">
+            <strong>{{ o.customerName }}</strong>
+            <small *ngIf="o.customerPhone">{{ o.customerPhone }}</small>
+            <small>{{ o.customerEmail }}</small>
+            <small *ngIf="o.address"><span class="material-icons">place</span> {{ o.address }}</small>
+            <small *ngIf="o.notes"><em>Obs: {{ o.notes }}</em></small>
+          </div>
+
+          <ul class="items">
+            <li *ngFor="let it of o.items">
+              <span>{{ it.quantity }}× {{ it.productName }}</span>
+              <span>R$ {{ it.subtotal | number:'1.2-2' }}</span>
+            </li>
+          </ul>
+
+          <div class="actions">
+            <button class="btn btn-primary"
+                    *ngIf="nextStatus[o.status]"
+                    (click)="advance(o)">
+              <span class="material-icons">arrow_forward</span>
+              Avançar p/ {{ statusLabels[nextStatus[o.status]!] }}
+            </button>
+            <button class="btn btn-ghost"
+                    *ngIf="o.status !== 'DELIVERED' && o.status !== 'CANCELLED'"
+                    (click)="cancel(o)">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>

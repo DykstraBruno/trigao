@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+backend/target/
+frontend/dist/
+frontend/.angular/
+
+# IDE / editor
+.idea/
+.vscode/
+*.iml
+
+# Env / local
+.env
+.env.local
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local data
+trigao.data
+
+# Root tooling junk
+/package.json
+/package-lock.json
+/AGENTS.md

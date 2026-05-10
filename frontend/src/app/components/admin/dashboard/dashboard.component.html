@@ -1,8 +1,51 @@
 <div class="admin-page">
   <div class="container">
-    <h1>Painel Administrativo</h1>
+    <div class="admin-header">
+      <h1>Painel do Dono</h1>
+      <span class="material-icons">settings</span>
+    </div>
+
+    <section class="metrics-grid">
+      <article class="metric-card" *ngFor="let c of cards">
+        <span class="material-icons">{{ c.icon }}</span>
+        <strong>{{ c.value }}</strong>
+        <p>{{ c.label }}</p>
+      </article>
+    </section>
+
+    <section class="chart-card">
+      <h2>Vendas da Semana</h2>
+      <div class="mock-chart" role="img" aria-label="Grafico de barras de vendas da semana">
+        <div class="bar-item" *ngFor="let bar of weekBars; let i = index">
+          <div class="bar-track">
+            <div class="bar-fill" [style.height.%]="bar"></div>
+          </div>
+          <small>{{ weekLabels[i] }}</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="ranking-card">
+      <h2>Produtos Mais Vendidos</h2>
+      <ol>
+        <li *ngFor="let product of topProducts; let i = index">
+          <span class="position">{{ i + 1 }}.</span>
+          <span class="name">{{ product.name }}</span>
+          <strong>{{ product.qty }} un</strong>
+        </li>
+      </ol>
+    </section>
+
+    <section class="alerts-card">
+      <h2>Alertas</h2>
+      <p *ngFor="let alert of alerts" [class]="'alert-line ' + alert.type">
+        <span class="material-icons">{{ alert.icon }}</span>
+        {{ alert.text }}
+      </p>
+    </section>
+
     <div class="admin-cards">
-      <div class="admin-card card" *ngFor="let c of cards" (click)="navigate(c.route)">
+      <div class="admin-card card" *ngFor="let c of quickActions" (click)="navigate(c.route)">
         <span class="material-icons">{{ c.icon }}</span>
         <h3>{{ c.label }}</h3>
         <p>{{ c.desc }}</p>

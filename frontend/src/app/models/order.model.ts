@@ -18,11 +18,17 @@ export interface Order {
   paymentMethod?: string;
   address?: string;
   createdAt: string;
+  storeId?: number;
+  storeName?: string;
+  customerName?: string;
+  customerEmail?: string;
+  customerPhone?: string;
   items: OrderItem[];
 }
 
 export interface CreateOrderRequest {
   items: { productId: number; quantity: number }[];
+  storeId: number;
   notes?: string;
   address?: string;
   paymentMethod: string;

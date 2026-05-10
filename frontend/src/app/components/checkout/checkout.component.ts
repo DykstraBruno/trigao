@@ -3,8 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { OrderService } from '../../services/order.service';
+import { StoreService } from '../../services/store.service';
 import { Cart } from '../../models/cart.model';
 import { Order } from '../../models/order.model';
+import { Store } from '../../models/store.model';
 
 @Component({
   selector: 'app-checkout',
@@ -14,6 +16,7 @@ import { Order } from '../../models/order.model';
 export class CheckoutComponent implements OnInit {
   form!: FormGroup;
   cart: Cart = { items: [], total: 0, itemCount: 0 };
+  stores: Store[] = [];
   loading = false;
   error = '';
 
@@ -26,6 +29,7 @@ export class CheckoutComponent implements OnInit {
     private fb: FormBuilder,
     private cartService: CartService,
     private orderService: OrderService,
+    private storeService: StoreService,
     private router: Router
   ) {}
 
@@ -36,9 +40,15 @@ export class CheckoutComponent implements OnInit {
     });
 
     this.form = this.fb.group({
+      storeId: [null, Validators.required],
       address: ['', Validators.required],
       notes: [''],
       paymentMethod: ['PIX', Validators.required]
+    });
+
+    this.storeService.list().subscribe(stores => {
+      this.stores = stores;
+      if (stores.length === 1) this.form.patchValue({ storeId: stores[0].id });
     });
   }
 
@@ -50,6 +60,7 @@ export class CheckoutComponent implements OnInit {
 
     const request = {
       items: this.cart.items.map(i => ({ productId: i.product.id, quantity: i.quantity })),
+      storeId: this.form.value.storeId,
       address: this.form.value.address,
       notes: this.form.value.notes,
       paymentMethod: this.form.value.paymentMethod

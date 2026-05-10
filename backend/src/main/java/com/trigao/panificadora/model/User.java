@@ -38,6 +38,10 @@ public class User implements UserDetails {
     @Column(nullable = false, length = 20)
     private Role role = Role.CUSTOMER;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
+    private Store store;
+
     @Column(name = "created_at", updatable = false)
     private Instant createdAt = Instant.now();
 

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard, AdminGuard } from './guards/auth.guard';
+import { AuthGuard, AdminGuard, ManagerGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./components/home/home.module').then(m => m.HomeModule) },
@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: 'login', loadChildren: () => import('./components/auth/login/login.module').then(m => m.LoginModule) },
   { path: 'cadastro', loadChildren: () => import('./components/auth/register/register.module').then(m => m.RegisterModule) },
   { path: 'admin', loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule), canActivate: [AuthGuard, AdminGuard] },
+  { path: 'gerente', loadChildren: () => import('./components/manager/manager.module').then(m => m.ManagerModule), canActivate: [AuthGuard, ManagerGuard] },
   { path: '**', redirectTo: '' }
 ];
 

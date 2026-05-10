@@ -19,3 +19,14 @@ export class AdminGuard implements CanActivate {
     return this.auth.isAdmin() ? true : this.router.createUrlTree(['/']);
   }
 }
+
+@Injectable({ providedIn: 'root' })
+export class ManagerGuard implements CanActivate {
+  constructor(private auth: AuthService, private router: Router) {}
+
+  canActivate(): boolean | UrlTree {
+    return (this.auth.isManager() || this.auth.isAdmin())
+      ? true
+      : this.router.createUrlTree(['/']);
+  }
+}

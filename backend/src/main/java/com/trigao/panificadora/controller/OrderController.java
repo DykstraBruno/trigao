@@ -58,4 +58,23 @@ public class OrderController {
             @RequestParam OrderStatus status) {
         return ResponseEntity.ok(orderService.updateStatus(id, status));
     }
+
+    // Manager: pedidos da própria loja
+    @GetMapping("/manager")
+    @PreAuthorize("hasRole('MANAGER')")
+    public ResponseEntity<Page<OrderDTO>> managerOrders(
+            @AuthenticationPrincipal UserDetails user,
+            @RequestParam(required = false) OrderStatus status,
+            @PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(orderService.findByManagerStore(user.getUsername(), status, pageable));
+    }
+
+    @PatchMapping("/manager/{id}/status")
+    @PreAuthorize("hasRole('MANAGER')")
+    public ResponseEntity<OrderDTO> managerUpdateStatus(
+            @PathVariable Long id,
+            @RequestParam OrderStatus status,
+            @AuthenticationPrincipal UserDetails user) {
+        return ResponseEntity.ok(orderService.updateStatusAsManager(id, status, user.getUsername()));
+    }
 }

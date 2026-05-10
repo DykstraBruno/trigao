@@ -1,9 +1,13 @@
+export type UserRole = 'CUSTOMER' | 'MANAGER' | 'ADMIN';
+
 export interface User {
   id: number;
   name: string;
   email: string;
-  role: 'CUSTOMER' | 'ADMIN';
+  role: UserRole;
   phone?: string;
+  storeId?: number;
+  storeName?: string;
 }
 
 export interface LoginResponse {
@@ -12,5 +16,7 @@ export interface LoginResponse {
   id: number;
   name: string;
   email: string;
-  role: 'CUSTOMER' | 'ADMIN';
+  role: UserRole;
+  storeId?: number;
+  storeName?: string;
 }
