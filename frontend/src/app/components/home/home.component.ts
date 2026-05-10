@@ -11,6 +11,8 @@ import { CartService } from '../../services/cart.service';
 export class HomeComponent implements OnInit {
   featuredProducts: Product[] = [];
   addedToCart: Set<number> = new Set();
+  loading = true;
+  loadError = false;
   categories = [
     { id: 'paes', icon: 'bakery_dining', name: 'Pães' },
     { id: 'bolos', icon: 'cake', name: 'Bolos' },
@@ -25,8 +27,16 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.productService.getProducts(0, 6).subscribe(page => {
-      this.featuredProducts = page.content;
+    this.productService.getProducts(0, 6).subscribe({
+      next: page => {
+        this.featuredProducts = page.content;
+        this.loading = false;
+      },
+      error: err => {
+        console.error('Falha ao carregar produtos em destaque', err);
+        this.loadError = true;
+        this.loading = false;
+      }
     });
   }
 
@@ -41,6 +51,10 @@ export class HomeComponent implements OnInit {
     }
 
     return 'Boa noite! Ainda tem fornada quentinha';
+  }
+
+  trackByProductId(_: number, product: Product): number {
+    return product.id;
   }
 
   addToCart(product: Product): void {

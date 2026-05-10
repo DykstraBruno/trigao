@@ -1,0 +1,54 @@
+// ============================================================
+// Trigão Panificadora – SCSS Tokens
+// Importado por componentes; sem regras de saída para evitar
+// duplicação de CSS por componente.
+// ============================================================
+
+// Cor de ação principal
+$primary:        #C7392F;
+$primary-dark:   #9F2B23;
+$primary-light:  #DE6C63;
+
+// Cores secundárias
+$secondary:      #D12D2D;
+$secondary-dark: #9F1F1F;
+$secondary-light:#E24A4A;
+
+// Neutros quentes
+$bg-cream:       #F4ECD2;
+$bg-warm:        #FFF7DC;
+$surface:        #FFFDF6;
+$surface-alt:    #FAF2DD;
+
+// Texto
+$text-dark:      #4C2316;
+$text-medium:    #6D3A21;
+$text-light:     #99603E;
+
+// Destaque / ação
+$accent:         #C62828;
+$accent-light:   #DF4A4A;
+
+// Status
+$success:        #2E7D32;
+$warning:        #F57C00;
+$error:          #C62828;
+$info:           #1565C0;
+
+// Sombras
+$shadow-sm:      0 2px 8px rgba(214, 40, 40, 0.10);
+$shadow-md:      0 4px 16px rgba(214, 40, 40, 0.15);
+$shadow-lg:      0 8px 32px rgba(214, 40, 40, 0.22);
+
+// Border radius
+$radius-sm:      6px;
+$radius-md:      12px;
+$radius-lg:      20px;
+$radius-full:    9999px;
+
+// Fontes
+$font-heading:   'Playfair Display', serif;
+$font-body:      'Inter', 'Nunito', sans-serif;
+
+// Transições
+$transition:     0.25s ease;

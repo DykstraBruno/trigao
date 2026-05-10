@@ -1,14 +1,42 @@
-<section class="home-hero">
-  <div class="container">
-    <div class="hero-card">
-      <p class="hero-kicker">Do forno para sua casa</p>
-      <h1>{{ greeting }}</h1>
-      <p class="hero-copy">Fresquinho do forno desde 5h. Peça pelo app e receba rápido em Teresina.</p>
-      <a routerLink="/produtos" class="btn btn-primary">Ver promoções</a>
+<!-- Hero -->
+<section class="hero bg-gradient-hero shadow-warm grain">
+  <div class="hero__content container">
+    <span class="hero__tag">PANIFICAÇÃO ARTESANAL</span>
+    <h1 class="font-display">
+      <span class="highlight text-gradient-gold">Trigão</span> Panificadora
+    </h1>
+    <p class="hero__slogan">{{ greeting }}</p>
+    <p class="hero__desc">Da nossa fornada diretamente para a sua mesa. Pães frescos, bolos e salgados artesanais todos os dias, das 05:30h às 21:30h.</p>
+    <div class="hero__ctas">
+      <a routerLink="/produtos" class="btn btn-accent">Ver cardápio</a>
+      <a routerLink="/sacola" class="btn btn-outline">Meu carrinho</a>
+    </div>
+
+    <div class="hero__stats">
+      <div class="stat">
+        <strong class="stat__value">120+</strong>
+        <span class="stat__label">itens no cardápio</span>
+      </div>
+      <div class="stat">
+        <strong class="stat__value">05:30 – 21:30</strong>
+        <span class="stat__label">todos os dias</span>
+      </div>
+      <div class="stat">
+        <strong class="stat__value">4,9 / 5</strong>
+        <span class="stat__label">avaliação dos clientes</span>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- Banner faixa -->
+<section class="hero-banner">
+  <div class="container">
+    <p>🥖 Receita de vitrine para o dia inteiro</p>
+  </div>
+</section>
+
+<!-- Filtros rápidos por categoria -->
 <section class="category-filter">
   <div class="container">
     <div class="filter-scroll">
@@ -20,6 +48,33 @@
   </div>
 </section>
 
+<!-- Features -->
+<section class="features">
+  <div class="container features__grid">
+    <div class="feature-item">
+      <span class="feature-icon">🌾</span>
+      <h3>Ingredientes selecionados</h3>
+      <p>Farinha premium e produtos naturais em todas as receitas.</p>
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon">🔥</span>
+      <h3>Assados todo dia</h3>
+      <p>Forno aceso desde as 5h para garantir frescor na sua mesa.</p>
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon">🛵</span>
+      <h3>Entrega rápida</h3>
+      <p>Peça online e receba no conforto de casa.</p>
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon">💳</span>
+      <h3>Pague como preferir</h3>
+      <p>Pix, cartão de crédito ou boleto via AbacatePay.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Mais Vendidos -->
 <section class="section" id="produtos">
   <div class="container">
     <div class="section-header">
@@ -27,8 +82,14 @@
       <a routerLink="/produtos" class="section-link">Ver cardápio completo</a>
     </div>
 
-    <div class="products-grid">
-      <article class="product-card" *ngFor="let p of featuredProducts">
+    <div *ngIf="loading" class="products-status">Carregando produtos…</div>
+
+    <div *ngIf="loadError && !loading" class="products-status products-status--error">
+      Não foi possível carregar os produtos. Verifique sua conexão e tente novamente.
+    </div>
+
+    <div *ngIf="!loading && !loadError" class="products-grid">
+      <article class="product-card card" *ngFor="let p of featuredProducts; trackBy: trackByProductId">
         <div class="product-card__img">
           <img [src]="p.imageUrl || 'assets/placeholder-bread.jpg'" [alt]="p.name" loading="lazy">
         </div>
@@ -38,9 +99,11 @@
           <p class="product-card__desc">{{ p.description }}</p>
           <div class="product-card__footer">
             <span class="product-card__price">R$ {{ p.price | number:'1.2-2' }}</span>
-            <button class="btn btn-primary btn-sm" [class.added]="addedToCart.has(p.id)" (click)="addToCart(p)">
-              <span class="material-icons">{{ addedToCart.has(p.id) ? 'check' : 'add' }}</span>
-              {{ addedToCart.has(p.id) ? 'Adicionado' : 'Add' }}
+            <button class="btn btn-primary btn-sm"
+                    [class.added]="addedToCart.has(p.id)"
+                    (click)="addToCart(p)">
+              <i class="ph" [class.ph-check]="addedToCart.has(p.id)" [class.ph-shopping-cart-simple]="!addedToCart.has(p.id)"></i>
+              {{ addedToCart.has(p.id) ? 'Adicionado!' : 'Adicionar' }}
             </button>
           </div>
         </div>
@@ -49,6 +112,7 @@
   </div>
 </section>
 
+<!-- Encomendas -->
 <section class="section custom-orders">
   <div class="container">
     <div class="custom-orders__card">
@@ -61,6 +125,7 @@
   </div>
 </section>
 
+<!-- Sobre -->
 <section class="section about" id="sobre">
   <div class="container">
     <div class="about__grid">
@@ -113,10 +178,63 @@
   </div>
 </section>
 
-<section class="section delivery" id="contato">
+<!-- Contato -->
+<section class="contact section" id="contato">
   <div class="container">
-    <h2>Entregas em Teresina</h2>
-    <p>Segunda a Sábado: 6h às 20h</p>
-    <a href="https://wa.me/5586998165030" target="_blank" rel="noopener">Ver bairros atendidos</a>
+    <div class="section-header">
+      <h2>Onde nos encontrar</h2>
+      <p>3 lojas em Teresina, abertas todos os dias.</p>
+    </div>
+
+    <div class="contact__grid">
+      <div class="contact-info">
+        <div class="info-item">
+          <i class="ph ph-map-pin"></i>
+          <div>
+            <strong>Av. Barão de Gurguéia, Nº 1932</strong>
+            <p><a href="tel:+5599982281369">(99) 98228-1369</a></p>
+          </div>
+        </div>
+        <div class="info-item">
+          <i class="ph ph-map-pin"></i>
+          <div>
+            <strong>Av. Joaquim Ribeiro, Nº 1890</strong>
+            <p><a href="tel:+5586998165030">(86) 99816-5030</a></p>
+          </div>
+        </div>
+        <div class="info-item">
+          <i class="ph ph-map-pin"></i>
+          <div>
+            <strong>Av. 19 de Outubro, Qd. I, Casa 04 – Parque Piauí</strong>
+            <p><a href="tel:+5586988811785">(86) 98881-1785</a></p>
+          </div>
+        </div>
+        <div class="info-item">
+          <i class="ph ph-clock"></i>
+          <div>
+            <strong>Horário</strong>
+            <p>Seg–Dom: 05:30h às 21:30h</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <i class="ph ph-instagram-logo"></i>
+          <div>
+            <strong>Instagram</strong>
+            <a href="https://www.instagram.com/trigaopanificadora/" target="_blank" rel="noopener">@trigaopanificadora</a>
+          </div>
+        </div>
+        <div class="info-item">
+          <i class="ph ph-whatsapp-logo"></i>
+          <div>
+            <strong>WhatsApp</strong>
+            <p>
+              <a href="https://wa.me/5599982281369" target="_blank" rel="noopener">(99) 98228-1369</a><br>
+              <a href="https://wa.me/5586998165030" target="_blank" rel="noopener">(86) 99816-5030</a><br>
+              <a href="https://wa.me/5586988811785" target="_blank" rel="noopener">(86) 98881-1785</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>

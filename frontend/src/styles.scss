@@ -80,54 +80,7 @@
   --color-gold-deep: var(--gold-deep);
 }
 
-// Cor de acao principal
-$primary:        #D4A574;
-$primary-dark:   #B8885A;
-$primary-light:  #E8C9A8;
-
-// Cores secundarias
-$secondary:      #8B4513;
-$secondary-dark: #6B3410;
-$secondary-light:#A0522D;
-
-// Neutros quentes
-$bg-cream:       #FFFEF7;
-$bg-warm:        #F5DEB3;
-$surface:        #FAF8F3;
-$surface-alt:    #FFF6EA;
-
-// Texto
-$text-dark:      #2C1810;
-$text-medium:    #5D4E46;
-$text-light:     #8B7D75;
-
-// Destaque / acao
-$accent:         #D4A574;
-$accent-light:   #E8C9A8;
-
-// Status
-$success:        #4CAF50;
-$warning:        #FF9800;
-$error:          #F44336;
-$info:           #2196F3;
-
-// Sombras
-$shadow-sm:      0 2px 8px rgba(139, 69, 19, 0.08);
-$shadow-md:      0 4px 12px rgba(139, 69, 19, 0.12);
-$shadow-lg:      0 8px 24px rgba(139, 69, 19, 0.16);
-
-// Border radius
-$radius-sm:      6px;
-$radius-md:      12px;
-$radius-lg:      20px;
-$radius-full:    9999px;
-
-// Fontes
-$font-heading:   'Playfair Display', serif;
-$font-body:      'Inter', 'Nunito', sans-serif;
-
-// Transições
-$transition:     0.25s ease;
+@import 'styles/variables';
 
 // ============================================================
 // Reset e base
