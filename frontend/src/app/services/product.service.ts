@@ -11,10 +11,21 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  getProducts(page = 0, size = 12, categoryId?: number, search?: string): Observable<PageResponse<Product>> {
+  getProducts(
+    page = 0,
+    size = 12,
+    categoryId?: number,
+    search?: string,
+    minPrice?: number,
+    maxPrice?: number,
+    inStockOnly = false
+  ): Observable<PageResponse<Product>> {
     let params = new HttpParams().set('page', String(page)).set('size', String(size));
-    if (categoryId) params = params.set('categoryId', String(categoryId));
-    if (search)     params = params.set('search', search);
+    if (categoryId)         params = params.set('categoryId', String(categoryId));
+    if (search)             params = params.set('search', search);
+    if (minPrice != null)   params = params.set('minPrice', String(minPrice));
+    if (maxPrice != null)   params = params.set('maxPrice', String(maxPrice));
+    if (inStockOnly)        params = params.set('inStockOnly', 'true');
     return this.http.get<PageResponse<Product>>(this.base, { params });
   }
 

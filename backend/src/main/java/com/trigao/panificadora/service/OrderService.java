@@ -30,6 +30,7 @@ public class OrderService {
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
     private final AbacatePayService abacatePayService;
+    private final OrderEventPublisher eventPublisher;
 
     @Value("${app.frontend-url:http://localhost:4200}")
     private String frontendUrl;
@@ -81,7 +82,9 @@ public class OrderService {
         // Criar checkout no AbacatePay
         createAbacatePayCheckout(saved, request.getPaymentMethod());
 
-        return OrderDTO.from(orderRepository.findById(saved.getId()).orElseThrow());
+        OrderDTO dto = OrderDTO.from(orderRepository.findById(saved.getId()).orElseThrow());
+        eventPublisher.publishCreated(dto);
+        return dto;
     }
 
     private void createAbacatePayCheckout(Order order, String paymentMethod) {
@@ -180,7 +183,9 @@ public class OrderService {
             throw new IllegalArgumentException("Pedido não pertence à loja do gerente.");
         }
         order.setStatus(status);
-        return OrderDTO.from(orderRepository.save(order));
+        OrderDTO dto = OrderDTO.from(orderRepository.save(order));
+        eventPublisher.publishUpdated(dto);
+        return dto;
     }
 
     // Chamado pelo webhook do AbacatePay
@@ -188,8 +193,9 @@ public class OrderService {
     public void handlePaymentConfirmed(String billingId) {
         orderRepository.findByBillingId(billingId).ifPresent(order -> {
             order.setStatus(OrderStatus.PAID);
-            orderRepository.save(order);
-            log.info("Pedido {} marcado como PAGO.", order.getId());
+            Order saved = orderRepository.save(order);
+            log.info("Pedido {} marcado como PAGO.", saved.getId());
+            eventPublisher.publishUpdated(OrderDTO.from(saved));
         });
     }
 
@@ -203,6 +209,8 @@ public class OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado."));
         order.setStatus(status);
-        return OrderDTO.from(orderRepository.save(order));
+        OrderDTO dto = OrderDTO.from(orderRepository.save(order));
+        eventPublisher.publishUpdated(dto);
+        return dto;
     }
 }

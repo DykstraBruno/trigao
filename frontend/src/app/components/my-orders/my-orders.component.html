@@ -1,44 +1,108 @@
 <div class="orders-page">
   <div class="container">
-    <h1>Meus Pedidos</h1>
+    <header class="page-header">
+      <div>
+        <h1>Meus Pedidos</h1>
+        <p>Acompanhe o status de cada pedido em tempo real.</p>
+      </div>
+      <a routerLink="/produtos" class="btn btn-outline btn-sm">
+        <span class="material-icons">add</span> Novo pedido
+      </a>
+    </header>
+
+    <div class="filter-bar" *ngIf="!loading && orders.length > 0">
+      <button class="chip" *ngFor="let f of filterOptions"
+              [class.active]="filter === f.id"
+              (click)="setFilter(f.id)">
+        {{ f.label }}
+      </button>
+    </div>
 
     <div class="spinner" *ngIf="loading"></div>
 
-    <div class="orders-list" *ngIf="!loading">
-      <div class="order-card card" *ngFor="let order of orders">
-        <div class="order-header">
-          <div>
-            <span class="order-id">Pedido #{{ order.id }}</span>
-            <span class="order-date">{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+    <div class="empty-state" *ngIf="!loading && orders.length === 0">
+      <span class="material-icons">receipt_long</span>
+      <p>Você ainda não fez nenhum pedido.</p>
+      <a routerLink="/produtos" class="btn btn-primary">Fazer primeiro pedido</a>
+    </div>
+
+    <div class="empty-state" *ngIf="!loading && orders.length > 0 && filtered.length === 0">
+      <span class="material-icons">filter_alt_off</span>
+      <p>Nenhum pedido nessa categoria.</p>
+    </div>
+
+    <div class="orders-list" *ngIf="!loading && filtered.length > 0">
+      <article class="order-card" *ngFor="let o of filtered; trackBy: trackById"
+               [class.expanded]="expandedId === o.id"
+               [attr.data-status]="o.status">
+
+        <header class="order-head" (click)="toggle(o.id)">
+          <div class="head-left">
+            <strong>Pedido #{{ o.id }}</strong>
+            <small>{{ o.createdAt | date:'dd/MM HH:mm' }}</small>
+            <small *ngIf="o.storeName" class="store-tag">
+              <span class="material-icons">storefront</span> {{ o.storeName }}
+            </small>
           </div>
-          <span class="badge" [ngClass]="statusClasses[order.status]">
-            {{ statusLabels[order.status] }}
-          </span>
-        </div>
+          <div class="head-right">
+            <span class="status-pill" [attr.data-status]="o.status">
+              {{ statusLabels[o.status] }}
+            </span>
+            <strong class="total">R$ {{ o.totalAmount | number:'1.2-2' }}</strong>
+          </div>
+        </header>
 
-        <div class="order-items">
-          <div class="order-item" *ngFor="let item of order.items">
-            <img [src]="item.productImageUrl || 'assets/placeholder-bread.jpg'" [alt]="item.productName">
-            <span class="item-name">{{ item.productName }}</span>
-            <span class="item-qty">x{{ item.quantity }}</span>
-            <span class="item-price">R$ {{ item.subtotal | number:'1.2-2' }}</span>
+        <!-- Timeline -->
+        <div class="timeline" *ngIf="o.status !== 'CANCELLED'">
+          <div class="step" *ngFor="let s of steps; let i = index"
+               [class.done]="isStepDone(i, o)"
+               [class.active]="isStepActive(i, o)">
+            <span class="dot"></span>
+            <small>{{ statusLabels[s] }}</small>
           </div>
         </div>
-
-        <div class="order-footer">
-          <span class="order-total">Total: <strong>R$ {{ order.totalAmount | number:'1.2-2' }}</strong></span>
-          <a *ngIf="order.billingUrl && order.status === 'PENDING'"
-             [href]="order.billingUrl" target="_blank" class="btn btn-primary btn-sm">
-            Pagar agora
-          </a>
+        <div class="cancelled-banner" *ngIf="o.status === 'CANCELLED'">
+          <span class="material-icons">cancel</span> Pedido cancelado
         </div>
-      </div>
 
-      <div class="empty-state" *ngIf="orders.length === 0">
-        <span class="material-icons">receipt_long</span>
-        <p>Nenhum pedido encontrado.</p>
-        <a routerLink="/produtos" class="btn btn-primary">Fazer um pedido</a>
-      </div>
+        <!-- Detalhes expandidos -->
+        <div class="order-body" *ngIf="expandedId === o.id">
+          <div class="meta-grid">
+            <div *ngIf="o.address">
+              <strong>Endereço</strong>
+              <p>{{ o.address }}</p>
+            </div>
+            <div *ngIf="o.paymentMethod">
+              <strong>Pagamento</strong>
+              <p>{{ o.paymentMethod === 'PIX' ? 'Pix' : 'Cartão' }}</p>
+            </div>
+            <div *ngIf="o.notes">
+              <strong>Observações</strong>
+              <p>{{ o.notes }}</p>
+            </div>
+          </div>
+
+          <ul class="items">
+            <li *ngFor="let it of o.items">
+              <img [src]="it.productImageUrl || 'assets/placeholder-bread.jpg'" [alt]="it.productName">
+              <span class="name">{{ it.productName }}</span>
+              <span class="qty">x{{ it.quantity }}</span>
+              <span class="price">R$ {{ it.subtotal | number:'1.2-2' }}</span>
+            </li>
+          </ul>
+
+          <div class="actions">
+            <a *ngIf="o.billingUrl && o.status === 'PENDING'"
+               [href]="o.billingUrl" target="_blank"
+               class="btn btn-primary">
+              <span class="material-icons">payments</span> Pagar agora
+            </a>
+            <button class="btn btn-outline" (click)="reorder(o)">
+              <span class="material-icons">replay</span> Pedir novamente
+            </button>
+          </div>
+        </div>
+      </article>
     </div>
   </div>
 </div>

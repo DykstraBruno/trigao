@@ -1,62 +1,285 @@
 @import '../../../styles/variables';
 
 .orders-page {
-  padding: 2.5rem 0 4rem;
-  h1 { font-size: 2rem; color: $secondary; margin-bottom: 2rem; }
+  padding: 2rem 0 4rem;
+  min-height: calc(100vh - 80px);
+  background: $bg-cream;
 }
 
-.orders-list { display: flex; flex-direction: column; gap: 1.25rem; }
-
-.order-card { padding: 1.25rem; }
-
-.order-header {
+.page-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 
-  .order-id { font-weight: 700; font-size: 0.95rem; color: $text-dark; display: block; }
-  .order-date { font-size: 0.82rem; color: $text-light; }
+  h1 { margin: 0; color: $text-dark; }
+  p  { margin: 0.25rem 0 0; color: $text-medium; }
 }
 
-.order-items {
+.filter-bar {
   display: flex;
-  flex-direction: column;
   gap: 0.5rem;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba($secondary, 0.1);
-}
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
 
-.order-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.9rem;
+  .chip {
+    padding: 0.4rem 0.9rem;
+    border-radius: $radius-full;
+    border: 1px solid #e0d0bf;
+    background: #fff;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all $transition;
 
-  img { width: 40px; height: 40px; object-fit: cover; border-radius: $radius-sm; background: $bg-warm; }
-  .item-name { flex: 1; color: $text-dark; }
-  .item-qty { color: $text-light; }
-  .item-price { font-weight: 700; color: $primary-dark; }
-}
-
-.order-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  .order-total { font-size: 0.95rem; color: $text-medium; strong { color: $text-dark; font-size: 1.05rem; } }
+    &:hover { border-color: $primary-light; }
+    &.active {
+      background: $primary;
+      color: #fff;
+      border-color: $primary;
+    }
+  }
 }
 
 .empty-state {
   text-align: center;
-  padding: 4rem 0;
-  .material-icons { font-size: 4rem; color: $text-light; display: block; margin-bottom: 1rem; }
-  p { color: $text-light; margin-bottom: 1.5rem; }
+  padding: 3rem 1rem;
+  color: $text-light;
+  .material-icons { font-size: 3rem; opacity: 0.4; }
+  p { margin: 0.75rem 0 1.25rem; }
 }
 
-.badge-warning { background: #FFF3CD; color: #856404; }
-.badge-info    { background: #D1ECF1; color: #0C5460; }
-.badge-primary { background: rgba($primary, 0.12); color: $primary-dark; }
-.badge-success { background: #D4EDDA; color: #155724; }
-.badge-error   { background: #F8D7DA; color: #721C24; }
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.order-card {
+  background: #fff;
+  border-radius: $radius-md;
+  box-shadow: $shadow-sm;
+  border-left: 4px solid #ccc;
+  overflow: hidden;
+  transition: box-shadow $transition;
+
+  &:hover { box-shadow: $shadow-md; }
+
+  &[data-status="PENDING"]   { border-left-color: $warning; }
+  &[data-status="PAID"]      { border-left-color: $info; }
+  &[data-status="PREPARING"] { border-left-color: $warning; }
+  &[data-status="READY"]     { border-left-color: $success; }
+  &[data-status="DELIVERED"] { border-left-color: $text-light; }
+  &[data-status="CANCELLED"] { border-left-color: $error; opacity: 0.75; }
+}
+
+.order-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  .head-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    strong { font-size: 1rem; color: $text-dark; }
+    small  { color: $text-light; font-size: 0.82rem; }
+    .store-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      color: $primary-dark;
+      font-weight: 600;
+      .material-icons { font-size: 0.95rem; }
+    }
+  }
+
+  .head-right {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    .total { color: $primary-dark; font-size: 1.05rem; }
+  }
+}
+
+.status-pill {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: $radius-full;
+  background: #eee;
+  color: $text-medium;
+  font-weight: 600;
+
+  &[data-status="PENDING"]   { background: rgba($warning, 0.15); color: darken($warning, 10%); }
+  &[data-status="PAID"]      { background: rgba($info, 0.15); color: $info; }
+  &[data-status="PREPARING"] { background: rgba($warning, 0.15); color: darken($warning, 15%); }
+  &[data-status="READY"]     { background: rgba($success, 0.15); color: darken($success, 10%); }
+  &[data-status="DELIVERED"] { background: rgba($text-light, 0.15); color: $text-medium; }
+  &[data-status="CANCELLED"] { background: rgba($error, 0.15); color: $error; }
+}
+
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem 1rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 1rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    height: 2px;
+    background: #e0d0bf;
+    z-index: 0;
+  }
+
+  .step {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    text-align: center;
+    color: $text-light;
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #e0d0bf;
+      display: block;
+      margin: 0 auto 0.3rem;
+      transition: all $transition;
+    }
+    small { font-size: 0.7rem; }
+
+    &.done {
+      color: $primary-dark;
+      .dot { background: $primary; border-color: $primary; }
+    }
+    &.active {
+      color: $primary-dark;
+      font-weight: 700;
+      .dot {
+        background: $primary;
+        border-color: $primary;
+        box-shadow: 0 0 0 4px rgba($primary, 0.2);
+        animation: pulse 1.6s infinite;
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba($primary, 0.2); }
+  50%      { box-shadow: 0 0 0 8px rgba($primary, 0.05); }
+}
+
+.cancelled-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba($error, 0.08);
+  color: $error;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-top: 1px solid rgba($error, 0.15);
+  .material-icons { font-size: 1.1rem; }
+}
+
+.order-body {
+  border-top: 1px solid #f0e6d8;
+  padding: 1rem 1.25rem;
+  background: $surface;
+  display: grid;
+  gap: 1rem;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.85rem;
+
+  strong { display: block; color: $text-medium; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem; }
+  p      { margin: 0; color: $text-dark; font-size: 0.9rem; }
+}
+
+.items {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  li {
+    display: grid;
+    grid-template-columns: 40px 1fr auto auto;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    color: $text-dark;
+
+    img {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: $radius-sm;
+    }
+    .qty   { color: $text-medium; font-size: 0.85rem; }
+    .price { font-weight: 600; color: $primary-dark; }
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding-top: 0.5rem;
+  border-top: 1px dashed #f0e6d8;
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1rem;
+    border-radius: $radius-sm;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+  }
+  .btn-primary {
+    background: $primary; color: #fff;
+    &:hover { background: darken($primary, 5%); }
+  }
+  .btn-outline {
+    background: transparent;
+    color: $primary-dark;
+    border: 1px solid $primary;
+    &:hover { background: rgba($primary, 0.08); }
+  }
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f0e6d8;
+  border-top-color: $primary;
+  border-radius: 50%;
+  margin: 3rem auto;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

@@ -139,6 +139,75 @@
     .material-icons { font-size: 1.1rem; }
     &:hover { color: $text-dark; }
   }
+
+  .filter-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: transparent;
+    border: 1px solid #d8c8b3;
+    border-radius: $radius-full;
+    padding: 0.35rem 0.85rem;
+    color: $text-medium;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all $transition;
+
+    .material-icons { font-size: 1rem; }
+    &:hover { border-color: $primary-light; color: $primary; }
+    &.active { background: $primary; color: #fff; border-color: $primary; }
+  }
+}
+
+.advanced-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.85rem;
+  background: $surface;
+  border: 1px solid #f0e2cf;
+  padding: 1rem;
+  border-radius: $radius-md;
+  margin-bottom: 1.5rem;
+
+  .filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    color: $text-medium;
+
+    input {
+      width: 130px;
+      padding: 0.45rem 0.6rem;
+      border: 1px solid #d8c8b3;
+      border-radius: $radius-sm;
+      font-size: 0.9rem;
+    }
+  }
+
+  .filter-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding-bottom: 0.45rem;
+    color: $text-medium;
+    font-size: 0.9rem;
+    cursor: pointer;
+    input { accent-color: $primary; }
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid $error;
+    color: $error;
+    padding: 0.45rem 0.85rem;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    font-size: 0.85rem;
+    &:hover { background: rgba($error, 0.08); }
+  }
 }
 
 .products-grid {

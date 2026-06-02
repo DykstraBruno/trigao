@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -28,6 +30,15 @@ public class ProductService {
 
     public Page<ProductDTO> search(String query, Pageable pageable) {
         return productRepository.searchByNameOrDescription(query, pageable).map(ProductDTO::from);
+    }
+
+    public Page<ProductDTO> filter(Long categoryId, String query,
+                                   BigDecimal minPrice, BigDecimal maxPrice,
+                                   boolean inStockOnly, Pageable pageable) {
+        String q = (query == null || query.isBlank()) ? null : query.trim();
+        return productRepository
+                .filter(categoryId, q, minPrice, maxPrice, inStockOnly, pageable)
+                .map(ProductDTO::from);
     }
 
     public ProductDTO findById(Long id) {

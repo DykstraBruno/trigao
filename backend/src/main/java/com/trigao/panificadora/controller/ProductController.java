@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/products")
@@ -23,8 +24,15 @@ public class ProductController {
     public ResponseEntity<Page<ProductDTO>> findAll(
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(defaultValue = "false") boolean inStockOnly,
             @PageableDefault(size = 12) Pageable pageable) {
 
+        boolean hasExtraFilters = minPrice != null || maxPrice != null || inStockOnly;
+        if (hasExtraFilters || (search != null && !search.isBlank() && categoryId != null)) {
+            return ResponseEntity.ok(productService.filter(categoryId, search, minPrice, maxPrice, inStockOnly, pageable));
+        }
         if (search != null && !search.isBlank()) {
             return ResponseEntity.ok(productService.search(search, pageable));
         }

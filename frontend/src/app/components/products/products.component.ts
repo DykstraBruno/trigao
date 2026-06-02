@@ -36,7 +36,14 @@ export class ProductsComponent implements OnInit {
   selectedQty = 1;
   observations = '';
 
+  // Filtros avançados
+  minPrice: number | null = null;
+  maxPrice: number | null = null;
+  inStockOnly = false;
+  showAdvancedFilters = false;
+
   private searchSubject = new Subject<string>();
+  private filterSubject = new Subject<void>();
 
   constructor(
     private productService: ProductService,
@@ -53,6 +60,9 @@ export class ProductsComponent implements OnInit {
     this.searchSubject.pipe(debounceTime(350), distinctUntilChanged())
       .subscribe(() => { this.currentPage = 0; this.loadProducts(); });
 
+    this.filterSubject.pipe(debounceTime(400))
+      .subscribe(() => { this.currentPage = 0; this.loadProducts(); });
+
     this.route.queryParamMap.subscribe(params => {
       const chip = params.get('categoria') || 'todos';
       this.selectQuickCategory(chip);
@@ -61,20 +71,47 @@ export class ProductsComponent implements OnInit {
 
   loadProducts(): void {
     this.loading = true;
-    this.productService.getProducts(this.currentPage, 12, this.selectedCategory, this.searchQuery || undefined)
-      .subscribe({
-        next: (page: PageResponse<Product>) => {
-          this.products = page.content;
-          this.totalPages = page.totalPages;
-          this.totalElements = page.totalElements;
-          this.loading = false;
-        },
-        error: () => this.loading = false
-      });
+    this.productService.getProducts(
+      this.currentPage, 12,
+      this.selectedCategory,
+      this.searchQuery || undefined,
+      this.minPrice ?? undefined,
+      this.maxPrice ?? undefined,
+      this.inStockOnly
+    ).subscribe({
+      next: (page: PageResponse<Product>) => {
+        this.products = page.content;
+        this.totalPages = page.totalPages;
+        this.totalElements = page.totalElements;
+        this.loading = false;
+      },
+      error: () => this.loading = false
+    });
   }
 
   onSearch(): void {
     this.searchSubject.next(this.searchQuery);
+  }
+
+  onFilterChange(): void {
+    this.filterSubject.next();
+  }
+
+  toggleAdvanced(): void {
+    this.showAdvancedFilters = !this.showAdvancedFilters;
+  }
+
+  clearFilters(): void {
+    this.minPrice = null;
+    this.maxPrice = null;
+    this.inStockOnly = false;
+    this.searchQuery = '';
+    this.currentPage = 0;
+    this.loadProducts();
+  }
+
+  hasActiveFilters(): boolean {
+    return this.minPrice != null || this.maxPrice != null || this.inStockOnly || !!this.searchQuery;
   }
 
   selectCategory(id: number | undefined): void {

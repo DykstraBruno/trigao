@@ -36,7 +36,7 @@
 
     <!-- Main -->
     <main class="products-main">
-      <!-- Search -->
+      <!-- Search + filtros -->
       <div class="search-bar">
         <span class="material-icons">search</span>
         <input type="text" placeholder="Buscar produtos..."
@@ -44,6 +44,37 @@
                (ngModelChange)="onSearch()">
         <button *ngIf="searchQuery" class="clear-btn" (click)="searchQuery=''; loadProducts()">
           <span class="material-icons">close</span>
+        </button>
+        <button class="filter-toggle" (click)="toggleAdvanced()"
+                [class.active]="showAdvancedFilters || hasActiveFilters()">
+          <span class="material-icons">tune</span>
+          Filtros
+        </button>
+      </div>
+
+      <div class="advanced-filters" *ngIf="showAdvancedFilters">
+        <label class="filter-field">
+          <span>Preço mín. (R$)</span>
+          <input type="number" min="0" step="0.50"
+                 [(ngModel)]="minPrice"
+                 (ngModelChange)="onFilterChange()"
+                 placeholder="0,00">
+        </label>
+        <label class="filter-field">
+          <span>Preço máx. (R$)</span>
+          <input type="number" min="0" step="0.50"
+                 [(ngModel)]="maxPrice"
+                 (ngModelChange)="onFilterChange()"
+                 placeholder="∞">
+        </label>
+        <label class="filter-checkbox">
+          <input type="checkbox"
+                 [(ngModel)]="inStockOnly"
+                 (ngModelChange)="onFilterChange()">
+          Apenas em estoque
+        </label>
+        <button class="btn btn-ghost" (click)="clearFilters()" *ngIf="hasActiveFilters()">
+          Limpar
         </button>
       </div>
 

@@ -3,7 +3,10 @@
     <header class="page-header">
       <div>
         <h1><span class="material-icons">storefront</span> {{ storeName || 'Gerência' }}</h1>
-        <p>Pedidos em tempo real da sua loja</p>
+        <p>
+          Pedidos em tempo real da sua loja
+          <span class="rt-dot" [class.on]="realtimeConnected" [title]="realtimeConnected ? 'Conectado' : 'Reconectando…'"></span>
+        </p>
       </div>
       <div class="badge">{{ totalElements }} pedido(s)</div>
     </header>

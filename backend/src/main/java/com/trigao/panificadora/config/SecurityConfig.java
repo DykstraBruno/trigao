@@ -56,6 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/stores", "/api/stores/*").permitAll()
+                // WebSocket handshake (auth via STOMP CONNECT header)
+                .antMatchers("/ws/**").permitAll()
                 // Webhook do AbacatePay
                 .antMatchers("/api/webhooks/**").permitAll()
                 // Admin
