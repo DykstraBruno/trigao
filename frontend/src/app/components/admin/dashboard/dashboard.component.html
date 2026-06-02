@@ -5,44 +5,101 @@
       <span class="material-icons">settings</span>
     </div>
 
-    <section class="metrics-grid">
-      <article class="metric-card" *ngFor="let c of cards">
-        <span class="material-icons">{{ c.icon }}</span>
-        <strong>{{ c.value }}</strong>
-        <p>{{ c.label }}</p>
-      </article>
-    </section>
+    <div class="spinner" *ngIf="loading"></div>
 
-    <section class="chart-card">
-      <h2>Vendas da Semana</h2>
-      <div class="mock-chart" role="img" aria-label="Grafico de barras de vendas da semana">
-        <div class="bar-item" *ngFor="let bar of weekBars; let i = index">
-          <div class="bar-track">
-            <div class="bar-fill" [style.height.%]="bar"></div>
+    <ng-container *ngIf="!loading && report">
+      <section class="metrics-grid">
+        <article class="metric-card">
+          <span class="material-icons">payments</span>
+          <strong>{{ formatBRL(report.totalRevenue) }}</strong>
+          <p>Receita ({{ range }} dias)</p>
+        </article>
+        <article class="metric-card">
+          <span class="material-icons">inventory_2</span>
+          <strong>{{ report.totalOrders }}</strong>
+          <p>Pedidos no período</p>
+        </article>
+        <article class="metric-card">
+          <span class="material-icons">attach_money</span>
+          <strong>{{ formatBRL(report.averageTicket) }}</strong>
+          <p>Ticket médio</p>
+        </article>
+        <article class="metric-card" [class.up]="report.growthWoW >= 0" [class.down]="report.growthWoW < 0">
+          <span class="material-icons">{{ report.growthWoW >= 0 ? 'trending_up' : 'trending_down' }}</span>
+          <strong>{{ report.growthWoW > 0 ? '+' : '' }}{{ report.growthWoW | number:'1.0-1' }}%</strong>
+          <p>Crescimento semana</p>
+        </article>
+      </section>
+
+      <section class="chart-card">
+        <header class="chart-head">
+          <div>
+            <h2>Vendas & Projeção</h2>
+            <small>Linha cheia: histórico • tracejada: projeção {{ forecastDays }} dias (SMA{{ report.movingAverageWindow }} + sazonal)</small>
           </div>
-          <small>{{ weekLabels[i] }}</small>
+          <div class="range-toggle">
+            <button *ngFor="let r of [7,14,30,60,90]" (click)="setRange(r)" [class.active]="range === r">
+              {{ r }}d
+            </button>
+          </div>
+        </header>
+
+        <div class="chart-wrap">
+          <svg [attr.viewBox]="'0 0 ' + chartWidth + ' ' + chartHeight" preserveAspectRatio="xMidYMid meet" class="sales-chart">
+            <!-- Y grid + ticks -->
+            <g class="y-axis">
+              <line *ngFor="let t of yTicks"
+                    [attr.x1]="padding.left" [attr.x2]="chartWidth - padding.right"
+                    [attr.y1]="t.y" [attr.y2]="t.y" />
+              <text *ngFor="let t of yTicks"
+                    [attr.x]="padding.left - 8" [attr.y]="t.y + 4"
+                    text-anchor="end">{{ t.label }}</text>
+            </g>
+
+            <!-- X ticks -->
+            <g class="x-axis">
+              <text *ngFor="let t of xTicks"
+                    [attr.x]="t.x" [attr.y]="chartHeight - padding.bottom + 18"
+                    text-anchor="middle">{{ t.label }}</text>
+            </g>
+
+            <!-- Área sombreada do histórico -->
+            <path [attr.d]="areaPath" class="area" *ngIf="areaPath"></path>
+
+            <!-- Linha histórico -->
+            <path [attr.d]="historyPath" class="line history" *ngIf="historyPath"></path>
+
+            <!-- Linha projeção -->
+            <path [attr.d]="forecastPath" class="line forecast" *ngIf="forecastPath"></path>
+
+            <!-- Pontos interativos -->
+            <g class="points">
+              <circle *ngFor="let p of points"
+                      [attr.cx]="p.x" [attr.cy]="p.y" r="4"
+                      [class.fc]="p.forecast"
+                      (mouseenter)="showPoint(p)"
+                      (mouseleave)="hidePoint()"></circle>
+            </g>
+          </svg>
+
+          <div class="tooltip" *ngIf="hoverPoint"
+               [style.left.px]="hoverPoint.x"
+               [style.top.px]="hoverPoint.y - 8">
+            <strong>{{ formatDateShort(hoverPoint.date) }}</strong>
+            <span [class.fc]="hoverPoint.forecast">
+              {{ hoverPoint.forecast ? 'Projeção' : 'Realizado' }}
+            </span>
+            <p>{{ formatBRL(hoverPoint.revenue) }}</p>
+            <small>{{ hoverPoint.orders }} pedido(s)</small>
+          </div>
         </div>
-      </div>
-    </section>
 
-    <section class="ranking-card">
-      <h2>Produtos Mais Vendidos</h2>
-      <ol>
-        <li *ngFor="let product of topProducts; let i = index">
-          <span class="position">{{ i + 1 }}.</span>
-          <span class="name">{{ product.name }}</span>
-          <strong>{{ product.qty }} un</strong>
-        </li>
-      </ol>
-    </section>
-
-    <section class="alerts-card">
-      <h2>Alertas</h2>
-      <p *ngFor="let alert of alerts" [class]="'alert-line ' + alert.type">
-        <span class="material-icons">{{ alert.icon }}</span>
-        {{ alert.text }}
-      </p>
-    </section>
+        <div class="legend">
+          <span><i class="dot history"></i> Histórico</span>
+          <span><i class="dot forecast"></i> Projeção ({{ forecastDays }}d)</span>
+        </div>
+      </section>
+    </ng-container>
 
     <div class="admin-cards">
       <div class="admin-card card" *ngFor="let c of quickActions" (click)="navigate(c.route)">
