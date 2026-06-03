@@ -1,0 +1,28 @@
+# GitHub linguist: força Java como linguagem principal
+# (esconde diretórios de boilerplate/gerados da contagem de linhas)
+
+# Boilerplate Angular standalone (não é o app real)
+trigao-ecommerce/** linguist-vendored
+
+# Dependências
+node_modules/**            linguist-vendored
+frontend/node_modules/**   linguist-vendored
+
+# Build artifacts
+backend/target/**          linguist-generated
+frontend/dist/**           linguist-generated
+frontend/.angular/**       linguist-generated
+
+# Lock files
+**/package-lock.json       linguist-generated
+**/yarn.lock               linguist-generated
+
+# CSS/SCSS são considerados documentation no contexto (mantém Java em destaque)
+*.scss                     linguist-documentation
+*.css                      linguist-documentation
+
+# Normalização de line endings
+* text=auto eol=lf
+*.cmd       text eol=crlf
+*.bat       text eol=crlf
+*.ps1       text eol=crlf
