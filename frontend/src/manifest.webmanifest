@@ -1,0 +1,49 @@
+{
+  "name": "Trigão Panificadora",
+  "short_name": "Trigão",
+  "description": "Pão fresquinho, bolos e salgados artesanais em Teresina. Painel da loja em tempo real para gerentes.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FFFDF6",
+  "theme_color": "#C7392F",
+  "lang": "pt-BR",
+  "categories": ["food", "business", "shopping"],
+  "icons": [
+    {
+      "src": "assets/logo-trigao.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/logo-trigao.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/logo-trigao.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Painel da Loja",
+      "short_name": "Pedidos",
+      "description": "Acompanhe pedidos em tempo real",
+      "url": "/gerente/pedidos",
+      "icons": [{ "src": "assets/logo-trigao.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Cardápio",
+      "short_name": "Cardápio",
+      "description": "Ver produtos",
+      "url": "/cardapio",
+      "icons": [{ "src": "assets/logo-trigao.png", "sizes": "192x192" }]
+    }
+  ]
+}
