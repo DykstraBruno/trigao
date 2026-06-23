@@ -1,0 +1,63 @@
+<div class="detail-page">
+  <div class="container">
+    <button class="back-btn" (click)="back()">
+      <span class="material-icons">arrow_back</span> Voltar ao cardápio
+    </button>
+
+    <div class="spinner" *ngIf="loading"></div>
+
+    <div class="not-found" *ngIf="!loading && notFound">
+      <span class="material-icons">search_off</span>
+      <h2>Produto não encontrado</h2>
+      <p>O item que você procura pode ter saído do cardápio.</p>
+      <button class="btn btn-primary" (click)="back()">Ver cardápio</button>
+    </div>
+
+    <article class="detail" *ngIf="!loading && product">
+      <div class="detail__img">
+        <img [src]="product.imageUrl || 'assets/placeholder-bread.jpg'" [alt]="product.name">
+        <span class="badge esgotado" *ngIf="(product.stock ?? 0) === 0">Esgotado</span>
+      </div>
+
+      <div class="detail__info">
+        <span class="cat" *ngIf="product.categoryName">{{ product.categoryName }}</span>
+        <h1>{{ product.name }}</h1>
+        <p class="desc">{{ product.description || 'Produto artesanal preparado diariamente pela Trigão Panificadora.' }}</p>
+
+        <div class="price">R$ {{ product.price | number:'1.2-2' }}</div>
+
+        <div class="qty" *ngIf="(product.stock ?? 0) > 0">
+          <span>Quantidade</span>
+          <div class="qty-controls">
+            <button class="qty-btn" (click)="decrease()" [disabled]="quantity <= 1">
+              <span class="material-icons">remove</span>
+            </button>
+            <strong>{{ quantity }}</strong>
+            <button class="qty-btn" (click)="increase()">
+              <span class="material-icons">add</span>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-large"
+                [disabled]="(product.stock ?? 0) === 0"
+                [class.added]="added"
+                (click)="addToCart()">
+          <span class="material-icons">{{ added ? 'check' : 'shopping_cart' }}</span>
+          {{ added ? 'Adicionado!' : 'Adicionar ao pedido' }}
+        </button>
+
+        <div class="share">
+          <span>Compartilhar:</span>
+          <a [href]="whatsappShareUrl()"
+             target="_blank" rel="noopener" class="share-btn">
+            <i class="ph ph-whatsapp-logo"></i> WhatsApp
+          </a>
+          <button class="share-btn" (click)="copyShareUrl()">
+            <span class="material-icons">link</span> Copiar link
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>

@@ -5,6 +5,8 @@ import { AuthGuard, AdminGuard, ManagerGuard } from './guards/auth.guard';
 const routes: Routes = [
   { path: '', loadChildren: () => import('./components/home/home.module').then(m => m.HomeModule) },
   { path: 'produtos', loadChildren: () => import('./components/products/products.module').then(m => m.ProductsModule) },
+  { path: 'cardapio', loadChildren: () => import('./components/products/products.module').then(m => m.ProductsModule) },
+  { path: 'cardapio/:slug', loadChildren: () => import('./components/product-detail/product-detail.module').then(m => m.ProductDetailModule) },
   { path: 'sacola', loadChildren: () => import('./components/cart/cart.module').then(m => m.CartModule), canActivate: [AuthGuard] },
   { path: 'checkout', loadChildren: () => import('./components/checkout/checkout.module').then(m => m.CheckoutModule), canActivate: [AuthGuard] },
   { path: 'pedido/:id/confirmacao', loadChildren: () => import('./components/order-confirmation/order-confirmation.module').then(m => m.OrderConfirmationModule), canActivate: [AuthGuard] },

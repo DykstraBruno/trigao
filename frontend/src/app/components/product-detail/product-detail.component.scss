@@ -1,0 +1,187 @@
+@import '../../../styles/variables';
+
+.detail-page {
+  padding: 2rem 0 4rem;
+  background: $bg-cream;
+  min-height: calc(100vh - 80px);
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: 1px solid #e0d0bf;
+  border-radius: $radius-full;
+  padding: 0.45rem 0.9rem;
+  color: $text-medium;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  transition: all $transition;
+
+  &:hover { border-color: $primary; color: $primary; }
+  .material-icons { font-size: 1.1rem; }
+}
+
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid #f0e6d8;
+  border-top-color: $primary;
+  border-radius: 50%;
+  margin: 3rem auto;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.not-found {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: $text-medium;
+
+  .material-icons { font-size: 3rem; color: $text-light; }
+  h2 { margin: 1rem 0 0.5rem; color: $text-dark; }
+  p  { color: $text-light; margin: 0 0 1.5rem; }
+}
+
+.detail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  background: #fff;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-md;
+
+  &__img {
+    position: relative;
+    background: $surface;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+
+    img { width: 100%; height: 100%; object-fit: cover; }
+    .badge.esgotado {
+      position: absolute; top: 1rem; left: 1rem;
+      background: $error; color: #fff;
+      padding: 0.3rem 0.7rem;
+      border-radius: $radius-full;
+      font-size: 0.78rem; font-weight: 700;
+    }
+  }
+
+  &__info {
+    padding: 1.5rem 1.75rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+
+    .cat {
+      display: inline-block;
+      color: $primary-dark;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    h1 { margin: 0; color: $text-dark; font-family: $font-heading; font-size: 1.8rem; line-height: 1.2; }
+    .desc { color: $text-medium; line-height: 1.6; margin: 0; }
+    .price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: $primary-dark;
+      margin: 0.5rem 0;
+    }
+  }
+}
+
+.qty {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  span { color: $text-medium; font-size: 0.85rem; }
+  .qty-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    background: $surface;
+    border: 1px solid #e0d0bf;
+    border-radius: $radius-full;
+    padding: 0.25rem 0.5rem;
+    width: fit-content;
+
+    strong { min-width: 32px; text-align: center; font-size: 1.1rem; color: $text-dark; }
+  }
+  .qty-btn {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #e0d0bf;
+    color: $text-dark;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover:not(:disabled) { border-color: $primary; color: $primary; }
+    &:disabled { opacity: 0.4; cursor: not-allowed; }
+    .material-icons { font-size: 1.1rem; }
+  }
+}
+
+.btn-large {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  background: $primary;
+  color: #fff;
+  transition: background $transition;
+
+  &:hover:not(:disabled) { background: darken($primary, 5%); }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+  &.added { background: $success; }
+}
+
+.share {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed #f0e6d8;
+
+  > span { color: $text-light; font-size: 0.85rem; margin-right: 0.25rem; }
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.85rem;
+    border-radius: $radius-full;
+    background: $surface;
+    border: 1px solid #e0d0bf;
+    color: $text-medium;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all $transition;
+
+    &:hover { border-color: $primary; color: $primary; background: #fff; }
+    .material-icons, i { font-size: 1rem; }
+  }
+}
+
+@media (min-width: 800px) {
+  .detail {
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .detail__img { aspect-ratio: 1/1; }
+}

@@ -97,9 +97,11 @@
             <p class="product-card__desc">{{ p.description }}</p>
             <div class="product-card__footer">
               <span class="product-card__price">R$ {{ p.price | number:'1.2-2' }}</span>
-              <button class="btn btn-outline btn-sm" (click)="openDetails(p)">
+              <a class="btn btn-outline btn-sm"
+                 [routerLink]="['/cardapio', productSlug(p)]"
+                 title="Abrir página do produto">
                 Ver detalhes
-              </button>
+              </a>
               <button class="btn btn-primary btn-sm"
                       [class.added]="addedToCart.has(p.id)"
                       [disabled]="p.stock === 0"

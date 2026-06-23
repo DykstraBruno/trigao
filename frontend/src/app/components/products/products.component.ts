@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService, CategoryService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
+import { SlugService } from '../../services/slug.service';
 import { Product, PageResponse } from '../../models/product.model';
 import { Category } from '../../models/category.model';
 import { Subject } from 'rxjs';
@@ -49,8 +50,13 @@ export class ProductsComponent implements OnInit {
     private productService: ProductService,
     private categoryService: CategoryService,
     private cartService: CartService,
+    private slugService: SlugService,
     private route: ActivatedRoute
   ) {}
+
+  productSlug(p: Product): string {
+    return this.slugService.toSlug(p.name, p.id);
+  }
 
   ngOnInit(): void {
     this.categoryService.getAll().subscribe(cats => {
