@@ -101,6 +101,38 @@
       </section>
     </ng-container>
 
+    <section class="export-card" *ngIf="!loading">
+      <header>
+        <h2><span class="material-icons">file_download</span> Exportar relatório</h2>
+        <small>CSV abre no Excel · HTML imprime ou salva como PDF pelo navegador</small>
+      </header>
+      <div class="export-form">
+        <label>
+          De
+          <input type="date" [(ngModel)]="exportFrom">
+        </label>
+        <label>
+          Até
+          <input type="date" [(ngModel)]="exportTo">
+        </label>
+        <label>
+          Loja
+          <select [(ngModel)]="exportStoreId">
+            <option [ngValue]="null">Todas</option>
+            <option *ngFor="let s of stores" [ngValue]="s.id">{{ s.name }}</option>
+          </select>
+        </label>
+        <div class="export-actions">
+          <button class="btn btn-outline" (click)="downloadCsv()" [disabled]="exporting">
+            <span class="material-icons">grid_on</span> CSV
+          </button>
+          <button class="btn btn-primary" (click)="openPrintReport()" [disabled]="exporting">
+            <span class="material-icons">print</span> Imprimir / PDF
+          </button>
+        </div>
+      </div>
+    </section>
+
     <div class="admin-cards">
       <div class="admin-card card" *ngFor="let c of quickActions" (click)="navigate(c.route)">
         <span class="material-icons">{{ c.icon }}</span>

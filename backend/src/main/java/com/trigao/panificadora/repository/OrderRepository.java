@@ -33,4 +33,14 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
            nativeQuery = true)
     List<Object[]> aggregateDailySales(@Param("since") Instant since,
                                        @Param("storeId") Long storeId);
+
+    // Export: pedidos no range, opcional por loja, exclui apenas CANCELLED
+    @Query("SELECT o FROM Order o " +
+           "WHERE o.createdAt >= :from AND o.createdAt < :to " +
+           "  AND (:storeId IS NULL OR o.store.id = :storeId) " +
+           "  AND o.status <> com.trigao.panificadora.model.OrderStatus.CANCELLED " +
+           "ORDER BY o.createdAt DESC")
+    List<Order> findForExport(@Param("from") Instant from,
+                              @Param("to") Instant to,
+                              @Param("storeId") Long storeId);
 }

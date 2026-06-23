@@ -192,3 +192,73 @@
 @media (max-width: 600px) {
   .metrics-grid { grid-template-columns: 1fr; }
 }
+
+.export-card {
+  background: #fff;
+  border: 1px solid $bg-warm;
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  margin: 0 0 1rem;
+
+  header {
+    margin-bottom: 0.85rem;
+    h2 { margin: 0; display: inline-flex; align-items: center; gap: 0.45rem; font-size: 1.1rem; color: $text-dark; }
+    small { display: block; color: $text-light; margin-top: 0.2rem; font-size: 0.82rem; }
+    .material-icons { color: $primary; font-size: 1.2rem; }
+  }
+
+  .export-form {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(140px, 1fr)) auto;
+    gap: 0.75rem;
+    align-items: end;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    color: $text-medium;
+    font-size: 0.82rem;
+
+    input, select {
+      padding: 0.5rem 0.7rem;
+      border: 1px solid #d8c8b3;
+      border-radius: 6px;
+      background: #fff;
+      font-size: 0.92rem;
+    }
+  }
+
+  .export-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.55rem 1rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    .material-icons { font-size: 1rem; }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+  .btn-primary { background: $primary; color: #fff; &:hover:not(:disabled) { background: darken($primary, 5%); } }
+  .btn-outline { background: transparent; border: 1px solid $primary; color: $primary-dark; &:hover:not(:disabled) { background: rgba($primary, 0.08); } }
+}
+
+@media (max-width: 700px) {
+  .export-card .export-form {
+    grid-template-columns: 1fr 1fr;
+  }
+  .export-card .export-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+  }
+}

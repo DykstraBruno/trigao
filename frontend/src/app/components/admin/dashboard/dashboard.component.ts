@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdminService } from '../../../services/admin.service';
+import { StoreService } from '../../../services/store.service';
+import { Store } from '../../../models/store.model';
 import { DailyPoint, SalesReport } from '../../../models/sales.model';
 
 interface ChartPoint {
@@ -36,6 +38,13 @@ export class DashboardComponent implements OnInit {
   hoverPoint: ChartPoint | null = null;
   points: ChartPoint[] = [];
 
+  // Export
+  stores: Store[] = [];
+  exportFrom = '';
+  exportTo = '';
+  exportStoreId: number | null = null;
+  exporting = false;
+
   quickActions = [
     { label: 'Gerenciar Produtos', icon: 'edit_note',      route: '/admin/produtos', desc: 'Adicionar, editar e remover produtos' },
     { label: 'Gerenciar Pedidos',  icon: 'local_shipping', route: '/admin/pedidos',  desc: 'Atualizar status de entregas e retirada' },
@@ -43,10 +52,70 @@ export class DashboardComponent implements OnInit {
     { label: 'Gerentes',           icon: 'badge',          route: '/admin/gerentes', desc: 'Atribuir gerentes às lojas' }
   ];
 
-  constructor(private router: Router, private adminService: AdminService) {}
+  constructor(
+    private router: Router,
+    private adminService: AdminService,
+    private storeService: StoreService
+  ) {}
 
   ngOnInit(): void {
     this.load();
+    this.initExportDates();
+    this.storeService.list(false).subscribe(s => this.stores = s);
+  }
+
+  private initExportDates(): void {
+    const today = new Date();
+    const start = new Date(today);
+    start.setDate(today.getDate() - 29);
+    this.exportFrom = this.toIsoDate(start);
+    this.exportTo   = this.toIsoDate(today);
+  }
+
+  private toIsoDate(d: Date): string {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${dd}`;
+  }
+
+  downloadCsv(): void {
+    if (!this.exportFrom || !this.exportTo) return;
+    this.exporting = true;
+    this.adminService.downloadSalesCsv(this.exportFrom, this.exportTo, this.exportStoreId ?? undefined)
+      .subscribe({
+        next: blob => {
+          this.triggerBlobDownload(blob, `vendas-trigao-${this.exportFrom}-a-${this.exportTo}.csv`);
+          this.exporting = false;
+        },
+        error: () => { this.exporting = false; alert('Falha ao baixar CSV.'); }
+      });
+  }
+
+  openPrintReport(): void {
+    if (!this.exportFrom || !this.exportTo) return;
+    this.exporting = true;
+    this.adminService.fetchSalesHtml(this.exportFrom, this.exportTo, this.exportStoreId ?? undefined)
+      .subscribe({
+        next: blob => {
+          const url = URL.createObjectURL(blob);
+          window.open(url, '_blank');
+          setTimeout(() => URL.revokeObjectURL(url), 30000);
+          this.exporting = false;
+        },
+        error: () => { this.exporting = false; alert('Falha ao gerar relatório.'); }
+      });
+  }
+
+  private triggerBlobDownload(blob: Blob, filename: string): void {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 
   navigate(route: string): void { this.router.navigate([route]); }
