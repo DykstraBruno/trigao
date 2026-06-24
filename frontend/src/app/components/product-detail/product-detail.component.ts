@@ -20,6 +20,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   added = false;
   shareUrl = '';
 
+  // Carrossel
+  gallery: string[] = [];
+  galleryIndex = 0;
+
   private jsonLdEl: HTMLScriptElement | null = null;
   private canonicalEl: HTMLLinkElement | null = null;
 
@@ -50,6 +54,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
           this.product = p;
           this.loading = false;
           this.shareUrl = this.doc.location.href;
+          this.buildGallery(p);
           this.applySeo(p);
         },
         error: () => {
@@ -87,6 +92,31 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   whatsappShareUrl(): string {
     return `https://wa.me/?text=${encodeURIComponent(this.shareUrl)}`;
+  }
+
+  // Carrossel
+  selectImage(i: number): void {
+    if (i < 0 || i >= this.gallery.length) return;
+    this.galleryIndex = i;
+  }
+  prevImage(): void {
+    if (!this.gallery.length) return;
+    this.galleryIndex = (this.galleryIndex - 1 + this.gallery.length) % this.gallery.length;
+  }
+  nextImage(): void {
+    if (!this.gallery.length) return;
+    this.galleryIndex = (this.galleryIndex + 1) % this.gallery.length;
+  }
+
+  private buildGallery(p: Product): void {
+    const urls: string[] = [];
+    if (p.imageUrl) urls.push(p.imageUrl);
+    (p.images ?? []).forEach(img => {
+      if (img.url && !urls.includes(img.url)) urls.push(img.url);
+    });
+    if (urls.length === 0) urls.push('assets/placeholder-bread.jpg');
+    this.gallery = urls;
+    this.galleryIndex = 0;
   }
 
   private applySeo(p: Product): void {

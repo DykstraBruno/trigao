@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService, CategoryService } from '../../../services/product.service';
-import { Product } from '../../../models/product.model';
+import { Product, ProductImage } from '../../../models/product.model';
 import { Category } from '../../../models/category.model';
 
 @Component({
@@ -79,5 +79,59 @@ export class ProductManagementComponent implements OnInit {
   delete(p: Product): void {
     if (!confirm(`Deseja remover "${p.name}"?`)) return;
     this.productService.delete(p.id).subscribe({ next: () => this.loadData() });
+  }
+
+  // Galeria de imagens
+  galleryProduct: Product | null = null;
+  galleryImages: ProductImage[] = [];
+  newImageUrl = '';
+  newImageAlt = '';
+  galleryLoading = false;
+
+  openGallery(p: Product): void {
+    this.galleryProduct = p;
+    this.loadGallery();
+  }
+
+  closeGallery(): void {
+    this.galleryProduct = null;
+    this.galleryImages = [];
+    this.newImageUrl = '';
+    this.newImageAlt = '';
+  }
+
+  loadGallery(): void {
+    if (!this.galleryProduct) return;
+    this.galleryLoading = true;
+    this.productService.listImages(this.galleryProduct.id).subscribe({
+      next: imgs => { this.galleryImages = imgs; this.galleryLoading = false; },
+      error: () => { this.galleryLoading = false; }
+    });
+  }
+
+  addImage(): void {
+    if (!this.galleryProduct || !this.newImageUrl.trim()) return;
+    this.productService.addImage(this.galleryProduct.id, {
+      url: this.newImageUrl.trim(),
+      altText: this.newImageAlt.trim() || undefined,
+      sortOrder: this.galleryImages.length
+    }).subscribe(() => {
+      this.newImageUrl = '';
+      this.newImageAlt = '';
+      this.loadGallery();
+    });
+  }
+
+  removeImage(img: ProductImage): void {
+    if (!this.galleryProduct) return;
+    if (!confirm('Remover esta imagem?')) return;
+    this.productService.deleteImage(this.galleryProduct.id, img.id).subscribe(() => this.loadGallery());
+  }
+
+  moveImage(img: ProductImage, delta: number): void {
+    if (!this.galleryProduct) return;
+    const newOrder = (img.sortOrder ?? 0) + delta;
+    this.productService.updateImage(this.galleryProduct.id, img.id, { sortOrder: newOrder })
+      .subscribe(() => this.loadGallery());
   }
 }

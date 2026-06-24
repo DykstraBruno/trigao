@@ -1,6 +1,7 @@
 package com.trigao.panificadora.controller;
 
 import com.trigao.panificadora.dto.ProductDTO;
+import com.trigao.panificadora.dto.ProductImageDTO;
 import com.trigao.panificadora.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -63,6 +65,33 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         productService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Imagens extras (galeria)
+    @GetMapping("/{id}/images")
+    public ResponseEntity<List<ProductImageDTO>> listImages(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.listImages(id));
+    }
+
+    @PostMapping("/{id}/images")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ProductImageDTO> addImage(@PathVariable Long id, @Valid @RequestBody ProductImageDTO dto) {
+        return ResponseEntity.ok(productService.addImage(id, dto));
+    }
+
+    @PutMapping("/{id}/images/{imageId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ProductImageDTO> updateImage(@PathVariable Long id,
+                                                       @PathVariable Long imageId,
+                                                       @RequestBody ProductImageDTO dto) {
+        return ResponseEntity.ok(productService.updateImage(id, imageId, dto));
+    }
+
+    @DeleteMapping("/{id}/images/{imageId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteImage(@PathVariable Long id, @PathVariable Long imageId) {
+        productService.deleteImage(id, imageId);
         return ResponseEntity.noContent().build();
     }
 }

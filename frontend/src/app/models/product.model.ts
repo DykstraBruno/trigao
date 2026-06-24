@@ -1,3 +1,10 @@
+export interface ProductImage {
+  id: number;
+  url: string;
+  altText?: string;
+  sortOrder?: number;
+}
+
 export interface Product {
   id: number;
   name: string;
@@ -8,6 +15,7 @@ export interface Product {
   categoryName?: string;
   active?: boolean;
   stock?: number;
+  images?: ProductImage[];
 }
 
 export interface PageResponse<T> {

@@ -56,18 +56,104 @@
   &__img {
     position: relative;
     background: $surface;
-    aspect-ratio: 4/3;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+}
 
-    img { width: 100%; height: 100%; object-fit: cover; }
-    .badge.esgotado {
-      position: absolute; top: 1rem; left: 1rem;
-      background: $error; color: #fff;
-      padding: 0.3rem 0.7rem;
-      border-radius: $radius-full;
-      font-size: 0.78rem; font-weight: 700;
+.carousel {
+  position: relative;
+  aspect-ratio: 4/3;
+  background: $surface;
+  overflow: hidden;
+
+  &__main {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.2s;
+  }
+
+  &__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.92);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: background $transition;
+
+    &.prev { left: 0.6rem; }
+    &.next { right: 0.6rem; }
+    &:hover { background: #fff; }
+    .material-icons { color: $text-dark; font-size: 1.4rem; }
+  }
+
+  &__dots {
+    position: absolute;
+    bottom: 0.65rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.35rem;
+
+    button {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(0,0,0,0.1);
+      cursor: pointer;
+      padding: 0;
+      transition: all $transition;
+
+      &.active { background: $primary; width: 22px; border-radius: 999px; }
     }
   }
+
+  .badge.esgotado {
+    position: absolute; top: 1rem; left: 1rem;
+    background: $error; color: #fff;
+    padding: 0.3rem 0.7rem;
+    border-radius: $radius-full;
+    font-size: 0.78rem; font-weight: 700;
+    z-index: 2;
+  }
+}
+
+.thumbs {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding: 0.6rem;
+  background: #fff;
+
+  .thumb {
+    flex: 0 0 64px;
+    height: 64px;
+    border-radius: $radius-sm;
+    overflow: hidden;
+    border: 2px solid transparent;
+    cursor: pointer;
+    padding: 0;
+    background: $surface;
+    transition: border-color $transition;
+
+    img { width: 100%; height: 100%; object-fit: cover; }
+    &:hover { border-color: $primary-light; }
+    &.active { border-color: $primary; }
+  }
+}
+
+// Ajuste do detail container (já existia)
+.detail {
 
   &__info {
     padding: 1.5rem 1.75rem 2rem;

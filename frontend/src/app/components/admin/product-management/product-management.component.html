@@ -94,6 +94,9 @@
               <button class="icon-btn" (click)="openEdit(p)" title="Editar">
                 <span class="material-icons">edit</span>
               </button>
+              <button class="icon-btn" (click)="openGallery(p)" title="Galeria de imagens">
+                <span class="material-icons">collections</span>
+              </button>
               <button class="icon-btn danger" (click)="delete(p)" title="Remover">
                 <span class="material-icons">delete_outline</span>
               </button>
@@ -101,6 +104,54 @@
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- Modal galeria -->
+  <div class="modal-backdrop" *ngIf="galleryProduct" (click)="closeGallery()">
+    <div class="modal-card gallery-modal" (click)="$event.stopPropagation()">
+      <header class="modal-head">
+        <h3><span class="material-icons">collections</span> {{ galleryProduct.name }}</h3>
+        <button class="icon-btn" (click)="closeGallery()" aria-label="Fechar">
+          <span class="material-icons">close</span>
+        </button>
+      </header>
+
+      <p class="hint">A capa do produto vem do campo <strong>Imagem URL</strong> no formulário. Aqui você adiciona imagens extras que aparecem no carrossel da página do produto.</p>
+
+      <div class="gallery-loading" *ngIf="galleryLoading">Carregando…</div>
+
+      <div class="gallery-grid" *ngIf="!galleryLoading">
+        <div class="gallery-empty" *ngIf="galleryImages.length === 0">
+          Nenhuma imagem extra ainda.
+        </div>
+        <article class="gallery-item" *ngFor="let img of galleryImages; let i = index">
+          <img [src]="img.url" [alt]="img.altText || galleryProduct.name">
+          <div class="gallery-item__info">
+            <small class="order">#{{ (img.sortOrder ?? 0) + 1 }}</small>
+            <small *ngIf="img.altText">{{ img.altText }}</small>
+          </div>
+          <div class="gallery-item__actions">
+            <button class="icon-btn" (click)="moveImage(img, -1)" title="Subir" [disabled]="i === 0">
+              <span class="material-icons">arrow_upward</span>
+            </button>
+            <button class="icon-btn" (click)="moveImage(img, 1)" title="Descer" [disabled]="i === galleryImages.length - 1">
+              <span class="material-icons">arrow_downward</span>
+            </button>
+            <button class="icon-btn danger" (click)="removeImage(img)" title="Remover">
+              <span class="material-icons">delete_outline</span>
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <form class="gallery-add" (submit)="$event.preventDefault(); addImage()">
+        <input type="url" [(ngModel)]="newImageUrl" name="url" placeholder="https://exemplo.com/imagem.jpg" required>
+        <input type="text" [(ngModel)]="newImageAlt" name="alt" placeholder="Descrição (alt)" maxlength="255">
+        <button type="submit" class="btn btn-primary" [disabled]="!newImageUrl.trim()">
+          <span class="material-icons">add_a_photo</span> Adicionar
+        </button>
+      </form>
     </div>
   </div>
 </div>

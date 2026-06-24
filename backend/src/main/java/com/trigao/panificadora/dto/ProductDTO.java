@@ -1,9 +1,13 @@
 package com.trigao.panificadora.dto;
 
 import com.trigao.panificadora.model.Product;
+import com.trigao.panificadora.model.ProductImage;
 import lombok.Data;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class ProductDTO {
@@ -26,7 +30,13 @@ public class ProductDTO {
     private Boolean active;
     private Integer stock;
 
+    private List<ProductImageDTO> images;
+
     public static ProductDTO from(Product p) {
+        return from(p, Collections.emptyList());
+    }
+
+    public static ProductDTO from(Product p, List<ProductImage> extraImages) {
         ProductDTO dto = new ProductDTO();
         dto.setId(p.getId());
         dto.setName(p.getName());
@@ -39,6 +49,8 @@ public class ProductDTO {
             dto.setCategoryId(p.getCategory().getId());
             dto.setCategoryName(p.getCategory().getName());
         }
+        dto.setImages(extraImages == null ? Collections.emptyList()
+                : extraImages.stream().map(ProductImageDTO::from).collect(Collectors.toList()));
         return dto;
     }
 }

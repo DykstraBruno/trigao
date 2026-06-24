@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Product, PageResponse } from '../models/product.model';
+import { Product, ProductImage, PageResponse } from '../models/product.model';
 import { Category } from '../models/category.model';
 
 @Injectable({ providedIn: 'root' })
@@ -44,6 +44,23 @@ export class ProductService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.base}/${id}`);
+  }
+
+  // Galeria de imagens
+  listImages(productId: number): Observable<ProductImage[]> {
+    return this.http.get<ProductImage[]>(`${this.base}/${productId}/images`);
+  }
+
+  addImage(productId: number, img: Partial<ProductImage>): Observable<ProductImage> {
+    return this.http.post<ProductImage>(`${this.base}/${productId}/images`, img);
+  }
+
+  updateImage(productId: number, imageId: number, img: Partial<ProductImage>): Observable<ProductImage> {
+    return this.http.put<ProductImage>(`${this.base}/${productId}/images/${imageId}`, img);
+  }
+
+  deleteImage(productId: number, imageId: number): Observable<void> {
+    return this.http.delete<void>(`${this.base}/${productId}/images/${imageId}`);
   }
 }
 

@@ -15,8 +15,39 @@
 
     <article class="detail" *ngIf="!loading && product">
       <div class="detail__img">
-        <img [src]="product.imageUrl || 'assets/placeholder-bread.jpg'" [alt]="product.name">
-        <span class="badge esgotado" *ngIf="(product.stock ?? 0) === 0">Esgotado</span>
+        <div class="carousel">
+          <img class="carousel__main"
+               [src]="gallery[galleryIndex]"
+               [alt]="product.name"
+               loading="eager">
+          <button class="carousel__nav prev"
+                  *ngIf="gallery.length > 1"
+                  (click)="prevImage()"
+                  aria-label="Anterior">
+            <span class="material-icons">chevron_left</span>
+          </button>
+          <button class="carousel__nav next"
+                  *ngIf="gallery.length > 1"
+                  (click)="nextImage()"
+                  aria-label="Próxima">
+            <span class="material-icons">chevron_right</span>
+          </button>
+          <div class="carousel__dots" *ngIf="gallery.length > 1">
+            <button *ngFor="let _ of gallery; let i = index"
+                    [class.active]="i === galleryIndex"
+                    (click)="selectImage(i)"
+                    [attr.aria-label]="'Imagem ' + (i + 1)"></button>
+          </div>
+          <span class="badge esgotado" *ngIf="(product.stock ?? 0) === 0">Esgotado</span>
+        </div>
+        <div class="thumbs" *ngIf="gallery.length > 1">
+          <button class="thumb"
+                  *ngFor="let url of gallery; let i = index"
+                  [class.active]="i === galleryIndex"
+                  (click)="selectImage(i)">
+            <img [src]="url" [alt]="product.name + ' imagem ' + (i + 1)" loading="lazy">
+          </button>
+        </div>
       </div>
 
       <div class="detail__info">
