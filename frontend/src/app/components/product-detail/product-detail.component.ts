@@ -5,7 +5,10 @@ import { Title, Meta } from '@angular/platform-browser';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 import { SlugService } from '../../services/slug.service';
+import { ReviewService } from '../../services/review.service';
 import { Product } from '../../models/product.model';
+import { Review, ReviewSummary } from '../../models/review.model';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-product-detail',
@@ -24,6 +27,11 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   gallery: string[] = [];
   galleryIndex = 0;
 
+  // Reviews
+  reviews: Review[] = [];
+  reviewSummary: ReviewSummary | null = null;
+  reviewsLoading = false;
+
   private jsonLdEl: HTMLScriptElement | null = null;
   private canonicalEl: HTMLLinkElement | null = null;
 
@@ -33,6 +41,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private productService: ProductService,
     private cartService: CartService,
     private slugService: SlugService,
+    private reviewService: ReviewService,
     private title: Title,
     private meta: Meta,
     private renderer: Renderer2,
@@ -56,6 +65,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
           this.shareUrl = this.doc.location.href;
           this.buildGallery(p);
           this.applySeo(p);
+          this.loadReviews(p.id);
         },
         error: () => {
           this.notFound = true;
@@ -106,6 +116,28 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   nextImage(): void {
     if (!this.gallery.length) return;
     this.galleryIndex = (this.galleryIndex + 1) % this.gallery.length;
+  }
+
+  loadReviews(productId: number): void {
+    this.reviewsLoading = true;
+    forkJoin({
+      list: this.reviewService.listByProduct(productId),
+      summary: this.reviewService.summary(productId)
+    }).subscribe({
+      next: r => { this.reviews = r.list; this.reviewSummary = r.summary; this.reviewsLoading = false; },
+      error: () => { this.reviewsLoading = false; }
+    });
+  }
+
+  // Estrelas auxiliares
+  ratingArray(n: number): number[] {
+    return [1, 2, 3, 4, 5].map(i => (i <= Math.round(n) ? 1 : 0));
+  }
+
+  distributionPercent(rating: number): number {
+    if (!this.reviewSummary || !this.reviewSummary.count) return 0;
+    const v = this.reviewSummary.distribution?.[rating] ?? 0;
+    return Math.round((v / this.reviewSummary.count) * 100);
   }
 
   private buildGallery(p: Product): void {

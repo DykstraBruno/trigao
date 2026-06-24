@@ -283,3 +283,84 @@
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+// Review form
+.items li {
+  grid-template-columns: 40px 1fr auto auto auto !important;
+}
+
+.btn-mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.78rem;
+  border-radius: $radius-full;
+  border: 1px solid $primary-light;
+  background: transparent;
+  color: $primary-dark;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all $transition;
+
+  .material-icons { font-size: 0.95rem; }
+  &:hover { background: $primary; color: #fff; border-color: $primary; }
+}
+
+.review-form {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: $surface;
+  border: 1px solid #f0e2cf;
+  border-radius: $radius-md;
+
+  h4 {
+    margin: 0 0 0.6rem;
+    color: $text-dark;
+    font-size: 0.95rem;
+    strong { color: $primary-dark; }
+  }
+
+  textarea {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid #d8c8b3;
+    border-radius: $radius-sm;
+    font-size: 0.9rem;
+    font-family: inherit;
+    resize: vertical;
+    margin-top: 0.5rem;
+  }
+
+  .review-error {
+    color: $error;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+
+  .review-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    margin-top: 0.75rem;
+  }
+}
+
+.stars-picker {
+  display: inline-flex;
+  gap: 0.15rem;
+
+  .star {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.15rem;
+    .material-icons {
+      font-size: 1.7rem;
+      color: #d4c3a8;
+      transition: color $transition, transform 0.1s;
+    }
+    &.active .material-icons { color: #FFB300; }
+    &:hover .material-icons { transform: scale(1.15); }
+  }
+}

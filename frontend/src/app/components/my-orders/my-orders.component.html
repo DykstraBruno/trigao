@@ -88,8 +88,44 @@
               <span class="name">{{ it.productName }}</span>
               <span class="qty">x{{ it.quantity }}</span>
               <span class="price">R$ {{ it.subtotal | number:'1.2-2' }}</span>
+              <button class="btn btn-mini"
+                      *ngIf="o.status === 'DELIVERED' && canReview(o.id, it.productId)"
+                      (click)="openReviewForm(o.id, it.productId)">
+                <span class="material-icons">rate_review</span> Avaliar
+              </button>
             </li>
           </ul>
+
+          <div class="review-form"
+               *ngIf="reviewFormFor && reviewFormFor.orderId === o.id">
+            <h4>Avaliar
+              <em>{{ (o.items | json | slice:0:0) || '' }}</em>
+              <ng-container *ngFor="let it of o.items">
+                <strong *ngIf="it.productId === reviewFormFor.productId">{{ it.productName }}</strong>
+              </ng-container>
+            </h4>
+            <div class="stars-picker" role="radiogroup">
+              <button type="button"
+                      *ngFor="let n of [1,2,3,4,5]"
+                      class="star"
+                      [class.active]="n <= reviewRating"
+                      (click)="setRating(n)"
+                      [attr.aria-label]="n + ' estrela(s)'">
+                <span class="material-icons">{{ n <= reviewRating ? 'star' : 'star_border' }}</span>
+              </button>
+            </div>
+            <textarea [(ngModel)]="reviewComment"
+                      placeholder="Conta como foi a experiência (opcional)"
+                      maxlength="1000"
+                      rows="3"></textarea>
+            <div class="review-error" *ngIf="reviewError">{{ reviewError }}</div>
+            <div class="review-actions">
+              <button class="btn btn-ghost" (click)="cancelReview()" [disabled]="reviewSaving">Cancelar</button>
+              <button class="btn btn-primary" (click)="submitReview()" [disabled]="reviewSaving">
+                {{ reviewSaving ? 'Enviando…' : 'Enviar avaliação' }}
+              </button>
+            </div>
+          </div>
 
           <div class="actions">
             <a *ngIf="o.billingUrl && o.status === 'PENDING'"

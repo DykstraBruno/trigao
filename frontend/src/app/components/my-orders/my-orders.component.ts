@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { CartService } from '../../services/cart.service';
 import { ProductService } from '../../services/product.service';
+import { ReviewService } from '../../services/review.service';
 import { Order, OrderStatus } from '../../models/order.model';
 import { PageResponse } from '../../models/product.model';
+import { ReviewableItem } from '../../models/review.model';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -43,10 +45,19 @@ export class MyOrdersComponent implements OnInit {
     { id: 'CANCELLED', label: 'Cancelados' }
   ];
 
+  // Reviews
+  reviewable: ReviewableItem[] = [];
+  reviewFormFor: { orderId: number; productId: number } | null = null;
+  reviewRating = 5;
+  reviewComment = '';
+  reviewSaving = false;
+  reviewError = '';
+
   constructor(
     private orderService: OrderService,
     private cartService: CartService,
-    private productService: ProductService
+    private productService: ProductService,
+    private reviewService: ReviewService
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +68,58 @@ export class MyOrdersComponent implements OnInit {
         this.loading = false;
       },
       error: () => { this.loading = false; }
+    });
+    this.loadReviewable();
+  }
+
+  loadReviewable(): void {
+    this.reviewService.reviewable().subscribe({
+      next: list => this.reviewable = list,
+      error: () => this.reviewable = []
+    });
+  }
+
+  canReview(orderId: number, productId: number): boolean {
+    return this.reviewable.some(r => r.orderId === orderId && r.productId === productId);
+  }
+
+  openReviewForm(orderId: number, productId: number): void {
+    this.reviewFormFor = { orderId, productId };
+    this.reviewRating = 5;
+    this.reviewComment = '';
+    this.reviewError = '';
+  }
+
+  cancelReview(): void {
+    this.reviewFormFor = null;
+  }
+
+  setRating(n: number): void {
+    this.reviewRating = n;
+  }
+
+  submitReview(): void {
+    if (!this.reviewFormFor) return;
+    this.reviewSaving = true;
+    this.reviewError = '';
+    this.reviewService.create({
+      orderId: this.reviewFormFor.orderId,
+      productId: this.reviewFormFor.productId,
+      rating: this.reviewRating,
+      comment: this.reviewComment.trim() || undefined
+    }).subscribe({
+      next: () => {
+        // remove da lista de "avaliáveis"
+        this.reviewable = this.reviewable.filter(
+          r => !(r.orderId === this.reviewFormFor!.orderId && r.productId === this.reviewFormFor!.productId)
+        );
+        this.reviewFormFor = null;
+        this.reviewSaving = false;
+      },
+      error: err => {
+        this.reviewError = err?.error?.error || 'Falha ao salvar avaliação.';
+        this.reviewSaving = false;
+      }
     });
   }
 
