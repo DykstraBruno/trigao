@@ -346,6 +346,11 @@
   }
 }
 
+.loyalty-meta {
+  strong.earned { color: $success; }
+  p strong { color: $primary-dark; }
+}
+
 .stars-picker {
   display: inline-flex;
   gap: 0.15rem;

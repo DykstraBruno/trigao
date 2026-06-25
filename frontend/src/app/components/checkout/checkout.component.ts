@@ -4,9 +4,12 @@ import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { OrderService } from '../../services/order.service';
 import { StoreService } from '../../services/store.service';
+import { LoyaltyService } from '../../services/loyalty.service';
+import { AuthService } from '../../services/auth.service';
 import { Cart } from '../../models/cart.model';
 import { Order } from '../../models/order.model';
 import { Store } from '../../models/store.model';
+import { LoyaltyBalance } from '../../models/loyalty.model';
 
 @Component({
   selector: 'app-checkout',
@@ -17,6 +20,8 @@ export class CheckoutComponent implements OnInit {
   form!: FormGroup;
   cart: Cart = { items: [], total: 0, itemCount: 0 };
   stores: Store[] = [];
+  loyalty: LoyaltyBalance | null = null;
+  pointsToRedeem = 0;
   loading = false;
   error = '';
 
@@ -30,6 +35,8 @@ export class CheckoutComponent implements OnInit {
     private cartService: CartService,
     private orderService: OrderService,
     private storeService: StoreService,
+    private loyaltyService: LoyaltyService,
+    private auth: AuthService,
     private router: Router
   ) {}
 
@@ -50,6 +57,42 @@ export class CheckoutComponent implements OnInit {
       this.stores = stores;
       if (stores.length === 1) this.form.patchValue({ storeId: stores[0].id });
     });
+
+    if (this.auth.isLoggedIn()) {
+      this.loyaltyService.balance().subscribe({
+        next: b => this.loyalty = b,
+        error: () => this.loyalty = null
+      });
+    }
+  }
+
+  get maxRedeemPoints(): number {
+    if (!this.loyalty) return 0;
+    const maxFromBalance = this.loyalty.points;
+    const maxFromCart = Math.floor(this.cart.total * this.loyalty.maxRedeemFraction * this.loyalty.redeemRatioPoints);
+    return Math.max(0, Math.min(maxFromBalance, maxFromCart));
+  }
+
+  get redeemDiscount(): number {
+    if (!this.loyalty || this.pointsToRedeem <= 0) return 0;
+    return Math.min(this.pointsToRedeem, this.maxRedeemPoints) / this.loyalty.redeemRatioPoints;
+  }
+
+  get payableTotal(): number {
+    return Math.max(0, this.cart.total - this.redeemDiscount);
+  }
+
+  setRedeem(n: number): void {
+    const capped = Math.max(0, Math.min(Math.floor(n) || 0, this.maxRedeemPoints));
+    this.pointsToRedeem = capped;
+  }
+
+  useAllPoints(): void {
+    this.setRedeem(this.maxRedeemPoints);
+  }
+
+  clearRedeem(): void {
+    this.pointsToRedeem = 0;
   }
 
   submit(): void {
@@ -63,7 +106,8 @@ export class CheckoutComponent implements OnInit {
       storeId: this.form.value.storeId,
       address: this.form.value.address,
       notes: this.form.value.notes,
-      paymentMethod: this.form.value.paymentMethod
+      paymentMethod: this.form.value.paymentMethod,
+      pointsToRedeem: this.pointsToRedeem
     };
 
     this.orderService.create(request).subscribe({

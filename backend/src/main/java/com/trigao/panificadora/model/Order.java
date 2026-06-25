@@ -32,6 +32,15 @@ public class Order {
     @Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
+    @Column(name = "discount_amount", nullable = false, precision = 10, scale = 2)
+    private BigDecimal discountAmount = BigDecimal.ZERO;
+
+    @Column(name = "loyalty_points_used", nullable = false)
+    private Integer loyaltyPointsUsed = 0;
+
+    @Column(name = "loyalty_points_earned", nullable = false)
+    private Integer loyaltyPointsEarned = 0;
+
     @Column(columnDefinition = "TEXT")
     private String notes;
 

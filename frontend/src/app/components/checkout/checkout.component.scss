@@ -143,3 +143,78 @@
 
   strong { color: $text-medium; }
 }
+
+// Loyalty
+.loyalty-line {
+  margin: 0 0 0.6rem;
+  color: $text-medium;
+  font-size: 0.92rem;
+  strong { color: $primary-dark; }
+}
+
+.loyalty-redeem {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) auto;
+  gap: 0.6rem;
+  align-items: end;
+  background: rgba($primary, 0.05);
+  padding: 0.85rem;
+  border-radius: $radius-sm;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.8rem;
+    color: $text-medium;
+    input {
+      padding: 0.5rem 0.7rem;
+      border: 1px solid #d8c8b3;
+      border-radius: $radius-sm;
+      font-size: 1rem;
+      width: 100%;
+    }
+  }
+
+  .loyalty-actions {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  small {
+    grid-column: 1 / -1;
+    color: $primary-dark;
+    font-size: 0.85rem;
+    strong { font-size: 1rem; }
+  }
+}
+
+.loyalty-empty {
+  margin: 0;
+  color: $text-light;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.btn-mini {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid $primary;
+  background: $primary;
+  color: #fff;
+  border-radius: $radius-full;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-weight: 600;
+  &:hover { background: darken($primary, 5%); }
+  &.ghost { background: transparent; color: $primary-dark; }
+  &.ghost:hover { background: rgba($primary, 0.08); }
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: $text-medium;
+  padding: 0.2rem 0;
+  &.discount { color: $success; }
+}

@@ -13,6 +13,7 @@ const routes: Routes = [
   { path: 'meus-pedidos', loadChildren: () => import('./components/my-orders/my-orders.module').then(m => m.MyOrdersModule), canActivate: [AuthGuard] },
   { path: 'login', loadChildren: () => import('./components/auth/login/login.module').then(m => m.LoginModule) },
   { path: 'cadastro', loadChildren: () => import('./components/auth/register/register.module').then(m => m.RegisterModule) },
+  { path: 'fidelidade', loadChildren: () => import('./components/loyalty/loyalty.module').then(m => m.LoyaltyModule), canActivate: [AuthGuard] },
   { path: 'admin', loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule), canActivate: [AuthGuard, AdminGuard] },
   { path: 'gerente', loadChildren: () => import('./components/manager/manager.module').then(m => m.ManagerModule), canActivate: [AuthGuard, ManagerGuard] },
   { path: '**', redirectTo: '' }

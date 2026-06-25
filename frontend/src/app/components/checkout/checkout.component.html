@@ -69,6 +69,36 @@
             </div>
           </div>
 
+          <div class="form-section" *ngIf="loyalty && loyalty.points > 0">
+            <h3><span class="material-icons">stars</span> Trigão Club</h3>
+            <p class="loyalty-line">
+              Você tem <strong>{{ loyalty.points }} pts</strong>
+              (≈ R$ {{ loyalty.equivalentBrl | number:'1.2-2' }}).
+              {{ loyalty.redeemRatioPoints }} pts = R$ 1,00.
+            </p>
+            <div class="loyalty-redeem" *ngIf="maxRedeemPoints > 0">
+              <label>
+                Usar pontos (máx {{ maxRedeemPoints }})
+                <input type="number"
+                       min="0"
+                       [max]="maxRedeemPoints"
+                       [ngModel]="pointsToRedeem"
+                       [ngModelOptions]="{ standalone: true }"
+                       (ngModelChange)="setRedeem($event)">
+              </label>
+              <div class="loyalty-actions">
+                <button type="button" class="btn-mini" (click)="useAllPoints()">Usar todos</button>
+                <button type="button" class="btn-mini ghost" *ngIf="pointsToRedeem > 0" (click)="clearRedeem()">Limpar</button>
+              </div>
+              <small *ngIf="pointsToRedeem > 0">
+                Desconto: <strong>R$ {{ redeemDiscount | number:'1.2-2' }}</strong>
+              </small>
+            </div>
+            <p class="loyalty-empty" *ngIf="maxRedeemPoints === 0">
+              Você ainda não atingiu pontos suficientes para descontar deste pedido.
+            </p>
+          </div>
+
           <div class="alert alert-error" *ngIf="error">{{ error }}</div>
 
           <button type="submit" class="btn btn-accent btn-large"
@@ -92,9 +122,17 @@
           </div>
         </div>
         <div class="summary-divider"></div>
+        <div class="summary-row" *ngIf="pointsToRedeem > 0">
+          <span>Subtotal</span>
+          <span>R$ {{ cart.total | number:'1.2-2' }}</span>
+        </div>
+        <div class="summary-row discount" *ngIf="redeemDiscount > 0">
+          <span>Desconto ({{ pointsToRedeem }} pts)</span>
+          <span>- R$ {{ redeemDiscount | number:'1.2-2' }}</span>
+        </div>
         <div class="summary-total">
           <strong>Total</strong>
-          <strong class="total-value">R$ {{ cart.total | number:'1.2-2' }}</strong>
+          <strong class="total-value">R$ {{ payableTotal | number:'1.2-2' }}</strong>
         </div>
         <div class="abacatepay-badge">
           <img src="https://abacatepay.com/favicon.ico" alt="AbacatePay" width="16">

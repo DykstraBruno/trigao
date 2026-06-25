@@ -31,6 +31,9 @@
             <a routerLink="/meus-pedidos" (click)="closeMenu()">
               <i class="ph ph-receipt"></i> Meus Pedidos
             </a>
+            <a routerLink="/fidelidade" (click)="closeMenu()">
+              <i class="ph ph-star"></i> Trigão Club
+            </a>
             <a *ngIf="currentUser.role === 'MANAGER'" routerLink="/gerente/pedidos" (click)="closeMenu()">
               <i class="ph ph-storefront"></i> Painel da Loja
             </a>
@@ -64,6 +67,7 @@
     <a routerLink="/sacola" (click)="closeMenu()">Sacola ({{ cartCount }})</a>
     <ng-container *ngIf="currentUser">
       <a routerLink="/meus-pedidos" (click)="closeMenu()">Meus Pedidos</a>
+      <a routerLink="/fidelidade" (click)="closeMenu()">Trigão Club</a>
       <a *ngIf="currentUser.role === 'MANAGER'" routerLink="/gerente/pedidos" (click)="closeMenu()">Painel da Loja</a>
       <a *ngIf="currentUser.role === 'ADMIN'" routerLink="/admin" (click)="closeMenu()">Admin</a>
       <button (click)="logout()">Sair</button>

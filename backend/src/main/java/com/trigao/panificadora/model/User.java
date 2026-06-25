@@ -42,6 +42,9 @@ public class User implements UserDetails {
     @JoinColumn(name = "store_id")
     private Store store;
 
+    @Column(name = "loyalty_points", nullable = false)
+    private Integer loyaltyPoints = 0;
+
     @Column(name = "created_at", updatable = false)
     private Instant createdAt = Instant.now();
 

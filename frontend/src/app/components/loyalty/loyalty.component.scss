@@ -1,0 +1,100 @@
+@import '../../../styles/variables';
+
+.loyalty-page {
+  padding: 2rem 0 4rem;
+  background: $bg-cream;
+  min-height: calc(100vh - 80px);
+}
+
+.page-head {
+  margin-bottom: 1.5rem;
+  h1 {
+    margin: 0;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    color: $text-dark;
+    font-family: $font-heading;
+    .material-icons { color: $primary; font-size: 1.8rem; }
+  }
+  p { margin: 0.25rem 0 0; color: $text-medium; }
+}
+
+.balance-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  background: linear-gradient(135deg, $primary, darken($primary, 8%));
+  color: #fff;
+  padding: 1.5rem 1.75rem;
+  border-radius: $radius-lg;
+  margin-bottom: 2rem;
+  box-shadow: $shadow-md;
+
+  .balance-main {
+    text-align: center;
+    .big { display: block; font-size: 3rem; line-height: 1; font-weight: 800; }
+    small { opacity: 0.85; }
+  }
+
+  .balance-info {
+    p { margin: 0 0 0.3rem; font-size: 1.05rem; strong { font-weight: 700; } }
+    small { opacity: 0.9; font-size: 0.82rem; line-height: 1.45; display: block; }
+  }
+}
+
+h2 { margin: 0 0 1rem; color: $text-dark; font-family: $font-heading; }
+
+.loading, .empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: $text-light;
+  .material-icons { font-size: 2.5rem; opacity: 0.4; display: block; margin: 0 auto 0.5rem; }
+}
+
+.history {
+  list-style: none;
+  padding: 0; margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border-radius: $radius-md;
+    padding: 0.85rem 1.1rem;
+    border-left: 4px solid #ccc;
+    box-shadow: $shadow-sm;
+
+    &[data-type="EARN"]    { border-left-color: $success; }
+    &[data-type="REDEEM"]  { border-left-color: $primary; }
+    &[data-type="ADJUST"]  { border-left-color: $info; }
+    &[data-type="EXPIRE"]  { border-left-color: $text-light; opacity: 0.75; }
+  }
+
+  .left, .right { display: flex; flex-direction: column; gap: 0.15rem; }
+  .right { text-align: right; }
+
+  .badge {
+    display: inline-block;
+    background: $surface;
+    color: $text-medium;
+    padding: 0.15rem 0.55rem;
+    border-radius: $radius-full;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    width: fit-content;
+  }
+  strong { color: $text-dark; font-size: 0.95rem; }
+  small  { color: $text-light; font-size: 0.78rem; }
+
+  .delta {
+    font-size: 1.1rem;
+    &.plus  { color: $success; }
+    &.minus { color: $error; }
+  }
+}

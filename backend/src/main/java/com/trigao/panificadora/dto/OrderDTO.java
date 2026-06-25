@@ -26,6 +26,9 @@ public class OrderDTO {
     private String customerName;
     private String customerEmail;
     private String customerPhone;
+    private BigDecimal discountAmount;
+    private Integer loyaltyPointsUsed;
+    private Integer loyaltyPointsEarned;
     private List<ItemDTO> items;
 
     @Data
@@ -57,6 +60,9 @@ public class OrderDTO {
             dto.setCustomerEmail(o.getUser().getEmail());
             dto.setCustomerPhone(o.getUser().getPhone());
         }
+        dto.setDiscountAmount(o.getDiscountAmount());
+        dto.setLoyaltyPointsUsed(o.getLoyaltyPointsUsed());
+        dto.setLoyaltyPointsEarned(o.getLoyaltyPointsEarned());
         dto.setItems(o.getItems().stream().map(OrderDTO::mapItem).collect(Collectors.toList()));
         return dto;
     }

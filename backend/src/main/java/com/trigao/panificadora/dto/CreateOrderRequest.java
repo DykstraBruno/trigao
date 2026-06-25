@@ -19,6 +19,9 @@ public class CreateOrderRequest {
     @NotBlank
     private String paymentMethod; // PIX, CARD
 
+    @Min(0)
+    private Integer pointsToRedeem = 0;
+
     @Data
     public static class OrderItemRequest {
         @NotNull

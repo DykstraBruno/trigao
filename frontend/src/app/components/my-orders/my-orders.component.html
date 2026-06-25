@@ -80,6 +80,15 @@
               <strong>Observações</strong>
               <p>{{ o.notes }}</p>
             </div>
+            <div *ngIf="(o.loyaltyPointsUsed ?? 0) > 0 || (o.loyaltyPointsEarned ?? 0) > 0" class="loyalty-meta">
+              <strong>Trigão Club</strong>
+              <p *ngIf="(o.loyaltyPointsUsed ?? 0) > 0">
+                Usou <strong>{{ o.loyaltyPointsUsed }} pts</strong> (− R$ {{ o.discountAmount | number:'1.2-2' }})
+              </p>
+              <p *ngIf="(o.loyaltyPointsEarned ?? 0) > 0">
+                Ganhou <strong class="earned">+{{ o.loyaltyPointsEarned }} pts</strong>
+              </p>
+            </div>
           </div>
 
           <ul class="items">

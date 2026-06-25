@@ -31,6 +31,7 @@ public class OrderService {
     private final StoreRepository storeRepository;
     private final AbacatePayService abacatePayService;
     private final OrderEventPublisher eventPublisher;
+    private final LoyaltyService loyaltyService;
 
     @Value("${app.frontend-url:http://localhost:4200}")
     private String frontendUrl;
@@ -76,8 +77,26 @@ public class OrderService {
         }
 
         order.setItems(items);
-        order.setTotalAmount(total);
+
+        // Loyalty redeem (desconto)
+        BigDecimal discount = BigDecimal.ZERO;
+        int pointsUsed = 0;
+        int requestedPoints = request.getPointsToRedeem() == null ? 0 : request.getPointsToRedeem();
+        if (requestedPoints > 0) {
+            int available = user.getLoyaltyPoints() == null ? 0 : user.getLoyaltyPoints();
+            discount = loyaltyService.computeDiscount(requestedPoints, total, available);
+            pointsUsed = loyaltyService.pointsForDiscount(discount);
+        }
+        BigDecimal payable = total.subtract(discount).max(BigDecimal.ZERO);
+
+        order.setTotalAmount(payable);
+        order.setDiscountAmount(discount);
+        order.setLoyaltyPointsUsed(pointsUsed);
         Order saved = orderRepository.save(order);
+
+        if (pointsUsed > 0) {
+            loyaltyService.recordRedeem(user, saved, pointsUsed, discount);
+        }
 
         // Criar checkout no AbacatePay
         createAbacatePayCheckout(saved, request.getPaymentMethod());
@@ -193,6 +212,7 @@ public class OrderService {
     public void handlePaymentConfirmed(String billingId) {
         orderRepository.findByBillingId(billingId).ifPresent(order -> {
             order.setStatus(OrderStatus.PAID);
+            loyaltyService.recordEarn(order);
             Order saved = orderRepository.save(order);
             log.info("Pedido {} marcado como PAGO.", saved.getId());
             eventPublisher.publishUpdated(OrderDTO.from(saved));

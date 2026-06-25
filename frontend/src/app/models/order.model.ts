@@ -23,6 +23,9 @@ export interface Order {
   customerName?: string;
   customerEmail?: string;
   customerPhone?: string;
+  discountAmount?: number;
+  loyaltyPointsUsed?: number;
+  loyaltyPointsEarned?: number;
   items: OrderItem[];
 }
 
@@ -32,4 +35,5 @@ export interface CreateOrderRequest {
   notes?: string;
   address?: string;
   paymentMethod: string;
+  pointsToRedeem?: number;
 }

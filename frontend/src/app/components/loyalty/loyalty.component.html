@@ -1,0 +1,44 @@
+<div class="loyalty-page">
+  <div class="container">
+    <header class="page-head">
+      <h1><span class="material-icons">stars</span> Trigão Club</h1>
+      <p>Acumule pontos a cada pedido e troque por desconto na próxima compra.</p>
+    </header>
+
+    <section class="balance-card" *ngIf="balance">
+      <div class="balance-main">
+        <strong class="big">{{ balance.points }}</strong>
+        <small>pontos</small>
+      </div>
+      <div class="balance-info">
+        <p>Equivalem a <strong>R$ {{ balance.equivalentBrl | number:'1.2-2' }}</strong> de desconto.</p>
+        <small>Regra: R$ {{ balance.earnRatioBrl | number:'1.2-2' }} = 1 pt · {{ balance.redeemRatioPoints }} pts = R$ 1,00 · Desconto máx por pedido: {{ (balance.maxRedeemFraction * 100) | number:'1.0-0' }}%</small>
+      </div>
+    </section>
+
+    <h2>Histórico</h2>
+
+    <div class="loading" *ngIf="loading">Carregando…</div>
+
+    <div class="empty" *ngIf="!loading && history.length === 0">
+      <span class="material-icons">history</span>
+      <p>Você ainda não tem movimentações. Faça um pedido para começar a acumular!</p>
+    </div>
+
+    <ul class="history" *ngIf="!loading && history.length > 0">
+      <li *ngFor="let t of history" [attr.data-type]="t.type">
+        <div class="left">
+          <span class="badge">{{ typeLabel(t.type) }}</span>
+          <strong>{{ t.description || '—' }}</strong>
+          <small>{{ t.createdAt | date:'dd/MM/yyyy HH:mm' }}</small>
+        </div>
+        <div class="right">
+          <strong class="delta" [class.plus]="t.points > 0" [class.minus]="t.points < 0">
+            {{ t.points > 0 ? '+' : '' }}{{ t.points }} pts
+          </strong>
+          <small>saldo: {{ t.balanceAfter }}</small>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
